@@ -1,0 +1,46 @@
+\begin{algorithm}[t]
+\footnotesize
+\caption{\footnotesize
+Extended version of the \findsuitor function (\Cref{algo:iter-find-suitor}) that finds the affected
+vertices}
+\label{algo:dyn-suitor-find-aff}
+\textbf{Input:} Affected vertex $z$\\
+\textbf{Output:} Stack of affected vertices
+
+\begin{algorithmic}[1]
+\Function{findAffected}{$z$}
+\State$S_A \gets$ empty stack
+\State$\cur \gets z$
+\State$\done \gets \false$
+\Repeat
+\State$\partner \gets \vsuitor(\cur)$
+\State$\heaviest \gets ws(\cur)$
+\For{\textbf{each} $x \in N(\cur)$}\label{line:dyn-find-affected:for-neighbors}
+\If{\textbf{not} $\affected(x)$ \textbf{and} $w(\cur, x) > \heaviest$ \textbf{and} $w(\cur, x) > ws(x)$}
+\label{line:dyn-find-suitor:first-if}
+\State$\partner \gets x$
+\State$\heaviest \gets w(\cur, x)$
+\EndIf
+\EndFor
+\State$\done \gets \true$
+\If{$\heaviest > ws(\partner)$}\label{line:dyn-find-affected:if-heaviest}
+\State$y \gets \vsuitor(\partner)$
+\State$\vsuitor(\partner) \gets \cur$\label{line:dyn-find-suitor:update-1}
+\State$ws(\partner) \gets \heaviest$\label{line:dyn-find-suitor:update-2}
+\State$S_A.\texttt{push}(\partner)$\label{line:dyn-find-suitor:sa-push}
+\State$\affected(\partner) \gets \true$
+\If{$y \neq \nil$}\label{line:dyn-find-affected:if-y}
+\State$\vsuitor(y) \gets \nil$\label{line:dyn-find-suitor:inv-1}
+\State$ws(y) \gets 0$\label{line:dyn-find-suitor:inv-2}
+\State$\affected(y) \gets \true$
+\State$\cur \gets y$
+\State$\done \gets \false$
+\EndIf
+\Else
+\State$\affected(\cur) \gets \false$\label{line:dyn-find-affected:mark-unaffected}
+\EndIf
+\Until{$\done$ is \true}
+\State\Return$S_A$
+\EndFunction
+\end{algorithmic}
+\end{algorithm}

@@ -1,0 +1,54 @@
+\begin{algorithm}[tb]
+\small
+\setstretch{1}
+\caption{\footnotesize Dynamic \nbcut algorithm to update the
+top-$k$ vertices after an edge removal.}
+\label{algo:nbcut-dyn-rem}
+\textbf{Input:} A graph $G = (V, E)$, an edge $(u,v) \in E$, \topk.\\
+\textbf{Output:} Top-$k$ vertices with highest closeness centrality in
+$G' = (V, E \setminus \set{(u, v)})$.
+
+\begin{algorithmic}[1]
+\State$h_k \gets \topk.\texttt{getMinKey}()$
+\State compute $r'(x)$ for each $x \in V$\label{line:nbcut-dyn-rem-reach}
+\State$A \gets $ compute the set of affected vertices
+\State compute $d(u, x), d'(u, x), d(x, v), d'(x, v)$ for each $x\in A$
+\smallskip
+
+\For{each $x \in A$}
+\State$\isexact(x) \gets \false$\label{line:nbcut-dyn-rem-aff1}
+\If{$x \in \topk$}
+\State$\topk.\texttt{remove}(x)$\label{line:nbcut-dyn-rem-aff2}
+\State$h_k \gets 0$\label{line:nbcut-dyn-rem-hk}
+\EndIf
+\EndFor
+
+\State$\prioq \gets$ max-priority queue with keys $\harmupp'(x)$ and values all
+$x\in V \setminus \topk$\label{line:nbcut-dyn-rem-pq}\smallskip
+
+\While{$\prioq$ is not empty}
+\State$x \gets \prioq.\texttt{extractMax}()$
+\If{$\harmupp(x) < h_k$}
+\State\textbf{break}\label{line:nbcut-dyn-rem-early-stop}
+\EndIf
+\If{\textbf{not} $\isexact(x)$}
+\TopComment{we run a new \bfscut from $x$}
+\State$\left< \harmupp'(x), \isexact(x) \right> \gets \bfscut(x, h_k)$
+\label{line:nbcut-dyn-rem-bfscut}
+\EndIf
+\If{$\isexact(x)$ \textbf{and} $\harmupp'(x) > h_k$}
+\State$\topk.\texttt{push}(\harmupp'(x), x)$
+\Comment{Note that here $\harmupp(x) = \harm(x)$}
+\EndIf
+\If{$\topk.\texttt{size}() > k$}
+\State$\topk.\texttt{removeMin}()$
+\EndIf
+\If{$\topk.\texttt{size}() = k$}
+\State$h_k \gets \topk.\texttt{getMinKey}()$
+\EndIf
+\EndWhile
+\State update $\harmupp(x), r(x),$ and $n_i(u)$ to $\harmupp'(x), r'(x),$ and $n_i'(x)$, respectively
+for each $x\in V$
+\State\Return\topk\label{line:nbcut-dyn-rem-end}
+\end{algorithmic}
+\end{algorithm}

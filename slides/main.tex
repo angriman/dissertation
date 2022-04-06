@@ -1,0 +1,2127 @@
+\documentclass[10pt,titlepage,english,presentation]{beamer}
+\usetheme{HUB}
+\setbeamercovered{invisible}
+\usepackage[noborder,colbullets]{beamerMACSYdefs}
+
+% -----------------------------------------------------------------------------
+% -- packages
+\usepackage{framed}
+\usepackage{algorithm}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{anyfontsize}
+\usepackage[noend]{algpseudocode}
+\algrenewcommand\alglinenumber[1]{\scriptsize #1:}
+\usepackage[T1]{fontenc}
+\usepackage[backend=biber,style=alphabetic,maxalphanames=1]{biblatex}
+\usepackage{booktabs}
+\usepackage{caption}
+\usepackage{csquotes}
+\usepackage{fontawesome,fourier}
+\usepackage{makecell}
+\usepackage{multirow}
+\usepackage{numprint}
+\usepackage[binary-units=true]{siunitx}
+\usepackage{subcaption}
+\usepackage{svg}
+\usepackage[beamer,customcolors]{hf-tikz}
+\usepackage{xspace}
+\usefonttheme[onlymath]{serif}
+\usetikzlibrary{patterns,positioning}
+\usetikzlibrary{decorations.pathreplacing}
+\usetikzlibrary{positioning}
+
+\newif\ifbackup
+\backuptrue
+
+\tikzset{hl/.style={
+    set fill color=red!80!black!40,
+    set border color=red!80!black,
+  },
+}
+
+\npthousandsep{,}
+\npdecimalsign{.}
+
+\HUBfaculty{HU Berlin}
+
+\newcommand{\mkcolorbibparens}[2]{\textcolor{#1}{\hypersetup{citecolor=#1}{[#2]}}}
+\renewenvironment{definition}[1]{\begin{block}{\vspace{-.5mm}\small Definition: #1}}{\end{block}}
+\newcommand{\wmaxuv}{\ensuremath{w_{\max}(u, v)}}
+
+\DeclareCiteCommand{\parencite}[\mkcolorbibparens{HUBblue50}]
+  {\usebibmacro{prenote}}%
+  {\usebibmacro{citeindex}%
+   \usebibmacro{cite}}
+  {\multicitedelim}
+  {\usebibmacro{postnote}}
+
+\input{../sources/gen-macros/dyn-mwm.tex}
+\input{../sources/gen-macros/rw-macros.tex}
+
+\bibliography{./references.bib}
+
+\graphicspath{{./images/}}
+\newcommand{\emphcolor}{blue}
+\renewcommand{\emph}[1]{\textcolor{\emphcolor}{#1}}
+
+\input{../sources/macros.tex}
+\input{../sources/gen-macros/group-closeness-ls.tex}
+\input{slides-macros.tex}
+\input{bigdata-graph-slides.tex}
+
+% -----------------------------------------------------------------------------
+
+\title{Scalable Algorithms for the Analysis of Massive Networks}
+
+\author[Eugenio Angriman]{Eugenio Angriman}
+\institute{Humboldt-Universit\"at zu Berlin $\cdot$ PhD Defense $\cdot$
+14 December 2021}
+
+\TitleImage[width=\textwidth]{./images/title-networks.png}
+
+\begin{document}
+\setlength\textheight{7cm} %required for correct vertical alignment, if [t] is not used as documentclass parameter
+
+\section{Introduction}
+\subsection{Introduction}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}
+\maketitle
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Lets try to dissect the title from the end
+
+\begin{frame}{Networks}
+\framesubtitle{Modeling of interconnected systems}
+%NETWORKS
+% Networks are everywhere, show some quick applications
+
+
+\begin{minipage}[t]{.33\textwidth}
+\centering
+\textbf{People}\smallskip
+
+\includegraphics[width=.9\textwidth]{./images/soc-net.jpg}
+\end{minipage}\hfill
+\begin{minipage}[t]{.33\textwidth}
+\centering
+\textbf{Biological Systems}\smallskip
+
+\includegraphics[width=.9\textwidth]{./images/protein-protein-int-net.jpg}
+\end{minipage}\hfill
+\begin{minipage}[t]{.33\textwidth}
+\centering
+\textbf{Infrastructure}\smallskip
+
+\includegraphics[width=.9\textwidth]{./images/smart-grid.jpg}
+\end{minipage}\medskip
+
+\begin{minipage}[t]{.33\textwidth}
+\begin{itemize}
+    \small
+    \item Social networks
+    \item Epidemics
+\end{itemize}
+\end{minipage}\hfill
+\begin{minipage}[t]{.33\textwidth}
+\begin{itemize}
+    \small
+    \item Protein-protein interactions
+    \item Neural activity
+\end{itemize}
+\end{minipage}\hfill
+\begin{minipage}[t]{.33\textwidth}
+\begin{itemize}
+    \small
+    \item Power grids
+    \item Transportation
+\end{itemize}
+\end{minipage}
+\end{frame}
+
+\begin{frame}[t]{Network Analysis}
+\textbf{Objective:} Extract \emph{non-trivial insights} from networks.
+\begin{minipage}[t]{.55\textwidth}
+\begin{itemize}
+    \small
+\item<2-> \emph{Group structure:} community detection
+\item<3-> Spread of epidemics
+\item<3-> \dots
+\end{itemize}\bigskip
+
+\only<4->{In this work:}
+\begin{itemize}
+    \small
+    \item<4-> \emph{Importance:} centrality
+    \item<5-> Matching
+\end{itemize}
+\end{minipage}\hfill
+\begin{minipage}[t]{.45\textwidth}
+\only<2>{
+\begin{figure}[c]
+    \includesvg[svgextension=svgz,width=.7\textwidth]{./images/comm-det}
+    \caption*{\tiny[Wang \etal, \textit{Hindawi}, 2019]}
+\end{figure}}
+\only<3>{
+\begin{figure}[c]
+\includegraphics[width=.95\textwidth]{./images/epidemic-networks.png}
+\caption*{\tiny[Matamalas \etal, \textit{Science Advances}, 2018]}
+\end{figure}}
+\only<4>{
+\begin{figure}[c]
+\includegraphics[width=.7\textwidth]{./images/betweenness.png}
+\caption*{\tiny[\url{commons.wikimedia.org}]}
+\end{figure}}
+\only<5>{
+\begin{figure}[c]
+\includegraphics[width=.27\textwidth]{./images/matchings.jpg}
+\caption*{\tiny[\url{www.wikiwand.com}]}
+\end{figure}}
+\end{minipage}
+\end{frame}
+
+\begin{frame}{Scalability Challenge}
+% MASSIVE
+% Today networks are Massive, show line of networ sizes
+Today's networks are \emph{massive}
+
+\begin{figure}
+\begin{subfigure}[t]{.55\textwidth}
+\centering
+\includegraphics[width=\textwidth]{./images/networks-scale.png}
+\caption*{\tiny Malewicz \etal \textit{ACM SIGMOD} 2010}
+\end{subfigure}\hfill
+\begin{subfigure}[t]{.45\textwidth}
+\centering
+\includegraphics[width=\textwidth]{./images/scalability-challenge.png}
+\end{subfigure}
+\end{figure}
+
+\begin{minipage}[t]{.5\textwidth}
+\phantom{ }
+
+\begin{itemize}
+    \small
+    \item Millions to billions of vertices/edges
+    \item CPU speed does not keep up with data volume
+    \item Need for \emph{scalable} algorithms
+\end{itemize}
+\end{minipage}\hfill
+\begin{minipage}[t]{.5\textwidth}
+\pause
+Achieving \textbf{scalability}
+
+\begin{itemize}
+    \small
+\item \emph{Inexact} results (approximation/heuristics)
+    \item Design \emph{new metrics}
+    \item \emph{Parallelism} (shared and/or distributed memory)
+\end{itemize}
+\end{minipage}
+\end{frame}
+
+\subsection{Contributions Overview}
+
+\begin{frame}[t]{Overview -- Centrality}
+\footnotesize
+\renewcommand\theadalign{tl}
+\begin{tabular}{lll}
+\textbf{Problem} & \textbf{Contribution} &\\
+\tikzmarkin<2>{topclos}\hspace{-1mm}Top-$k$ Closeness & \thead{Batch-dynamic algorithms, up to \emph{$10^4\times$ faster}
+\\than a static recomputation.} &
+\thead{\scriptsize To appear as a chapter of\\
+\enquote{\scriptsize Massive Graph Analytics.}\tikzmarkend{topclos}}\\
+\tikzmarkin<3>{betw}\hspace{-1mm}\thead{Betweenness\\Approximation} & \thead{General framework for parallel adaptive\\ sampling.
+On 32 cores: \emph{$>60\times$ faster} than\\SotA \kadabra algorithm~\parencite{DBLP:conf/esa/BorassiN16}.}&
+\thead{\parencite{DBLP:conf/europar/GrintenAM19}\\
+Euro-Par 2019\\\phantom{ }\hfill\phantom{ }\tikzmarkend{betw}}\\
+\tikzmarkin<4>{elclos}\hspace{-1mm}\thead{Electrical\\Closeness\\Approximation} & \thead{UST-based algorithm
+to approximate\\$\diag{\Linv}$. \emph{Faster and better quality}\\than SotA.} &
+\thead{\parencite{DBLP:conf/esa/AngrimanPGM20}\\ESA 2020}\\
+\thead{Forest Closeness\\Approximation} & \thead{UST-based algorithm to approximate\\
+$\textnormal{diag}((\Lapl + \alpha\Ident)^{-1})$. \emph{Faster and better quality}\\than SotA.} &
+\thead{\parencite{DBLP:conf/sdm/GrintenAPM21}\\SDM 2021\\\phantom{ }\hfill\phantom{ }\tikzmarkend{elclos}}\\
+\end{tabular}
+\end{frame}
+
+\begin{frame}[t]{Overview -- Group Centrality, Matching}
+\footnotesize
+\renewcommand\theadalign{tl}
+\begin{tabular}{lll}
+\textbf{Problem} & \textbf{Contribution} &\\
+\tikzmarkin<6>[hl]{gcm2}\tikzmarkin<2>{gcm}\hspace{-2mm}\thead{Group-Closeness\\Maximization} & \thead{New heuristic
+\emph{$> 100\times$ faster} than SotA.\\
+Quality: comparable or better.} & \thead{\parencite{DBLP:conf/bigdataconf/AngrimanGM19}\\
+IEEE BigData 2019\tikzmarkend{gcm}\tikzmarkend{gcm2}}\\
+\tikzmarkin<3>{gcmapx}\hspace{-1mm}\thead{Group-Closeness\\Maximization} & \thead{\emph{First approximation algorithm.}
+Higher\\ quality, trade-off with running time.} &
+\thead{\parencite{DBLP:conf/alenex/AngrimanBDGGM21}\\ALENEX 2021\tikzmarkend{gcmapx}}\\
+\tikzmarkin<4>{ged}\hspace{-1mm}\thead{GED-Walk} & \thead{New walk-based group centrality measure.\\
+\emph{$10\times$ to $100\times$ faster}
+to approximate than\\
+distance-based measures.} & \thead{\parencite{DBLP:conf/alenex/AngrimanGBZGM20}\\
+ALENEX 2020}\\
+\thead{Group-Forest\\Maximization} & \thead{First greedy approximation algorithm.\\
+\emph{Better precision for graph mining}\\\emph{applications} in disconnected graphs.} &
+\thead{\parencite{DBLP:conf/sdm/GrintenAPM21}\\
+SDM 2021\\\phantom{ALENEX 2020}\tikzmarkend{ged}}\\\medskip
+
+\tikzmarkin<6>[hl]{mwm2}\hspace{-.9mm}\tikzmarkin<5>{mwm}\hspace{-2mm}Dynamic MWM & \thead{Batch-dynamic 2-approximation algorithm.\\
+\emph{$10\times$ fewer traversed edges} than\\SotA~\parencite{conf/acda/AngrimanMSU21}
+(ACDA 2021), $93$-$99\%$\\solution quality.} &
+\thead{Under Revision\\\phantom{ }\\\hfill\\\hfill\phantom{ }\tikzmarkend{mwm}\tikzmarkend{mwm2}}\\
+\end{tabular}
+\end{frame}
+
+\subsection{Centrality}
+
+\begin{frame}[t]{(Vertex) Centrality}
+\textbf{Input:} a network/graph $G = (V, E)$\smallskip
+
+\textbf{Question:} how \emph{important} is $v\in V$?\bigskip
+
+\only<1>{
+\centering
+\textbf{Main idea:} vertices with a \emph{central} position are important
+\begin{figure}
+\centering
+\includegraphics[width=.4\textwidth]{./images/top-k-centrality.pdf}
+\end{figure}
+}
+\only<2>{
+\begin{definition}{Centrality Measure}
+Given a graph $G = (V, E)$, a centrality measure is a function:
+\[
+    c(\cdot) : V \to \mathbb{R},
+\]
+$c(u)$ is the \emph{centrality score} of $u \in V$.
+\end{definition}
+
+%Importance is \emph{relative}.\smallskip
+%
+%Many centrality measures were introduced.\smallskip
+%
+%Choice of $c(\cdot)$ depends on the \emph{application}.
+}
+\end{frame}
+
+%\begin{frame}[t]{Centrality}
+%\framesubtitle{Different Applications -- Different Measures}
+%\vspace{-5mm}
+%\begin{figure}[t]
+%\includegraphics[width=.8\textwidth]{./images/jakarta.pdf}
+%\caption*{\tiny Klipper \etal, AGILE GIScience Ser., 2, 4, 2021}
+%\end{figure}
+%\end{frame}
+
+\subsection{Group Centrality}
+
+\begin{frame}[t]{Group Centrality}
+\footnotesize
+\textbf{Input:} graph $G = (V, E)$, integer $1 \le k < n$.\medskip
+
+\textbf{Question:} most central \emph{group of vertices} $S \subset V$ s.t. $|S| = k$.
+\bigskip
+
+\only<1>{
+Not the \emph{top-$k$} most individually central vertices\dots
+
+\begin{minipage}[t]{.5\textwidth}
+\begin{figure}[t]
+\centering
+\includegraphics[width=.8\textwidth]{./images/top-k-centrality.pdf}
+\end{figure}
+\end{minipage}\hfill
+\begin{minipage}[t]{.5\textwidth}
+\onslide<1>{\begin{figure}[t]
+\centering
+\includegraphics[width=.8\textwidth]{./images/group-centrality.pdf}
+\end{figure}}
+\end{minipage}\medskip
+
+\onslide<1>{\hfill\dots but the most central \emph{group} as a whole!}
+}
+
+\only<2->{
+\vspace{-2mm}
+\begin{definition}{Group Centrality Measure}
+Given a graph $G = (V, E)$, a group centrality measure $g(\cdot)$ is
+a set function
+\[
+    g : \mathcal{P}(V) \to \mathbb{R},
+\]
+$g(S)$ is the \emph{group centrality score} of $S \subset V$.
+\end{definition}
+}
+\onslide<3->{
+\begin{minipage}[t]{.5\textwidth}
+\vspace{-2mm}
+\begin{block}{\footnotesize Group Centrality Maximization Problem}
+\footnotesize
+\textbf{Input:} Graph $G = (V, E)$, integer $1 \le k < n$,
+group centrality measure $g(\cdot)$.\medskip
+
+\textbf{Output:}
+\[
+    S^\star := \argmax_{S \subset V, |S| = k} g(S).
+\]
+\end{block}
+\end{minipage}\hfill
+\begin{minipage}[t]{.45\textwidth}
+\smallskip
+
+Popular group centrality measures:\medskip
+
+\begin{itemize}
+\footnotesize
+    \item Maximization problem is \np-hard
+    \item Typical maximization strategy: greedy ascent or heuristics
+\end{itemize}
+\end{minipage}
+}
+\end{frame}
+
+
+\subsection{Group-Closeness}
+
+\begin{frame}[t]{Group-Closeness}
+Given a graph $G = (V, E)$
+\begin{definition}{Group-closeness of $S \subset V$}
+\begin{minipage}[t]{.5\textwidth}
+Group-farness:
+\[
+\gfarn(S) := \sum_{u \in V \setminus S}d(S, u),
+\quad\to
+\]
+where $d(S, u) = \min_{s \in S}d(s, u)$.
+\end{minipage}\hfill
+\begin{minipage}[t]{.5\textwidth}
+Group-closeness:
+\[
+\gclos(S) := \frac{n}{\gfarn(S)}.
+\]
+\end{minipage}
+
+\end{definition}
+
+\only<1>{\begin{figure}
+\centering
+\includegraphics[width=.6\textwidth]{./images/group-farness.pdf}
+\end{figure}
+}
+\only<2->{
+Finding $S^\star$ with maximum $\gclos(S)$ is \np-hard~\parencite{DBLP:conf/adc/ChenWW16}.
+\medskip
+
+\emph{SotA:} greedy ascent heuristic~\parencite{DBLP:conf/alenex/BergaminiGM18}.\bigskip
+
+\onslide<3->{
+\small
+\begin{minipage}[t]{.5\textwidth}
+    \faThumbsOUp\ Nearly-optimal solutions (often)\smallskip
+
+    \faThumbsOUp\ Good scalability \wrt $k$
+\end{minipage}\hfill
+\begin{minipage}[t]{.5\textwidth}
+    \faThumbsODown\ High overhead\smallskip
+
+    \faThumbsODown\ Cannot correct \enquote{bad} choices
+\end{minipage}}
+}
+\end{frame}
+
+\section{Local Search for Group-Closeness}
+\subsection{Introduction}
+
+\begin{frame}[t]{Local Search for Group-Closeness}
+\small
+\textbf{Assumption} (for now): we have a group $S$, $|S| = k$.\smallskip
+
+\textbf{Idea:} increase $\gclos(S)$ by \emph{vertex exchanges} between
+$S$ and $\overline{S}$.\bigskip
+
+%\begin{block}{\small Notation: Vertex Exchange}
+%\hfill$\Suv := (S\cup\set{v})\setminus\set{u}$\hfill$\Su := S \setminus\set{u}$\hfill
+%$\Sv := S \cup \set{v}$\hspace{1.5cm}
+%\end{block}\bigskip
+
+\begin{minipage}[t]{.4\textwidth}
+\onslide<2->{
+\begin{block}{\textbf{New simple algorithm:}}
+
+Initialize $S$ randomly, then
+
+\begin{enumerate}
+    \small
+    \item Find the best exchange:
+    \[
+        \argmin_{u\in S,\ v\in\overline{S}}\ \gfarn\roundb{(S \cup \set{v}) \setminus \set{u}}
+    \]
+    \item Update $S \gets (S \cup \set{v}) \setminus \set{u}$
+    \item Repeat until $\gfarn(S)$ did not decrease
+\end{enumerate}
+\end{block}}
+\end{minipage}\hfill
+\begin{minipage}[t]{.55\textwidth}
+\onslide<3->{\textbf{Issue:}
+\begin{itemize}
+    \small
+\item Computing $\gfarn(S)$ naively requires a SSSP
+\item Impractical to do for all exchanges
+\end{itemize}\medskip
+
+\textbf{Solution:} new algorithm \parencite{DBLP:conf/bigdataconf/AngrimanGM19}
+\begin{itemize}
+    \small
+\item[\faHandORight] \emph{Separate} vertex insertions and removals
+        (no need to consider exchanges)
+\end{itemize}
+}
+\end{minipage}
+\end{frame}
+
+\subsection{Insertions}
+
+\begin{frame}[t]{Insertions -- Bound Farness Decrease}
+\small
+\textbf{Need:} decrease in farness
+\emph{$\deltafarnm(v) := \gfarn(S) - \gfarn(\Sv)$} $\forall v\in \overline{S}$.
+\smallskip
+
+\textbf{Idea:} use a shortest-path DAG from $S$.
+
+\input{bigdata-dag}
+
+\pause
+\emph{$D_v$}: vertices reachable from $v$ in the DAG. It holds:
+$\deltafarnm(v) \ge |\emph{D_v}|\cdot d(S, v).$
+%\begin{itemize}
+%    \small
+%    \item Note: if $G$ unweighted and $v \in N(S)$, then it holds: $\deltafarnm(v) = |\emph{D_v}|$.
+%\end{itemize}
+
+\pause
+\begin{block}{\vspace*{-3ex}}
+\textcolor{red}{\warning} Computing $D_v\ \forall v\in\overline{S}\ \Rightarrow$ transitive closure of a DAG,
+$\tilde{\Oh}(n^{2.373})$ time.\medskip
+
+\faHandORight\ Randomized algorithm~\parencite{DBLP:journals/jcss/Cohen97}:
+approx. $D_v\ \forall v\in \overline{S}$ in $\Oh(n + m)$ time.
+\end{block}
+\end{frame}
+
+
+\subsection{Removals -- Data Structures}
+
+\begin{frame}{Removals -- Data Structures}
+\small
+For each $x \in \overline{S}$ we store:
+\begin{itemize}
+    \small
+\item $d_S(x) = d(S, x)$ \textbf{and} the nearest vertex $r_x \in S$\smallskip
+
+\quad$\to\textcolor{HUBblue}{R_v := \set{x \in \overline{S} : d(v, x) = d_S(x)}}\ \forall v\in S$
+
+\item $d_S'(x) = d(S \setminus \set{r_x}, x)$ \textbf{and} the nearest vertex $r_x' \in S \setminus \set{r_x}$\smallskip
+
+\quad$\to\textcolor{HUBorange}{R_v' := \set{x \in \overline{S} : d(v, x) = d_S'(x)}}\ \forall v\in S\setminus\set{r_x}$
+\end{itemize}
+
+\begin{figure}
+\centering
+\input{grow-shrink-ds}
+\end{figure}
+\end{frame}
+
+\subsection{Removals}
+
+\begin{frame}[t]{Vertex Removal}
+\small
+\textbf{Exact} farness increase $\forall u\in S$: \emph{$\deltafarnp(u) := \sum_{x\in R_u}d_S'(x) - d_S(x)$}.\smallskip
+
+Pick vertex $u\in S$ that minimizes $\deltafarnp(u)$.
+
+\begin{center}
+    \onslide<2->{\input{grow-shrink-removal}}
+\end{center}\medskip
+
+\begin{itemize}
+    \small
+    \item<2-> Vertices $\textcolor{HUBred}{z \in R_u: d_S(z) \gets d_S'(z)}$
+    \smallskip
+
+    \faHandORight\ need to re-compute $d_S'(v)$ for all
+    $v \in \textcolor{HUBred}{R_u} \cup \textcolor{HUBorange}{R_u'}$\medskip
+
+%    \item<3-> Boundary pairs: $\pair{x}{y} : d_S'(y) \gets b(x, y)$
+    \item<3-> Update $d_S'(\cdot)$
+        with Dijkstra-like algo from \textcolor{cyan}{boundary vertices}
+\end{itemize}
+\end{frame}
+
+\subsection{\growshrink Algorithm}
+
+\begin{frame}[t]{\growshrink Algorithm}
+Issue: cannot \enquote{escape} from local optima.
+
+%\item[\faThumbsODown] Underestimates $\deltafarnm(v)$ for vertices with high DAG depth
+%\vspace{-5mm}
+%\begin{center}
+%    \input{./grow-shrink-back-edges.tex}
+%\end{center}
+
+\bigskip
+\textbf{Solution:} \growshrink algorithm
+\begin{itemize}
+    \small
+    \item allow $S$ to \emph{grow} (temporarily) to size $\emph{k + h}$\dots
+    \item\dots and then \emph{shrink} it back to size $k$.\smallskip
+\end{itemize}
+
+Strategy for choosing $h$:
+\begin{itemize}
+    \small
+\item[\faHandORight] Constant $h \ge 1$
+\item[\faHandORight] $h = \diam(G)/k^p$, for a fixed $p > 0$
+\end{itemize}
+\end{frame}
+
+
+\subsection{Experiments}
+
+\begin{frame}
+\centering
+\vfill\Huge\textbf{\textcolor{HUBblue}{Experiments}}\vfill
+\end{frame}
+
+\begin{frame}[t]{\growshrink\ -- Unweighted Graphs}
+\small
+\begin{figure}
+\centering
+\begin{subfigure}[t]{\textwidth}
+\centering
+\includegraphics{../sources/plots/local-search-heu/legend-h-p-params.pdf}
+\end{subfigure}\smallskip
+
+\begin{subfigure}[t]{.5\textwidth}
+\centering
+\includegraphics{../sources/plots/local-search-heu/speedups-h-p-params.pdf}
+\end{subfigure}\hfill
+\begin{subfigure}[t]{.5\textwidth}
+\centering
+\includegraphics{../sources/plots/local-search-heu/quality-h-p-params.pdf}
+\end{subfigure}
+\caption*{\footnotesize $k = 10$, geometric mean over 11 real-world networks, up to 27M edges.}
+\end{figure}
+
+\onslide<2->{
+\begin{tikzpicture}[remember picture,overlay]
+    \node[circle,minimum size=.5cm] at (current page.center) [
+    draw,align=center,anchor=center,xshift=-1.55cm,yshift=-.06cm,red, very thick]
+{};
+    \node[circle,minimum size=.5cm] at (current page.center) [
+    draw,align=center,anchor=center,xshift=4.3cm,yshift=1.6cm,red, very thick]
+{};
+\end{tikzpicture}
+
+With $p = 0.75$:\smallskip
+
+\quad\faThumbsOUp\ \emph{$\onedigit{\gsPSevenFiveKSpeed}\times$ faster} than greedy,
+\emph{$\onedigit{\gsPSevenFiveKQualNum}\%$ quality}
+}
+\end{frame}
+
+\begin{frame}[t]{\growshrink\ -- Weighted Graphs}
+\begin{figure}
+\centering
+\begin{subfigure}[t]{\textwidth}
+\centering
+\includegraphics{./images/legend_weighted.pdf}
+\end{subfigure}\smallskip
+
+\begin{subfigure}[t]{.5\textwidth}
+\centering
+\includegraphics{./images/speedups_weighted.pdf}
+\end{subfigure}\hfill
+\begin{subfigure}[t]{.5\textwidth}
+\centering
+\includegraphics{./images/quality_weighted.pdf}
+\end{subfigure}
+\caption*{\footnotesize Geometric mean over 14 US road networks, up to 380K edges.}
+\end{figure}
+
+For $k \le 100$ and \wrt greedy:\smallskip
+
+\begin{itemize}
+    \small
+    \item[\faThumbsOUp] Always $> 100\times$ faster
+    \item[\faThumbsOUp] Solutions with \emph{higher quality}
+\end{itemize}
+\end{frame}
+
+\subsection{Conclusions}
+
+\begin{frame}{Conclusions}
+\framesubtitle{Local Search for Group-Closeness}
+\textbf{Problem: Group-Closeness Maximization}
+\begin{itemize}
+    \small
+    \item \np-hard optimization problem
+    \item Existing algorithms are not scalable
+    \item SotA: greedy ascent~\parencite{DBLP:conf/alenex/BergaminiGM18}
+\end{itemize}\medskip
+
+\textbf{\growshrink}
+\begin{itemize}
+    \small
+\item Weighted graphs: \emph{better quality} and $\emph{>100\times}$ faster
+\item Unweighted graphs $k = 10$: \emph{$> 99\%$} quality and $\emph{>100\times}$ faster
+\item Networks with \emph{$>300$M edges} in \emph{$\approx 10$ min} ($k = 10$).
+\end{itemize}\medskip
+
+%\textbf{Local-Swaps}
+%\begin{itemize}
+%\small
+%\item Single swaps restricted to the \emph{neighborhood} of $S$
+%\item For small groups ($k \le 10$): $\approx 80\%$ quality, $>1000\times$ faster
+%\end{itemize}\pause\medskip
+
+%\textbf{Group-Closeness Approximation?}
+\end{frame}
+
+
+%\subsection{Group-Closeness Approximation}
+%
+%\begin{frame}[t]{Group-Closeness Approximation}
+%\footnotesize
+%Group-closeness maximization $\longleftrightarrow$ \emph{metric $k$-Median} problem:\medskip
+%
+%\textbf{Approximation algorithm} for metric $k$-Median~\parencite{DBLP:journals/siamcomp/AryaGKMMP04}:
+%\begin{itemize}
+%\footnotesize
+%\item Based on local search
+%\item $(1 + \frac{1}{e})$-approximation~\parencite{DBLP:journals/tmc/DAngeloDNP16}
+%\end{itemize}\medskip
+%
+%\textbf{Approximation algorithm} for group-closeness~\parencite{DBLP:conf/alenex/AngrimanBDGGM21}:
+%\begin{itemize}
+%\footnotesize
+%\item $\frac{e}{(e + 1)}$-approximation (undirected)
+%\item $4\cdot n^{-\epsilon}$ (directed)
+%\end{itemize}
+%
+%\begin{minipage}[t]{.5\textwidth}
+%\begin{itemize}
+%\footnotesize
+%\item[\faThumbsOUp] Always yields the best quality
+%\item[\faThumbsODown] $10\times$ to $100\times$ slower than heuristics
+%\end{itemize}\bigskip
+%\end{minipage}\hfill
+%\begin{minipage}[t]{.5\textwidth}
+%\begin{itemize}
+%    \footnotesize
+%    \item[\faHandORight] Time vs quality trade-off
+%    \item[\faHandORight] Approximation viable only in networks with moderate size
+%\end{itemize}
+%\end{minipage}
+%\end{frame}
+
+\section{Dynamic Matching}
+
+\begin{frame}
+\centering
+\vfill\Huge\textbf{\textcolor{HUBblue}{Dynamic Matching}}\vfill
+\end{frame}
+
+\subsection{Introduction}
+
+\begin{frame}{Matching}
+\small\medskip
+
+\begin{definition}{\small Matching}
+A matching $M \subseteq E$: set of edges not sharing any endpoints.
+\end{definition}
+
+$M$ is a \emph{Maximum Weighted Matching} (MWM) iff $M$ has the highest
+possible weight.\medskip
+
+\textbf{Weight} of $M$: $\sum_{e\in M}w(e)$.\medskip
+
+\begin{figure}
+\centering
+\input{./images/max-w-matching.tex}
+\caption*{\footnotesize Maximum weighted matching}
+\end{figure}
+\end{frame}
+
+\begin{frame}[t]{Matching -- Challenges}
+\small\vspace{-4mm}
+\begin{block}{\vspace*{-3ex}}
+\textcolor{red}{\warning} Fastest known algorithm for MWM:
+$\Oh(nm\log n)$ time~\parencite{DBLP:journals/csur/Galil86}.\smallskip
+
+\faHandORight\ \suitor: $2$-approximate algorithm, $\Oh(n + m)$
+time~\parencite{DBLP:conf/ipps/ManneH14}.
+\end{block}
+
+\onslide<2->{
+\begin{center}
+Graphs \emph{change} over time
+\end{center}
+
+\begin{figure}
+\input{graph-update}
+\end{figure}
+
+Update operations: \textcolor{HUBgreen}{insert$(u, v)$},
+\textcolor{HUBmagenta}{remove$(u, v)$}, update\_weight$(u, v)$.\smallskip
+}
+\onslide<4->{
+\begin{block}{\small\textbf{Challenge}: update $M$ (efficiently)
+after a change occurs.}
+\faThumbsODown\ Naive approach: re-run static algorithm.\medskip
+
+\faThumbsOUp\ Need: fast dynamic algorithm.
+\end{block}}
+\end{frame}
+
+
+\subsection{Suitor}
+\begin{frame}[t]{\suitor\ -- Overview}
+\small\vspace{-4mm}
+\begin{block}{\vspace{-3ex}}
+\begin{itemize}
+\small
+    \item A vertex is \emph{free} if not incident to any edge $e\in M$
+    \item Otherwise, it is \emph{matched}
+    \item $\forall u \in V,\ \vsuitor(u)$: \enquote{\emph{best offer}} received by vertex $u$ so far
+$$
+\textcolor{\emphcolor}{\vsuitor(u)}
+:= \argmax_{v \in N(u)}\set{w(u, v) : \nexists y \in N(v)\ \text{ s.t. }
+\roundb{\vsuitor(v) = y} \wedge \roundb{w(y, v) > w(u, v)}}.
+$$
+\end{itemize}\vspace{-1mm}
+
+\faHandORight\ $(u, v) \in M \Leftrightarrow \roundb{\vsuitor(u) = v} \wedge
+\roundb{\vsuitor(v) = u}$.\smallskip
+
+\faExclamationCircle\ Total ordering of the edges $\Rightarrow$
+\emph{deterministic} algorithm.
+\end{block}
+
+\only<1>{
+\centering\vspace{-1mm}
+\input{suitor-illustration.tex}
+}
+
+\only<2->{
+\vspace{-1mm}
+\begin{minipage}[t]{.6\textwidth}
+\begin{algorithmic}[1]
+\scriptsize
+\Function{findSuitor}{$u$}
+\State$v \gets \argmax_{v \in N(u)}\set{w(u, v) : w(u, v) > w(v, \vsuitor(v))}$
+\If{$v \neq \nil$}
+\State$y \gets \vsuitor(v)$
+\State$\vsuitor(v) \gets u$
+\If{$y \neq \nil$}
+\State$\Call{findSuitor}{y}$
+\EndIf
+\EndIf
+\EndFunction\smallskip
+
+\For{\textbf{each} $u\in V$}
+\State$\Call{findSuitor}{u}$
+\EndFor
+\end{algorithmic}\medskip
+
+\end{minipage}\hfill
+\begin{minipage}[t]{.4\textwidth}
+\pause
+\begin{figure}
+    \input{suitor-example}
+\end{figure}\vspace{-2mm}
+
+\onslide<8->{$M = \set{\set{c, b}, \set{a, d}}$.}
+\end{minipage}}
+
+%Note: a vertex \emph{$u$ never} changes its own \emph{$\vsuitor(u)$}.
+\end{frame}
+
+
+\subsection{Affected Vertices}
+\begin{frame}{Dynamic \suitor}
+\small
+
+\textbf{Input:} $G' = (V, E')$, $M$.\smallskip
+
+    \textbf{Task:} Update $M$ to $M'$ (if necessary).
+\smallskip
+
+\begin{definition}{Affected Vertices}
+Two vertices $u,v$ are \emph{affected} in $G'$ iff $(u, v) \in E'$ and:
+\[
+w'(u, v) > \underbrace{\max\set{w'\roundb{u, \vsuitor(u)},w'\roundb{v, \vsuitor(v)}}}_{\wmaxuv}.
+\]
+If true, we need to update $M$.
+\end{definition}
+\medskip
+
+\begin{figure}
+\centering
+\caption*{$M = \set{\set{a, u}, \set{v, b}},$ $\wmaxuv = 2$.}
+\input{affected}
+\end{figure}
+\centering
+$w'(u, v) > \wmaxuv \Rightarrow u$ and $v$ are affected.
+%
+%\begin{minipage}[t]{.5\textwidth}
+%Edge insertions:\smallskip
+%
+%$M = \set{\set{a, u}, \set{v, b}}\ \to\ M'=\set{\set{u, v}}$
+%\smallskip
+%
+%\begin{figure}
+%\centering
+%\input{affected-ins}
+%\end{figure}
+%\end{minipage}\hfill
+%\begin{minipage}[t]{.5\textwidth}
+%Edge removals:\smallskip
+%
+%$M = \emptyset\ \to\ M' = \set{\set{a, u}, \set{v, b}}$
+%\smallskip
+%
+%\begin{figure}
+%\centering
+%\input{affected-rem}
+%\end{figure}
+%\end{minipage}
+\end{frame}
+
+
+\subsection{Edge Insertions}
+
+\begin{frame}{Dynamic \suitor\ -- Edge Insertions}
+    \small\smallskip
+
+\begin{block}{\small Lemma}
+\small
+Let $G' = (V, E \cup \set{e}, w')$ and $e = \set{u, v}$. $\emph{e\in M'}
+\Leftrightarrow e$ is a \enquote{\emph{better deal}} for both $u$ and $v$:
+$$
+e \in M' \Leftrightarrow
+\only<-2>{w'(u, v)}\only<3->{\textcolor{HUBgreen}{w'(u, v)}}
+> \wmaxuv.
+$$
+Otherwise, no vertex is affected, we can \enquote{skip} $e$.
+\end{block}
+
+\begin{minipage}[t]{.45\textwidth}
+%\onslide<2->{Three cases:
+%\begin{enumerate}
+%    \small
+%    \item $u$ and $v$ free:\\
+%    \quad$\leadsto$ trivial, $e\in M'$
+%    \item $u$ matched and $v$ free
+%    \item both $u$ and $v$ matched
+%\end{enumerate}}
+
+\onslide<3->{
+\medskip
+\textbf{Idea:} \enquote{fix} $M$ by re-running\\
+\Call{findSuitor}{$\cdot$} on from $u$ and $v$.
+}\bigskip
+
+\onslide<4->{
+\begin{algorithmic}[1]
+\footnotesize
+\Function{addEdge}{$u, v$}
+\If{$w'(u, v) > \wmaxuv$}
+\For{$z \in \pair{v}{u}$}
+\State$\only<-8>{S_A}\only<9->{\textcolor{HUBmagenta}{S_A}}
+\gets \only<-4>{\Call{findAffected}{z}}
+\only<5->{\emph{\Call{findAffected}{z}}}$
+\State$\only<-9>{\Call{updateAffected}{S_A}}
+\only<10->{\textcolor{HUBmagenta}{\Call{updateAffected}{S_A}}}$
+\EndFor
+\EndIf
+\EndFunction
+\end{algorithmic}}\bigskip
+\end{minipage}\hfill
+\begin{minipage}[t]{.55\textwidth}
+\begin{figure}
+\input{suitor-algo-illustration}
+\end{figure}
+\end{minipage}
+\end{frame}
+
+%\begin{frame}{Dynamic \suitor\ -- Edge Insertions}
+%\small\smallskip
+%
+%\begin{block}{\small Lemma}
+%\small
+%Let $G' = (V, E\cup\set{\set{u, v}})$. If $u$ is matched in $M$,
+%then all affected vertices lie along a path $P_v$ that starts from $v$ and
+%alternates edges in $M'\setminus M$ and edges in $M\setminus M'$
+%\end{block}
+%
+%\begin{minipage}[t]{.5\textwidth}
+%
+%\onslide<6->{\small Both $u$ and $v$ matched:\smallskip
+%
+%\faHandORight\ two alternating paths $P_u$ and $P_v$.}
+%\end{minipage}\hfill
+%\begin{minipage}[t]{.5\textwidth}
+%\begin{figure}
+%\input{suitor-algo-illustration}
+%\end{figure}
+%\end{minipage}
+%
+%\end{frame}
+
+\subsection{Experiments}
+
+\begin{frame}
+\centering
+\vfill\Huge\textbf{\textcolor{HUBblue}{Experiments}}\vfill
+\end{frame}
+
+\begin{frame}[t]{Single Updates -- Road Networks}
+\small
+Comparison against \dynmwmrandom~\parencite{conf/acda/AngrimanMSU21}.\smallskip
+
+\quad\faHandORight\ $(1 + \epsilon)$-approx., random walks + dynamic programming.
+\medskip
+
+\begin{figure}
+\centering
+\begin{subfigure}[t]{.5\textwidth}
+\centering
+\includegraphics[width=.7\textwidth]{../sources/plots/dyn-mwm/rw-insertion-road-vedges.pdf}
+\end{subfigure}\hfill
+\begin{subfigure}[t]{.5\textwidth}
+\centering
+\includegraphics[width=.7\textwidth]{../sources/plots/dyn-mwm/rw-insertion-road-qual.pdf}
+\end{subfigure}
+\caption*{\footnotesize Average \emph{\#of traversed edges} and \emph{quality} of
+\dynmwmrandom relative to dynamic \suitor. Averaged over 15 road networks with
+up to 72M edges.}
+\end{figure}\pause
+
+$\epsilon = 1$: \dynmwmrandom visits \emph{\vedgesRWInsRoadHighEps more edges}, yields
+just \emph{\qualDropRWInsRoadHighEps better} quality.\smallskip
+
+Dynamic \suitor: \emph{\speedRWRemRoadHighEps faster.}
+
+\onslide<2->{
+\begin{tikzpicture}[remember picture,overlay]
+    \node[circle,minimum size=.5cm] at (current page.center) [
+    draw,align=center,anchor=center,xshift=-1.05cm,yshift=-.7cm,red, very thick]
+{};
+    \node[circle,minimum size=.5cm] at (current page.center) [
+    draw,align=center,anchor=center,xshift=4.75cm,yshift=-.7cm,red, very thick]
+{};
+\end{tikzpicture}
+}
+\end{frame}
+
+\begin{frame}[t]{Single Updates -- Complex Networks}
+\small
+Comparison against \dynmwmrandom~\parencite{conf/acda/AngrimanMSU21}.\smallskip
+
+\quad\faHandORight\ $(1 + \epsilon)$-approx., random walks + dynamic programming.
+
+\begin{figure}
+\centering
+\begin{subfigure}[t]{.5\textwidth}
+\centering
+\includegraphics[width=.7\textwidth]{../sources/plots/dyn-mwm/rw-insertion-cplx-vedges.pdf}
+\end{subfigure}\hfill
+\begin{subfigure}[t]{.5\textwidth}
+\centering
+\includegraphics[width=.7\textwidth]{../sources/plots/dyn-mwm/rw-insertion-cplx-qual.pdf}
+\end{subfigure}
+\caption*{\footnotesize Average \emph{\#of traversed edges} and \emph{quality} of
+\dynmwmrandom relative to dynamic \suitor. Averaged over 10 complex networks with
+up to 437M edges.}
+\end{figure}\pause
+
+$\epsilon = 1$: \dynmwmrandom visits \emph{\vedgesRWInsCplxHighEps more edges}, yields
+\emph{\qualDropRWInsCplxHighEps better} quality.\smallskip
+
+Same running time (due to better data structures used by \dynmwmrandom).
+
+\onslide<2->{
+\begin{tikzpicture}[remember picture,overlay]
+    \node[circle,minimum size=.5cm] at (current page.center) [
+    draw,align=center,anchor=center,xshift=-1.05cm,yshift=-.7cm,red, very thick]
+{};
+    \node[circle,minimum size=.5cm] at (current page.center) [
+    draw,align=center,anchor=center,xshift=4.75cm,yshift=1.25cm,red, very thick]
+{};
+\end{tikzpicture}
+}
+\end{frame}
+
+%\begin{frame}{Batch Updates}
+%\small
+%
+%\begin{figure}
+%\centering
+%\begin{subfigure}[b]{.5\textwidth}
+%\centering
+%\includegraphics[width=.7\textwidth]{../sources/plots/dyn-mwm/speedup-road-insertion.pdf}
+%\caption*{Road networks}
+%\end{subfigure}\hfill
+%\begin{subfigure}[b]{.5\textwidth}
+%\begin{subfigure}[b]{\textwidth}
+%\centering
+%\includegraphics{../sources/plots/dyn-mwm/legend-cplx.pdf}
+%\end{subfigure}\smallskip
+%
+%\begin{subfigure}[b]{\textwidth}
+%\centering
+%\includegraphics[width=.7\textwidth]{../sources/plots/dyn-mwm/speedup-cplx-insertion.pdf}
+%\caption*{Complex networks}
+%\end{subfigure}
+%\end{subfigure}
+%\caption*{\footnotesize Average speedups over a \emph{static recomputation}.}
+%\end{figure}\pause
+%
+%$10^4$ edge insertions: \emph{\speedupRoadInsBTenThou} (road)
+%\emph{\speedupCplxInsBTenThouExp} (complex).
+%\end{frame}
+
+\subsection{Conclusions}
+\begin{frame}{Conclusions -- Dynamic MWM}
+\small
+
+\textbf{Dynamic MWM on large graphs}
+\begin{itemize}
+    \small
+    \item Exact computation not feasible
+    \item Static approx. too slow
+    \item[\faHandORight] Efficient dynamic algorithms\smallskip
+
+        \faExclamationCircle\ Only a few have (recently) been
+        implemented~\parencite{conf/acda/AngrimanMSU21}
+\end{itemize}\medskip
+
+\textbf{New batch-dynamic \suitor algorithm}
+\begin{itemize}
+\small
+\item Requires \emph{$10\times$} less work (\#of traversed edges) than \dynmwmrandom
+\item Yields \emph{$\qualRWRemRoadHighEps$} quality in road networks
+    and \emph{$\qualRWRemCplxHighEps$} quality in complex networks
+\item Batches with \emph{$10^4$} updates, \emph{$>100\times$} faster than a static
+    re-run
+\end{itemize}
+\end{frame}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% END
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Thank You!}
+\begin{frame}
+\vfill
+\begin{center}
+\Huge\textbf{\textcolor{HUBblue}{Thank you!}}
+\end{center}
+\vfill
+\scriptsize
+Acknowledgments
+\begin{itemize}
+\scriptsize
+\item German Research Foundation (\textbf{DFG}) grant ME 3619/3-2 within
+\\ Priority Programme 1736 \textit{Algorithms for Big Data} \item
+\textbf{DFG} grant ME 3619/4-1: \\ \textit{Accelerating Matrix
+Computations for Mining Large Dynamic Complex Networks} \par
+\end{itemize}
+
+\vfill
+\end{frame}
+
+\begin{frame}[allowframebreaks]
+\frametitle{References}
+% This prints the bibliography on the slide
+\printbibliography
+\end{frame}
+% AT END: Summary of all results
+
+\ifbackup
+\section{Backup Slides}
+
+\subsection{Top-$k$ Closeness}
+
+\begin{frame}[t]{Dynamic Top-$k$ Closeness}
+\framesubtitle{Affected Vertices}
+
+\tiny\centering
+\setlength{\tabcolsep}{3pt}
+\input{../sources/tables/dyn-topk/affected-undirected-small-diameter.tex}\smallskip
+
+\input{../sources/tables/dyn-topk/affected-directed-small-diameter.tex}
+\end{frame}
+
+\begin{frame}[t]{Dynamic Top-$k$ Closeness}
+\framesubtitle{Speedups}\vspace{-1cm}
+
+\begin{figure}
+\centering
+\begin{subfigure}[t]{\textwidth}
+\centering
+\includegraphics{../sources/plots/dyn-topk/legend-speedup.pdf}
+\end{subfigure}\vspace{-1cm}
+
+\begin{subfigure}[t]{\textwidth}
+\begin{subfigure}[t]{.5\textwidth}
+\caption*{\scriptsize Complex networks}
+\begin{subfigure}[t]{.5\textwidth}
+\centering
+\includegraphics[width=.9\textwidth]{../sources/plots/dyn-topk/speedup-undirected-small-diameter-addition.pdf}
+\end{subfigure}\hfill
+\begin{subfigure}[t]{.5\textwidth}
+\centering
+\includegraphics[width=.9\textwidth]{../sources/plots/dyn-topk/speedup-undirected-small-diameter-removal.pdf}
+\end{subfigure}
+\end{subfigure}\hfill
+\begin{subfigure}[t]{.5\textwidth}
+\caption*{\scriptsize Road networks}
+\begin{subfigure}[t]{.5\textwidth}
+\centering
+\includegraphics[width=.9\textwidth]{../sources/plots/dyn-topk/speedup-undirected-high-diameter-addition.pdf}
+\end{subfigure}\hfill
+\begin{subfigure}[t]{.5\textwidth}
+\centering
+\includegraphics[width=.9\textwidth]{../sources/plots/dyn-topk/speedup-undirected-high-diameter-removal.pdf}
+\end{subfigure}
+\end{subfigure}
+\end{subfigure}
+\end{figure}
+
+\begin{minipage}[t]{.4\textwidth}
+\scriptsize
+\hfill Results for $k = 10$
+\end{minipage}\hfill
+\begin{minipage}[t]{.6\textwidth}
+\scriptsize\centering
+\setlength{\tabcolsep}{3pt}
+\begin{tabular}{lrr|rr}
+\toprule
+\multirow{2}{*}{Network} & \multirow{2}{*}{$n$} & \multirow{2}{*}{$m$} & \multicolumn{2}{c}{Batch size 10} \\
+                         & & & Static (s) & Dyn. (s) \\
+\midrule
+\vdots &\vdots &\vdots & \vdots & \vdots\\
+twitter & 456K & 14.8M & \numprint{163.5} & \numprint{3.8} \\
+petster & 623K & 15.6M & \numprint{1845.4} & \numprint{3.4} \\
+\bottomrule
+\end{tabular}
+\end{minipage}
+\end{frame}
+
+
+\subsection{Betweenness Centrality}
+
+\begin{frame}[t]{Betweenness Centrality}
+\scriptsize
+\begin{minipage}[t]{.5\textwidth}
+\vspace{-5mm}
+\begin{block}{\scriptsize\kadabra~\parencite{DBLP:conf/esa/BorassiN16}: Adaptive Sampling}
+\begin{itemize}
+    \scriptsize
+\item[\faHandORight] \# of samples is not fixed
+\item[\faHandORight] \emph{stopping condition} depends on sampled data
+\end{itemize}
+\end{block}
+
+\begin{algorithmic}[1]
+\Repeat
+\State$\mathit{agg} \gets \mathit{agg} \circ \Call{sample}{ }$
+\Until{$\Call{checkStop}{\mathit{agg}}$}
+\end{algorithmic}\medskip
+
+\faExclamationCircle\ $\Call{sample}{}$ and $\Call{checkStop}{}$ are \emph{inherently sequential}.
+
+\faExclamationCircle\ The algorithm needs to be \emph{serializable}.\smallskip
+
+\textbf{Challenge:} parallelize adaptive sampling.
+\end{minipage}\hfill
+\begin{minipage}[t]{.45\textwidth}
+\textbf{Solution:} epoch-based algorithm~\parencite{DBLP:conf/europar/GrintenAM19}.
+
+\begin{tikzpicture}[scale=.5,boxstyle/.style={
+    draw,rectangle,minimum height=.4cm,align=center,font=\scriptsize,
+}]
+    \node[] at (0,0) (t1) {\scriptsize T1};
+    \node[below=.3cm of t1] (t2) {\scriptsize T2};
+    \node[below=.3cm of t2] (t3) {\scriptsize T3};
+    \node[below=.3cm of t3] (t4) {\scriptsize T4};
+
+    \node[above right=.5cm and -.2cm of t1] (time1) {};
+    \node[above right=.5cm and 5cm of t1] (time2) {};
+    \node[above right=.75cm and 0cm of t1] {\scriptsize time};
+    \draw[->,thick] (time1) to (time2);
+
+    \node[boxstyle,minimum width=1cm, right=.1cm of t1] (e11) {1};
+    \node[boxstyle,minimum width=2cm, right=.1cm of t2] (e21) {1};
+    \node[boxstyle,minimum width=.5cm, right=.1cm of t3] (e31) {1};
+    \node[boxstyle,minimum width=.75cm, right=.1cm of t4] (e41) {1};
+    \node[boxstyle,minimum width=1.2cm, right=.1cm of e11] (e12) {2};
+    \node[boxstyle,minimum width=.8cm, right=.1cm of e21] (e22) {2};
+    \node[boxstyle,minimum width=2.1cm, right=.1cm of e31] (e32) {2};
+    \node[boxstyle,minimum width=1.1cm, right=.1cm of e41] (e42) {2};
+    \node[right=.1cm of e12] (d1) {\dots};
+    \node[right=.1cm of e22] (d2) {\dots};
+    \node[right=.1cm of e32] (d3) {\dots};
+    \node[right=.1cm of e42] (d4) {\dots};
+
+    \node[boxstyle,minimum width=1.5cm, right=.2 of d1] (f1) {k+1};
+    \node[boxstyle,minimum width=1.4cm, right=.2 of d2] (f2) {k+1};
+    \node[boxstyle,minimum width=1.7cm, right=.2 of d3] (f3) {k+1};
+    \node[boxstyle,minimum width=1.4cm, right=.2 of d4] (f4) {k};
+
+    \node[below right= .1cm and -.1cm of f4] (dash_bottom) {};
+    \node[above right= 2.5cm and -.1cm of f4] (dash_top) {};
+    \node[below left=-.1cm and 0cm of dash_bottom] () {\scriptsize\emph{$\Call{checkStop}{\mathit{agg}$} = \texttt{true}}};
+    \draw[dashed,thick,\emphcolor] (dash_bottom) to (dash_top);
+
+\end{tikzpicture}
+\end{minipage}
+
+\begin{minipage}[t]{.5\textwidth}
+\begin{figure}
+\centering
+\includegraphics[width=.65\textwidth]{../sources/plots/betw-apx/parallel-speedup.pdf}
+\end{figure}
+%\centering
+%\begin{itemize}
+%    \scriptsize
+%\item[\faThumbsOUp] Good parallel scalability
+%\item[\faThumbsOUp] On 32 cores: $3\times$ faster than straightforward OpenMP parallelization
+%\end{itemize}
+%\vspace{-3mm}
+\end{minipage}\hfill
+\begin{minipage}[t]{.5\textwidth}
+\centering\vspace{2mm}
+
+\begin{table}
+\setlength{\tabcolsep}{3pt}
+\scriptsize
+\begin{tabular}{lrrrr}
+\toprule
+\multirow{2}{*}{Network} & \multirow{2}{*}{$n$} & \multirow{2}{*}{$m$} & \multicolumn{2}{c}{Time (s) on 32 cores} \\
+ & & & OpenMP & Epoch-Based\\
+\midrule
+wiki\_sr & 3.2M & 103.3M & 13 & 3 \\
+orkut & 3.1M & 117.2M & 15 & 7\\
+\bottomrule
+\end{tabular}
+\caption*{\scriptsize Results for $\epsilon = \numprint{0.01}$}
+\end{table}
+\end{minipage}
+\end{frame}
+
+\begin{frame}[t]{Betweenness Centrality}
+\begin{minipage}[t]{.5\textwidth}
+\centering
+\begin{figure}
+\centering
+\includegraphics[width=.7\textwidth]{../sources/plots/betw-apx/original-vs-baseline.pdf}
+\caption*{\scriptsize Average speedup of OpenMP baseline over
+the original sequential implementation of \kadabra.}
+\end{figure}
+\end{minipage}\hfill
+\begin{minipage}[t]{.5\textwidth}
+\begin{figure}
+\centering
+\includegraphics[width=.7\textwidth]{../sources/plots/betw-apx/time-breakdown.pdf}
+\caption*{\scriptsize Breakdown of sequential \kadabra running times into preprocessing and ADS
+(in percent).}
+\end{figure}
+\end{minipage}
+\end{frame}
+
+
+\subsection{Electrical Closeness}
+
+\begin{frame}[t]{Electrical Closeness}
+\footnotesize
+%Electrical closeness: $\elclos(u) := \frac{n - 1}{\sum_{v \in V} \rdist(u, v)}$.\smallskip
+%
+%Sota: JLT + fast Laplacian solvers $\Rightarrow$ solve $\Oh(\log n / \epsilon^2)$ Laplacian systems, $(1 + \epsilon)$-approx.
+
+\begin{block}{\footnotesize Main idea}
+\begin{itemize}
+\footnotesize
+
+\item[\faHandORight] Only $\diag{\Linv}$ is necessary to compute
+$\elclos(\cdot)$~\parencite{DBLP:journals/socnet/BozzoF13}.%:
+%$\sum_{v \in V} \rdist(u, v) := n\cdot\Linv[u,u] + \tr{\Linv}$.
+
+\item[\faHandORight] Solve one linear system $\Lapl\vect{x} = \cunit{u} - \frac{1}{n}\cdot\ones\ \leadsto\ \emph{\Linv[:, u]}$.
+
+\item[\faHandORight] Remaining $n-1$ diagonal entries: $\Linv[v,v] = \emph{\rdist(u, v)} - \Linv[u, u] + 2\Linv[v, u]$.\\
+
+via \emph{UST sampling}~\parencite{DBLP:conf/esa/AngrimanPGM20}.
+\end{itemize}
+\end{block}\vspace{-5mm}
+
+\begin{minipage}[t]{.48\textwidth}
+\begin{block}{\footnotesize\textbf{Theorem}}
+    Current flowing through an edge $e = (a, b)$:
+    $$i(a, b) = (N_{s, t}(a, b) - N_{s, t}(b, a)) / N$$
+\end{block}
+\end{minipage}\hfill
+\begin{minipage}[t]{.48\textwidth}
+\begin{block}{\footnotesize Idea}
+Compute $\rdist(u, v)$ by adding the currents on a path from $u$ to $v$.
+\end{block}
+\end{minipage}
+
+\begin{minipage}[t]{.5\textwidth}
+\footnotesize\medskip
+
+Compared to competitors:
+\begin{itemize}
+    \footnotesize
+\item[\faThumbsOUp] Better approximation of $\diag{\Linv}$
+    \begin{itemize}
+    \scriptsize
+        \item absolute error
+        \item full vertex ranking
+    \end{itemize}
+\item[\faThumbsOUp] $10\times$ faster
+\end{itemize}
+\end{minipage}\hfill
+\begin{minipage}[t]{.5\textwidth}
+    \centering\vspace*{1mm}\scriptsize
+
+\begin{table}
+\setlength{\tabcolsep}{3pt}
+\begin{tabular}{lrr|rr}
+\toprule
+\multirow{2}{*}{Network} & \multirow{2}{*}{$n$} & \multirow{2}{*}{$m$} & \multicolumn{2}{c}{Time (s)} \\
+& & & $\epsilon = 0.3$ & $\epsilon = 0.9$ \\
+\midrule
+orkut & \numprint{3.1}M & \numprint{117.2}M & \numprint{71.8} & \numprint{19.9}\\
+wiki\_en & \numprint{13.6}M & \numprint{334.6}M & \numprint{429.9} & \numprint{88.3}\\
+\bottomrule
+\end{tabular}
+\caption*{\scriptsize Running time on $16\times 24$ cores.}
+\end{table}
+\end{minipage}
+\end{frame}
+
+\begin{frame}[t]{Electrical Closeness}
+\begin{figure}
+\begin{subfigure}[t]{.33\textwidth}
+\centering
+\includegraphics[width=.9\textwidth]{../sources/plots/el-clos/abs-errors.pdf}
+\end{subfigure}\hfill
+\begin{subfigure}[t]{.33\textwidth}
+\centering
+\includegraphics[width=.9\textwidth]{../sources/plots/el-clos/avg-abs-errors.pdf}
+\end{subfigure}\hfill
+\begin{subfigure}[t]{.33\textwidth}
+\centering
+\includegraphics[width=.9\textwidth]{../sources/plots/el-clos/full-ranking.pdf}
+\end{subfigure}
+
+\begin{subfigure}[t]{\textwidth}
+\centering
+\includegraphics[width=.45\textwidth]{../sources/plots/el-clos/legend-quality.pdf}
+\end{subfigure}\bigskip
+
+\begin{subfigure}[t]{\textwidth}
+\centering
+\includegraphics[width=.15\textwidth]{../sources/plots/el-clos/legend-time-breakdown.pdf}
+\hspace{2mm}
+\includegraphics[width=.35\textwidth]{../sources/plots/el-clos/time-breakdown.pdf}
+\end{subfigure}
+\end{figure}
+\end{frame}
+
+
+\begin{frame}[t]{Forest Closeness}
+\centering
+\begin{figure}
+\begin{subfigure}[t]{\textwidth}
+\centering
+\includegraphics[width=.4\textwidth]{../sources/plots/el-clos/forest-quality-legend.pdf}
+\end{subfigure}
+
+\begin{subfigure}[t]{.5\textwidth}
+\centering
+\includegraphics[width=.6\textwidth]{../sources/plots/el-clos/forest-max-abs-err-cplx.pdf}
+\end{subfigure}\hfill
+\begin{subfigure}[t]{.5\textwidth}
+\centering
+\includegraphics[width=.6\textwidth]{../sources/plots/el-clos/forest-max-abs-err-road.pdf}
+\end{subfigure}\smallskip
+
+\begin{subfigure}[t]{.5\textwidth}
+\centering
+\includegraphics[width=.6\textwidth]{../sources/plots/el-clos/avg-abs-small-diam-unweighted.pdf}
+\end{subfigure}\hfill
+\begin{subfigure}[t]{.5\textwidth}
+\centering
+\includegraphics[width=.6\textwidth]{../sources/plots/el-clos/avg-abs-high-diam-unweighted.pdf}
+\end{subfigure}
+\end{figure}
+\end{frame}
+
+
+\begin{frame}[t]{Group Forest Closeness}
+\begin{figure}
+\begin{subfigure}[t]{\textwidth}
+\centering
+\includegraphics[width=.4\textwidth]{../sources/plots/el-clos/legend-node-class.pdf}
+\end{subfigure}
+
+\begin{subfigure}[t]{.5\textwidth}
+\centering
+\includegraphics[width=.6\textwidth]{../sources/plots/el-clos/node-class-cora.pdf}
+\end{subfigure}\hfill
+\begin{subfigure}[t]{.5\textwidth}
+\centering
+\includegraphics[width=.6\textwidth]{../sources/plots/el-clos/node-class-citeseer.pdf}
+\end{subfigure}\smallskip
+
+\begin{subfigure}[t]{.5\textwidth}
+\centering
+\includegraphics[width=.6\textwidth]{../sources/plots/el-clos/node-class-cora_lcc.pdf}
+\end{subfigure}\hfill
+\begin{subfigure}[t]{.5\textwidth}
+\centering
+\includegraphics[width=.6\textwidth]{../sources/plots/el-clos/node-class-citeseer_lcc.pdf}
+\end{subfigure}
+\end{figure}
+\end{frame}
+
+\subsection{Grow-Shrink -- Backward Edges}
+\begin{frame}{Grow-Shrink -- Far Vertices}
+\small
+Limitation of lower bound for $\deltafarnm(v)$ for vertices $v$ far from $S$:
+
+\begin{figure}[H]
+\input{./grow-shrink-back-edges.tex}
+\end{figure}
+\end{frame}
+
+\subsection{Group-Closeness -- Local-Swaps}
+
+\begin{frame}{Local-Swaps}
+\framesubtitle{For \emph{unweighted} graphs}
+%
+\vspace{3mm}
+\textbf{Local approach:}
+\begin{itemize}
+    \item Only allow swaps between vertices in $S$ and their \emph{neighbors}
+    \item After each swap: \[\forall x\in V\quad\left(d(S, x) - d(\Suv, x) \right)\in \{-1, 0, +1\}\]
+\end{itemize}
+
+\vspace{-4mm}
+\input{neighbors_unw}
+\end{frame}
+
+
+\begin{frame}{Local-Swaps -- {\LARGE Computing $\gfarn(S) - \gfarn(\Suv)$}}
+\medskip\footnotesize
+
+Dynamic data structures:\medskip
+
+\begin{itemize}
+    \footnotesize
+    \newcommand{\lambdaw}{$\Lambda_z := \{x \in \overline{S} : \lambda_x = \{z\}\}$ for all $z\in S$}
+    \item Distance $d(S, x)$ from $S$ to all $x \in \overline{S}$\smallskip
+    \item Set $\lambda_x := \{z \in S : d(S, x) = d(z, x)\}$ for all $x\in \overline{S}$\smallskip
+    \item\textcolor{HUBmagenta}{\lambdaw}
+\end{itemize}\bigskip
+
+\begin{minipage}[t]{.5\textwidth}
+Good $(u,v)$ swap: maximize
+$\textcolor{cyan}{|D_v|} - \textcolor{magenta}{|\Lambda_u|}$
+\begin{enumerate}
+    \footnotesize
+    \item Find $v\in N(S)\setminus S$ that maximizes \textcolor{cyan}{$|D_v|$}
+    \item Find $u \in N(v)\cap S$ that minimizes \textcolor{magenta}{$|\Lambda_u|$}
+\end{enumerate}
+\end{minipage}\hfill
+\begin{minipage}[t]{.4\textwidth}
+\begin{figure}
+\centering
+\hspace{-1cm}\input{neighbors_swap}
+\end{figure}
+\end{minipage}\medskip
+
+\begin{block}{\centering\textcolor{black}{$\gfarn(S) - \gfarn(\Suv) =
+\textcolor{cyan}{|H^-_{u, v}|} - \textcolor{magenta}{|H^+_{u, v}|}$}}
+\vspace{-3ex}
+\end{block}
+\end{frame}
+
+\subsection{Group-Closeness -- Number of Exchanges}
+
+\begin{frame}[t]{\growshrink\ -- Number of Exchanges}
+
+\begin{figure}
+\centering
+\begin{subfigure}[t]{.8\textwidth}
+\centering
+\includegraphics{../sources/plots/local-search-heu/legend-unweighted.pdf}
+\end{subfigure}\smallskip
+
+\begin{subfigure}[t]{.5\textwidth}
+\centering
+\includegraphics[width=.7\textwidth]{../sources/plots/local-search-heu/impact-num-exchanges-unweighted.pdf}
+\caption*{\scriptsize Unweighted graphs}
+\end{subfigure}\hfill
+\begin{subfigure}[t]{.5\textwidth}
+\centering
+\includegraphics[width=.7\textwidth]{../sources/plots/local-search-heu/impact-num-exchanges-weighted.pdf}
+\caption*{\scriptsize Weighted graphs}
+\end{subfigure}
+\caption*{\footnotesize Group-closeness score relative to greedy depending on the number of vertex exchanges
+(results for $k = 10$).}
+\end{figure}
+\end{frame}
+
+
+\subsection{Group-Closeness Approximation}
+
+\begin{frame}[t]{Group-Closeness Approximation}
+\footnotesize
+Group-closeness maximization $\longleftrightarrow$ \emph{metric $k$-Median} problem:\medskip
+
+\begin{minipage}[t]{.45\textwidth}
+\textbf{Input:}
+\begin{itemize}
+    \scriptsize
+    \item sets of clients $C$ and facilities $F$
+    \item cost function $f: C\times F \to \mathbb{R}_{\ge 0}$
+    \item integer $k$
+\end{itemize}\smallskip
+
+\scriptsize
+\textbf{Find:} $S^\star := \argmin_{\substack{S\subset F\\|S| \le k}}\sum_{i\in C}\min_{j\in F}f(i,j)$
+\end{minipage}\hfill
+\begin{minipage}[t]{.55\textwidth}
+    \textbf{Approximation algorithm}~\parencite{DBLP:journals/siamcomp/AryaGKMMP04}:
+\begin{itemize}
+\scriptsize
+\item Based on local search
+\item $(1 + \frac{1}{e})$-approximation for metric $k$-Median~\parencite{DBLP:journals/tmc/DAngeloDNP16}
+\item[\emph{\faHandORight}] $\frac{e}{(e + 1)}$-approximation for group-closeness (undirected)
+\item[\emph{\faHandORight}] $4\cdot n^{-\epsilon}$ group-closeness
+(directed)~\parencite{DBLP:conf/alenex/AngrimanBDGGM21}
+\end{itemize}
+\end{minipage}\bigskip
+
+\begin{minipage}[t]{.55\textwidth}
+\begin{figure}
+\begin{subfigure}[t]{\textwidth}
+\centering
+\includegraphics[width=.7\textwidth]{../sources/plots/gh-gc-apx/legend-quality-closeness.pdf}
+\end{subfigure}\smallskip
+
+\begin{subfigure}[t]{.5\textwidth}
+\centering
+\includegraphics[width=.9\textwidth]{../sources/plots/gh-gc-apx/quality-high-diameter-directed-weighted.pdf}
+\end{subfigure}\hfill
+\begin{subfigure}[t]{.5\textwidth}
+\centering
+\includegraphics[width=.9\textwidth]{../sources/plots/gh-gc-apx/quality-high-diameter-undirected-weighted.pdf}
+\end{subfigure}
+\caption*{\scriptsize Fig.: Group-closeness scores relative to the best over 100 random groups.}
+\end{figure}
+\end{minipage}\hfill
+\begin{minipage}[t]{.4\textwidth}
+\scriptsize
+Our new local search algorithm (\textsc{LS-C}):
+\begin{itemize}
+\scriptsize
+\item[\faThumbsOUp] Always yields the best quality
+\item[\faThumbsODown] $10\times$ to $100\times$ slower than heuristics
+\end{itemize}\bigskip
+
+\faHandORight\ Time vs quality trade-off\smallskip
+
+\faHandORight\ Approximation viable only in networks with moderate size
+\end{minipage}
+\end{frame}
+
+
+\subsection{GED-Walk}
+\begin{frame}[t]{GED-Walk -- Scalable Group Centrality}
+\small\smallskip
+
+\begin{minipage}[t]{.45\textwidth}
+Popular group centrality measures:
+\begin{itemize}
+\small
+\item based on \emph{distance}
+\item \emph{expensive} to optimize
+\end{itemize}
+
+\end{minipage}\hfill
+\begin{minipage}[t]{.5\textwidth}
+\emph{GED-Walk:} new measure~\parencite{DBLP:conf/alenex/AngrimanGBZGM20}
+ based on \emph{walks}
+%\begin{itemize}
+%    \footnotesize
+%\item[\faThumbsOUp] \emph{$10\times$} to \emph{$100\times$ faster} to maximize than GBC, GCC and GHC
+%    for small groups
+%\item[\faThumbsOUp] Allows to analyze graphs with \emph{$>100$M edges in $<30$ min.}
+%\item[\faThumbsOUp] Improves quality of semi-supervised vertex classification and
+%    graph classification
+%\end{itemize}
+\end{minipage}
+
+\begin{block}{Definition (Group Exponentially Decaying Walk)}
+\small
+GED-Walk of $S \subseteq V$:
+\[\ged(S) := \sum_{i = 1}^\infty\alpha^i\phi_i(S),\]
+\vspace{-4mm}
+\begin{itemize}
+    \item $\alpha > 0$ controls the importance of long walks
+    \item $\phi_i$(S): \#of $i$-walks with at least a vertex in $S$.
+\end{itemize}
+\end{block}
+
+\begin{itemize}
+    \small
+    \item Monotone and submodular
+    \item $\ged(S) < \infty$ for a \enquote{small enough} $\alpha$
+\end{itemize}
+\end{frame}
+
+\subsection{GED-Walk -- Separation}
+
+\begin{frame}{GED-Walk -- Separation}
+
+\textbf{Need:} find the top-1 vertex with highest marginal gain.\smallskip
+
+\faHandORight\ Decide if the top-1 node is \enquote{separated} from the others.
+\medskip
+
+\bigskip\begingroup\centering
+\begin{tikzpicture}
+    \node at (0, 0) {$x$};
+    \node at (0, -.5) {$y$};
+    \node at (0, -1) {$z$};
+    \draw[latex reversed-latex reversed] (-1, 0) -- (-3, 0);
+    \draw[latex reversed-latex reversed] (-4, -.5) -- (-8, -.5);
+    \draw[latex reversed-latex reversed] (-7.5, -1) -- (-9, -1);
+    \node[\emphcolor] (sep) at (-2.7, -1.2) {separated};
+    \node[\emphcolor] (notsep) at (-8.8, .5) {not separated};
+    \draw[->,\emphcolor, thick] (sep) -- (-2, -.2);
+    \draw[->,\emphcolor, thick] (sep) -- (-5, -.7);
+    \draw[->,\emphcolor, thick] (notsep) -- (-6, -.3);
+    \draw[->,\emphcolor, thick] (notsep) -- (-8.75, -.8);
+    \node at (-1, .3) {$U_\ell(S, x)$};
+    \node at (-3, .3) {$L_\ell(S, x)$};
+    \node at (-4, -.2) {$U_\ell(S, y)$};
+    \node at (-8, -.2) {$L_\ell(S, y)$};
+    \node at (-7.5, -1.3) {$U_\ell(S, z)$};
+    \node at (-9, -1.3) {$L_\ell(S, z)$};
+\end{tikzpicture}
+\par\endgroup\bigskip
+
+\centering
+$x$ is separated from $y$
+$\Rightarrow$ $x$ has the highest marginal gain.
+\end{frame}
+
+
+\begin{frame}{GED-Walk -- Separation}
+Separation is too strong!\smallskip
+
+\faHandORight\ Implies correctness, but can separation be achieved?
+	\bigskip
+
+	\textbf{No!} Consider vertices with same marginal gain:
+	\bigskip
+
+	\begingroup\centering
+	\begin{tikzpicture}
+		\coordinate[] (g0) at (-4,1);
+		\coordinate[] (g1) at (-2,0);
+		\coordinate[] (g2) at (-1,1);
+		\coordinate[] (g3) at (0,2);
+		\coordinate[] (g4) at (-.5,3);
+		\coordinate[] (s0) at (-3.5,1.5);
+		\coordinate[] (s1) at (-2,.5);
+		\coordinate[] (s2) at (-1,1.5);
+		\coordinate[] (s3) at (-1.25,1.75);
+		\coordinate[] (s4) at (-.5,2);
+		\node[draw,circle,minimum size=17pt] (a) at (1,.6) {};
+		\node[draw,circle,minimum size=17pt] (v1) at (2.5,0) {$u$};
+		\node[draw,circle,minimum size=17pt] (v2) at (2.5,1.2) {$v$};
+		\node[minimum size=17pt] (G) at (-4,2.5) {$G$};
+        \node[minimum size=17pt] (S) at (-2,2) {\emph{$S$}};
+		\draw (a) -- (v1);
+		\draw (a) -- (v2);
+		\draw (g1) -- (a);
+		\draw (g2) -- node[above] {\quad$\ldots$} (a);
+		\draw (g3) -- (a);
+		\draw[dashed] (g0) to[out=-90,in=-130] (g1);
+		\draw[dashed] (g1) to[out=50,in=-130] (g2);
+		\draw[dashed] (g2) to[out=50,in=-150] (g3);
+		\draw[dashed] (g3) to[out=30,in=0] (g4);
+		\draw[dashed] (g4) to[out=180,in=90] (g0);
+		\draw[dashed,\emphcolor] (s0) to[out=-90,in=-130] (s1);
+		\draw[dashed,\emphcolor] (s1) to[out=50,in=-130] (s2);
+		\draw[dashed,\emphcolor] (s2) to[out=50,in=-120] (s4);
+		\draw[dashed,\emphcolor] (s4) to[out=90,in=90] (s0);
+	\end{tikzpicture}
+	\par\endgroup
+
+        Using $L_\ell(S, \cdot)$ and $U_\ell(S, \cdot)$, we cannot prove that two vertices
+		$u, v$ share the same marginal gain.
+\end{frame}
+
+\begin{frame}{But $\epsilon$-separation works~\parencite{DBLP:conf/esa/GrintenBGBM18}}
+\medskip
+
+\textbf{Workaround:} Consider marginal gains to be equal if their difference is very small.
+
+\begingroup\centering
+\begin{tikzpicture}
+    \node at (-1, -.5) {$x$};
+    \node at (-1, -1) {$w$};
+    \draw[latex reversed-latex reversed] (-2, -.5) -- (-6, -.5);
+    \draw[latex reversed-latex reversed] (-5.5, -1) -- (-7, -1);
+    \node[\darkorange] (notsep) at (-6.8, .5) {$\epsilon$-separated};
+    \draw[->,\darkorange,thick] (notsep) -- (-4, -.3);
+    \draw[->,\darkorange,thick] (notsep) -- (-6.5, -.8);
+    \node at (-2, -.2) {$U_\ell(S, x)$};
+    \node at (-6, -.2) {$L_\ell(S, x)$};
+    \node at (-5.5, -1.3) {$U_\ell(S, w)$};
+    \node at (-7, -1.3) {$L_\ell(S, w)$};
+    \draw[|-|,\darkorange,thick] (-5.5, -1.7) -- (-6, -1.7);
+    \node[\darkorange] at (-5.75, -2.0) {$< \epsilon$};
+\end{tikzpicture}
+\par\endgroup
+
+If $x$ is $\epsilon$-separated from all other vertices, then it holds:
+\begin{itemize}
+    \small
+    \item $x$ is the vertex with greatest marginal gain, \textbf{or}
+    \item the marginal gain of the top-1 vertex is \emph{at most $\ged(S, x) + \epsilon$}
+    \item at each iteration, the error is $\le\epsilon$
+    \item[\faHandORight] use $\epsilon / k$-separation, after $k$ iterations the
+        overall error is $\le \epsilon$
+\end{itemize}
+\bigskip
+\end{frame}
+
+
+\subsection{GED-Walk -- Correlation}
+
+\begin{frame}[t]{GED-Walk -- Correlation}
+\framesubtitle{Correlation between GED-Walk, GHC, and GCC}
+
+\begin{figure}
+\begin{subfigure}[t]{.33\textwidth}
+\centering
+\includegraphics[width=.9\textwidth]{./images/ged-corrs-k1.pdf}
+\end{subfigure}\hfill
+\begin{subfigure}[t]{.33\textwidth}
+\centering
+\includegraphics[width=.9\textwidth]{./images/ged-corrs-k5.pdf}
+\end{subfigure}\hfill
+\begin{subfigure}[t]{.33\textwidth}
+\centering
+\includegraphics[width=.9\textwidth]{./images/ged-corrs-k10.pdf}
+\end{subfigure}\medskip
+
+\begin{subfigure}[t]{.33\textwidth}
+\centering
+\includegraphics[width=.9\textwidth]{./images/ged-corrs-k20.pdf}
+\end{subfigure}\hfill
+\begin{subfigure}[t]{.33\textwidth}
+\centering
+\includegraphics[width=.9\textwidth]{./images/ged-corrs-k50.pdf}
+\end{subfigure}\hfill
+\begin{subfigure}[t]{.33\textwidth}
+\centering
+\includegraphics[width=.9\textwidth]{./images/ged-corrs-k100.pdf}
+\end{subfigure}
+\end{figure}
+\end{frame}
+
+\begin{frame}[t]{GED-Walk -- Scalability \wrt $k$}
+\begin{figure}
+\begin{subfigure}[t]{\textwidth}
+\centering
+\includegraphics[width=.5\textwidth]{../sources/plots/ged-walk/legend-ged-time-vs-group.pdf}
+\end{subfigure}\smallskip
+
+\begin{subfigure}[t]{.5\textwidth}
+\centering
+\includegraphics[width=.8\textwidth]{../sources/plots/ged-walk/ged-time-vs-group.pdf}
+\end{subfigure}\hfill
+\begin{subfigure}[t]{.5\textwidth}
+\centering
+\includegraphics[width=.8\textwidth]{../sources/plots/ged-walk/scalability-walk-length.pdf}
+\end{subfigure}
+\caption*{\footnotesize Scalability \wrt the group size and length of the walks
+considered by GED-Walk maximization on graphs with $0.5$M to $2.9$M edges.}
+\end{figure}
+\end{frame}
+
+
+\begin{frame}[t]{GED-Walk -- Stochastic Greedy}
+\begin{figure}
+\begin{subfigure}[t]{\textwidth}
+\centering
+\includegraphics[width=.5\textwidth]{../sources/plots/ged-walk/legend-ged-time-vs-group-large.pdf}
+\end{subfigure}\medskip
+
+\begin{subfigure}[t]{.5\textwidth}
+\centering
+\includegraphics[width=.75\textwidth]{../sources/plots/ged-walk/ged-time-vs-group-large.pdf}
+\end{subfigure}\hfill
+\begin{subfigure}[t]{.5\textwidth}
+\centering
+\includegraphics[width=.75\textwidth]{../sources/plots/ged-walk/ged-score-vs-group-large.pdf}
+\end{subfigure}
+
+\caption*{\footnotesize Running time (s) and scores of GED-Walk (lazy-greedy and stochastic greedy
+strategies), group-closeness and group-harmonic with large $k$.}
+\end{figure}
+\end{frame}
+
+\subsection{GED-Walk -- Scalability}
+
+\begin{frame}[t]{GED-Walk -- Scalability \wrt $n$}
+\begin{figure}
+\begin{subfigure}[t]{.5\textwidth}
+\centering
+\includegraphics[width=.7\textwidth]{../sources/plots/ged-walk/ER_scalability.pdf}
+\caption*{\scriptsize \erdosr networks.}
+\end{subfigure}\hfill
+\begin{subfigure}[t]{.5\textwidth}
+\centering
+\includegraphics[width=.7\textwidth]{../sources/plots/ged-walk/RMAT_scalability.pdf}
+\caption*{\scriptsize R-MAT networks.}
+\end{subfigure}\smallskip
+
+\begin{subfigure}[t]{.5\textwidth}
+\centering
+\includegraphics[width=.7\textwidth]{../sources/plots/ged-walk/BA_scalability.pdf}
+\caption*{\scriptsize Barab\`asi-Albert networks.}
+\end{subfigure}\hfill
+\begin{subfigure}[t]{.5\textwidth}
+\centering
+\includegraphics[width=.7\textwidth]{../sources/plots/ged-walk/RH_scalability.pdf}
+\caption*{\scriptsize Random Hyperbolic networks.}
+\end{subfigure}
+\end{figure}
+\end{frame}
+
+\subsection{GED-Walk -- Vertex Classification}
+
+\begin{frame}{GED-Walk -- Vertex Classification}
+\begin{figure}
+\begin{subfigure}[t]{.5\textwidth}
+\centering
+\includegraphics[width=.9\textwidth]{../sources/plots/ged-walk/node_classification_cora_ml.pdf}
+\end{subfigure}\hfill
+\begin{subfigure}[t]{.5\textwidth}
+\centering
+\includegraphics[width=.9\textwidth]{../sources/plots/ged-walk/node_classification_wiki.pdf}
+\end{subfigure}
+\end{figure}
+\end{frame}
+
+\begin{frame}{GED-Walk -- Graph Classification}
+\scriptsize
+\centering\vspace{-3mm}
+
+\begin{table}
+\centering
+\caption*{\scriptsize Graph classification accuracy in \%.}
+\vspace{-1mm}
+\input{../sources/tables/ged-walk/graph-classification.tex}
+\end{table}
+\end{frame}
+
+\subsection{Dynamic Matching -- Edge Removals}
+
+\begin{frame}{Dynamic \suitor\ -- Edge Removals}
+\small
+
+\begin{block}{\small Lemma}
+Let $G' = (V, E \setminus\set{e})$ with
+\only<1>{$e = \set{u, v}$}\only<2->{\textcolor{HUBred}{$e = \set{u, v}$}}. Then: $u$ and $v$ are affected
+$\Leftrightarrow \emph{e \in M}$.
+
+Otherwise, no vertex is affected, we can \enquote{skip} $e$.
+\end{block}
+
+\begin{minipage}[t]{.5\textwidth}
+\begin{algorithmic}[1]
+\footnotesize
+\Function{removeEdge}{$u,v$}
+\If{$\set{u, v} \in M$}
+\State$\vsuitor(u) \gets \nil$
+\State$\vsuitor(v) \gets \nil$
+\For{$z \in \pair{u}{v}$}
+\State$\only<-3>{S_A}\only<4->{\textcolor{HUBmagenta}{S_A}} \gets
+\only<-2>{\Call{findAffected}{z}}
+\only<3->{\textcolor{\emphcolor}{\Call{findAffected}{z}}}$
+\State$\only<-3>{\Call{updateAffected}{S_A}}
+\only<4->{\textcolor{HUBmagenta}{\Call{updateAffected}{S_A}}}$
+\EndFor
+\EndIf
+\EndFunction
+\end{algorithmic}
+
+\end{minipage}\hfill
+\begin{minipage}[t]{.5\textwidth}
+\begin{figure}
+\input{suitor-removal-illustration}
+\end{figure}
+\end{minipage}\vspace{-5mm}
+
+
+\begin{minipage}[t]{.7\textwidth}
+%\onslide<8->{
+%\begin{block}{\vspace{-3ex}}
+%\begin{itemize}
+%    \footnotesize
+%\item[\textcolor{red}{\warning}] $P_u$ and $P_v$ are \emph{not} computed together, they can
+%    intersect\smallskip
+%
+%    \ie matching along $P_u$ is (temporarily) wrong ($\neq M'$)
+%\item[\faHandORight] matching is \enquote{fixed} later by $P_v$
+%\end{itemize}
+%\end{block}
+%}
+\end{minipage}\hfill
+\begin{minipage}[c]{.3\textwidth}
+\begin{figure}
+\input{suitor-matching-legend}
+\end{figure}
+\end{minipage}
+\end{frame}
+
+\subsection{Dynamic Matching -- Paths Intersections}
+
+\begin{frame}{Dynamic \suitor -- Paths Intersections}
+\begin{figure}
+\centering
+\begin{subfigure}[t]{.4\textwidth}
+\centering
+\scalebox{.8}{
+\input{../sources/figures/edge-insertion-intersect-1.tex}
+}
+\caption*{Single alternating path from $v$.}
+\end{subfigure}\hfill
+\begin{subfigure}[t]{.4\textwidth}
+\centering
+\scalebox{.8}{
+\input{../sources/figures/edge-insertion-intersect-4.tex}
+}
+\caption*{Case (i): intersect at the last (free) vertex.}
+\end{subfigure}
+
+\begin{subfigure}[t]{.49\textwidth}
+\centering
+\scalebox{.8}{
+\input{../sources/figures/edge-insertion-intersect-2.tex}
+}
+\caption*{Case (ii): intersect at \enquote{downgraded} vertex.}
+\end{subfigure}\hfill
+\begin{subfigure}[t]{.49\textwidth}
+\centering
+\scalebox{.8}{
+\input{../sources/figures/edge-insertion-intersect-3.tex}
+}
+\caption*{Case (iii): intersect at \enquote{upgraded} vertex.}
+\end{subfigure}
+\end{figure}
+\end{frame}
+
+\subsection{Dynamic Matching -- Affected Vertices}
+
+\begin{frame}[t]{Dynamic \suitor -- Affected Vertices}
+\centering
+\begin{figure}[H]
+\centering
+\input{./suitor-affected-line.tex}
+\end{figure}
+
+\begin{itemize}
+    \small
+    \item<2> Affected vertices are connected by an alternating path
+    \item<2> Edge weights along alternating paths are decreasing
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Dynamic \suitor -- Affected Vertices}
+\begin{figure}
+\begin{subfigure}[t]{\textwidth}
+\centering
+\includegraphics[width=.3\textwidth]{../sources/plots/dyn-mwm/legend-cplx.pdf}
+\end{subfigure}\smallskip
+
+\begin{subfigure}[t]{\textwidth}
+\begin{subfigure}[t]{.5\textwidth}
+\centering
+\includegraphics[width=.5\textwidth]{../sources/plots/dyn-mwm/affected-cplx-insertion.pdf}
+\end{subfigure}\hfill
+\begin{subfigure}[t]{.5\textwidth}
+\centering
+\includegraphics[width=.5\textwidth]{../sources/plots/dyn-mwm/affected-cplx-insertion.pdf}
+\end{subfigure}
+\caption*{\scriptsize Complex networks}
+\end{subfigure}
+\smallskip
+
+\begin{subfigure}[t]{\textwidth}
+\begin{subfigure}[t]{.5\textwidth}
+\centering
+\includegraphics[width=.6\textwidth]{../sources/plots/dyn-mwm/affected-road-insertion.pdf}
+\end{subfigure}\hfill
+\begin{subfigure}[t]{.5\textwidth}
+\centering
+\includegraphics[width=.6\textwidth]{../sources/plots/dyn-mwm/affected-road-insertion.pdf}
+\end{subfigure}
+\caption*{\scriptsize Road networks}
+\end{subfigure}
+\end{figure}
+\end{frame}
+
+\subsection{Dynamic Matching -- Synthetic Networks}
+
+\begin{frame}[t]{Dynamic \suitor -- Synthetic Networks}
+\begin{figure}
+\begin{subfigure}[t]{\textwidth}
+\centering
+\includegraphics{../sources/plots/dyn-mwm/legend-synthetic.pdf}
+\end{subfigure}\medskip
+
+\begin{subfigure}[t]{.5\textwidth}
+\centering
+\includegraphics[width=.7\textwidth]{../sources/plots/dyn-mwm/speedup-rmat-insertion.pdf}
+\caption*{\scriptsize R-MAT network}
+\end{subfigure}\hfill
+\begin{subfigure}[t]{.5\textwidth}
+\centering
+\includegraphics[width=.7\textwidth]{../sources/plots/dyn-mwm/speedup-hyperbolic-insertion.pdf}
+\caption*{\scriptsize Random hyperbolic networks}
+\end{subfigure}
+\end{figure}
+\end{frame}
+
+\else
+\fi
+
+\end{document}

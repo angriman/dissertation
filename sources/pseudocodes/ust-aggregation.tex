@@ -1,0 +1,28 @@
+\begin{algorithm}[t]
+\footnotesize
+\setstretch{1}
+\caption{\footnotesize Aggregation of $T$'s contribution to $\rdistapx(u, \cdot)$.}
+\label{algo:ust-aggregation}
+\textbf{Input:} Spanning tree $T$, effective resistance estimates $\rdistapx(u, \cdot)$, BFS tree $B_u$\\
+\textbf{Output:} $\rdistapx(u, \cdot)$ updated with $T$'s contribution
+\begin{algorithmic}[1]
+\Function{Aggregate}{$(T, \rdistapx(u, \cdot), B_u)$}
+\State$\left<\tdis, \tfin\right>\gets\text{DFS}(T)$\label{line:ust-agg:dfs}
+\Comment{$\tdis(v)$, $\tfin(v)$: discovery and finish timestamps of vertex $v$}
+\For{$v \in V\setminus\set{u}$}
+\For{$(a, b) \in P_{u, v}$ obtained from $B_u$}
+\If{$parent(b) = a$}\label{line:ust-agg:ab-in-t}
+\If{$\tdis(b) < \tdis(v)$ \textbf{and} $\tfin(v) < \tfin(b)$}\label{line:ust-agg:v-below-ab}
+\State$\rdistapx(u, v) \gets \rdistapx(u, v) + 1$\label{line:ust-agg:add-1}
+\EndIf
+\ElsIf{$parent(a) = b$}\label{line:ust-agg:ba-in-t}
+\If{$\tdis(a) < \tdis(v)$ \textbf{and} $\tfin(v) < \tfin(a)$}\label{line:ust-agg:v-below-ba}
+\State$\rdistapx(u, v) \gets \rdistapx(u, v) - 1$\label{line:ust-agg:sub-1}
+\EndIf
+\EndIf
+\EndFor
+\EndFor
+\State\Return$\rdistapx(u, \cdot)$
+\EndFunction
+\end{algorithmic}
+\end{algorithm}

@@ -1,0 +1,65 @@
+\chapter*{Introduction}
+%
+Stable Marriage is the popular problem introduced by Gale and
+Shapley~\cite{DBLP:journals/tamm/GaleS13} of matching an equal number of women
+and men, each of whom has ranked the participants of the opposite sex in order
+of preference so that \change{no couple prefer each other to the partners they
+are matched with}.
+In other scenarios, however, there may not be a separation of the participants
+into two classes (\eg same-gender couples or pairing players in a chess
+tournament~\cite{kujansuu1999stable}), hence the Stable Roommates Problem
+(SRP). SRP, originally described in the paper of Gale and
+Shapley~\cite{DBLP:journals/tamm/GaleS13}, is essentially the stable marriage
+problem with just one set and appears in a variety of practical
+applications~\cite{iwama2007stable}. Every person in the set (of even cardinality $n$)
+ranks the others in order of preference. The objective is to partition
+the set into $n/2$ pairs of \enquote{roommates} such that no two
+persons that are not roommates both prefer each other to their
+current roommates -- \ie finding a stable \emph{matching}.
+
+Some commercial and scientific applications, however, demand to find matchings
+that are not only stable, but that also have the maximum weight, which leads to
+the Maximum Weighted Matching problem
+(MWM)~\cite{bisseling2020parallel,DBLP:conf/ecir/LaitangPB13,
+DBLP:journals/ijprai/ConteFSV04,
+DBLP:journals/pc/MonienPD00,wang2004bipartite,DBLP:conf/ismb/BorgwardtOSVSK05,
+DBLP:journals/dc/HalldorssonKPR18,DBLP:journals/jpdc/Patt-ShamirRS12}.
+To this end, several algorithms to solve MWM have been proposed;
+because optimal solutions are expensive to compute,\footnote{The fastest
+know algorithm for MWM on general graphs takes $\Oh(mn\log n)$
+time~\cite{galil1986efficient}, other faster strategies exploit assumptions
+on the input graph~\cite{DBLP:journals/talg/DuanPS18}.}
+approximation algorithms with nearly-linear time complexity are
+numerous in the literature~\cite{DBLP:conf/stacs/Preis99,DBLP:conf/ppam/ManneB07,
+DBLP:conf/europar/BirnOSSS13,DBLP:conf/wea/DrakeH03,
+DBLP:journals/ipl/DrakeH03,DBLP:conf/wea/MaueS07,DBLP:conf/ipps/ManneH14}.
+As we argued in \Cref{sec:intro:motivation}, networks often change
+over time, leading to the problem of updating an (approximate) MWM
+after those change(s). The naive solution is to re-run a static algorithm
+on the new graph; this, however, is a rather inefficient strategy:
+as we saw in \Cref{ch:dyn-topk}, reusing the information computed on an
+initial snapshot of the graph can reduce enormously the amount of work
+required to update the results on the new graph.
+This would be beneficial especially \change{for} applications dealing with
+rapidly-evolving networks where multiple updates happen every second --
+running a linear-time algorithm from scratch after each update would not
+be practical.
+
+Numerous dynamic algorithms for approximate MWM were
+proposed~\cite{DBLP:conf/fsttcs/AnandBGS12,DBLP:conf/focs/GuptaP13,
+DBLP:conf/innovations/StubbsW17,DBLP:conf/approx/CrouchS14} but
+just a few of them have been
+implemented~\cite{conf/acda/AngrimanMSU21} and none
+supports edge updates in batches.
+In \Cref{ch:dyn-mwm}, we address the problem of updating a $\change{(1/2)}$-approximate MWM
+after multiple edge updates by presenting a new batch-dynamic algorithm
+inspired by the \suitor algorithm by Manne and
+Halappanavar~\cite{DBLP:conf/ipps/ManneH14}.
+Despite having a worst-case time complexity that is linear in the size of the
+input graph, our extensive experimental analysis suggests that, compared to the
+state of the art~\cite{conf/acda/AngrimanMSU21},
+our dynamic \suitor algorithm \change{traverses less edges} to handle
+single edge updates and yields solutions with \quaRWLowest quality or higher.
+Further, for batches with up to $10^4$ edge updates, it requires milliseconds
+-- or less, for the batches of smaller size -- that is $10^2\times$ to $10^6\times$
+faster than re-running \suitor from scratch.

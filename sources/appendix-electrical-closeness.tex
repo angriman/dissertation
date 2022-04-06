@@ -1,0 +1,43 @@
+\apxch{ch:electrical-closeness}
+
+\section{Baseline}
+\label{apx:el-clos:baseline}
+\begin{table}[H]
+\footnotesize
+\captionabove{Precision of the diagonal entries computed by the LAMG
+solver (tolerance: $10^{-9}$) compared with the ones computed by the Matlab
+\texttt{pinv} function.}
+\label{tab:el-clos:lamg-pinv-prec}
+\input{sources/tables/el-clos/insts-small-pinv.tex}
+\end{table}
+
+\section{Running Time -- Forest Closeness}
+\label{apx:el-clos:forest-time}
+\begin{table}[H]
+\setlength{\tabcolsep}{2pt}
+\centering\footnotesize
+\captionabove{Running time (s) of \ust on the networks
+of \Cref{tab:el-clos:forest-corr}.}
+\label{tab:el-clos:forest-time}
+
+\begin{subtable}[t]{.5\textwidth}
+\centering
+\caption{Complex networks}
+\input{sources/tables/el-clos/time-forest-cplx.tex}
+\end{subtable}\hfill
+\begin{subtable}[t]{.5\textwidth}
+\centering
+\caption{Road networks}
+\input{sources/tables/el-clos/time-forest-cplx.tex}
+\end{subtable}
+\end{table}
+
+\section{Running Time -- Group Forest Closeness}
+\label{apx:el-clos:group-forest-time}
+\begin{table}[H]
+\centering\small
+\captionabove{Running time (s) of our greedy algorithm for group
+forest maximization.}
+\label{tab:el-clos:time-group-forest}
+\input{sources/tables/el-clos/group-forest-time.tex}
+\end{table}

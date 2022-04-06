@@ -1,0 +1,24 @@
+\begin{algorithm}[t]
+\caption{Dynamic \suitor algorithm for a batch of edge removals}
+\label{algo:dyn-suitor-batch-rem}
+\textbf{Input:} Graph $G' = (V, E \cup B, w')$, batch of edge removals $B \subseteq E$
+
+\begin{algorithmic}[1]
+\State$\affected(u) \gets \false\ \forall u \in V$
+\State$i \gets 0$
+\State$\vsuitor\iteri(u) \gets \vsuitor\interm(u)\ \forall\ u \in V$
+\State$ws\iteri(u) \gets ws\interm(u)\ \forall\ u \in V$
+\For{$\set{u, v} \in B$}\label{line:dyn-suitor-batch-rem:for-rem}
+\For{$z \in \set{u, v}$}
+\If{$\vsuitor\iteri(z) = \set{u, v}\setminus\set{z}$}\label{line:dyn-suitor-batch-rem:if}
+\State$\vsuitor\iter{i + 1}(z) \gets \nil$\label{line:dyn-suitor-batch-rem:upd-1}
+\State$ws\iter{i + 1}(z) \gets 0$
+\State$\affected(z) \gets \true$
+\State$S_A \gets \textsc{findAffected}(z)$\label{line:dyn-suitor-batch-rem:update-aff}
+\State$\textsc{updateAffected}(S_A)$\label{line:dyn-suitor-batch-rem:upd-2}
+\EndIf
+\EndFor
+\State$i \gets i + 1$
+\EndFor
+\end{algorithmic}
+\end{algorithm}

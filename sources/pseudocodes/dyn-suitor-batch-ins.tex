@@ -1,0 +1,26 @@
+\begin{algorithm}[t]
+\caption{Dynamic \suitor algorithm for a batch of edge insertions}
+\label{algo:dyn-suitor-batch-ins}
+\textbf{Input:} Graph $G' = (V, E \cup B, w')$, batch of edge insertions
+$B = \set{\set{u, v}\ \text{s.t.}\ \set{u, v} \notin E}$
+
+\begin{algorithmic}[1]
+\State$\affected \gets \false\ \forall u \in V$
+\State$i \gets 0$
+\State$\vsuitor\iteri(u) \gets \vsuitor\interm(u)\ \forall u\in V$
+\State$ws\iteri(u) \gets ws\interm(u)\ \forall u\in V$
+\For{\textbf{each} $\set{u, v} \in B$}\label{line:dyn-suitor-batch-ins:for-ins}
+\If{$w'(u, v) > \max\set{w'(u, \vsuitor\iteri(u)), w'(v, \vsuitor\iteri(v))}$}
+\label{line:dyn-suitor-batch-ins:if}
+\For{\textbf{each} $z \in \set{u, v}$}
+\State$\affected(z) \gets \true$
+\State$S_A \gets \textsc{findAffected}_B(z)$
+\label{line:dyn-suitor-batch-ins:find-aff-b}
+\Comment{Edge weights in $P_z$ are decreasing, see \Cref{sec:dyn-mwm:multiple-insertions}}
+\State$\textsc{updateAffected}(S_A \setminus \set{\vsuitor\iteri(z)})$
+\EndFor
+\EndIf
+\State$i \gets i + 1$
+\EndFor
+\end{algorithmic}
+\end{algorithm}

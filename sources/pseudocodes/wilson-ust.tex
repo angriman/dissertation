@@ -1,0 +1,28 @@
+\begin{algorithm}[t]
+\footnotesize
+\setstretch{1}
+\caption{\footnotesize Sampling algorithm for USTs
+based on Wilson's algorithm~\cite{DBLP:conf/stoc/Wilson96}}
+\label{algo:wilson-ust}
+\textbf{Input:} Graph $G = (V, E)$, universal vertex $u_\star\in V$\\
+\textbf{Output:} Estimated effective resistance values
+$\rdiststarapx(u_\star, \cdot)$
+
+\begin{algorithmic}[1]
+\Function{SampleUST}{$G, u_\star)$}
+\State$\rdiststarapx(u_\star, v) \gets 0\ \forall v\in V$
+\State$T \gets \set{u_\star}$\label{line:wilson-ust:pivot}
+\State Let $v_1, \ldots, v_n$ be a reordering of the vertices in $V$ in ascending degree
+\For{$j \gets 1$ \textbf{to} $n$}
+\State$P \gets$ random walk on $G$ from $v_j$ to $T$
+\State$LE(P) \gets$ loop erasure of $P$ in order of appearance
+\State$T \gets T \cup LE(P)$
+\If{last vertex of $LE(P)$ is $u_\star$}
+\State$z \gets$ last visited vertex before $u_\star$
+\State$\rdiststarapx(u_\star, z) \gets \rdiststarapx(u_\star, z) + 1$
+\EndIf
+\EndFor
+\State\Return$\rdiststarapx(u_\star, \cdot)$
+\EndFunction
+\end{algorithmic}
+\end{algorithm}

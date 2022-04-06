@@ -1,0 +1,216 @@
+\pagestyle{plain}
+\begin{center}
+  \textsc{Abstract}
+\end{center}
+%
+Network analysis is a collection of techniques aimed to unveil non-trivial
+insights from networked data by studying relationship patterns between
+the entities of a network.
+Among the insights that can be extracted from a network, a popular one is to
+quantify how important an entity is with respect to the others according to
+some importance criteria -- \eg social networks often have
+participants that are more influential than others or whose removal from the
+network would imply a major disruption of the communication flow.
+Another one is to find the most suitable matching partner for each participant
+of a network knowing the pairwise preferences (or the compatibility) of the
+participants to be matched with each other -- which can be formalized as the
+well-known maximum weighted matching problem, or MWM. Think of matchmaking
+platforms or pairing players in a chess tournament.
+
+Because the notion of importance is tied to the application under consideration,
+numerous \emph{centrality measures} have been introduced.
+However, many of these measures were conceived in a time when computing power was very
+limited and networks were much smaller compared to today's, and thus scalability
+to large datasets was not considered. Today, massive networks with
+millions of edges are ubiquitous and a complete exact computation for
+traditional centrality measures -- still widely used to extract meaningful
+information from large datasets -- often requires an excessive amount of time.
+This issue is amplified if our objective is to find the \emph{group} of $k$
+vertices that is the most central \emph{as a group}, which is useful to
+applications such as optimizing warehouse locations or influence maximization.
+Scalable algorithms to identify highly central (groups of) vertices
+on massive graphs are thus of pivotal importance for large-scale network analysis.
+%
+In addition to their size, today's networks often evolve over time and
+this poses the challenge of efficiently updating the findings we gathered on
+the network after a change occurs.
+Hence, efficient \emph{dynamic} algorithms
+are essential for modern network analysis
+pipelines.
+
+In this work, we propose scalable algorithms for the two
+aforementioned challenges, namely: identifying important vertices
+in a network
+and efficiently updating them in evolving networks.
+In real-world graphs with up to hundreds of millions of edges, most of our
+algorithms require seconds to a few minutes to perform these tasks, improving
+significantly over the state of the art.
+
+Concerning MWM, solving this problem optimally in large
+graphs is computationally too expensive, and
+fast inexact algorithms for MWM are abundant in the literature as well as dynamic
+algorithms to maintain an (approximate) MWM.
+\change{In the dynamic case}, however, little effort was devoted to actually
+implementing these algorithms in practice, leaving their actual performance
+unknown.
+In this work, we extend a state-of-the-art approximation algorithm for MWM to
+\change{dynamic graphs}; experiments show that our dynamic MWM algorithm handles
+multiple edge updates in graphs with billion edges in only a fraction of a
+second.
+
+%The algorithms presented in this thesis were developed following
+%the \emph{algorithm engineering} paradigm, meaning that, in addition to the
+%theoretical analysis, implementation and systematic experimental evaluation
+%are fundamental parts of the development process.
+%
+%This thesis is organized into five parts. While the first and the last parts
+%serve as introduction and concluding remarks, respectively, the other three
+%target different families of network analysis problems. Specifically,
+%\Cref{part:single-vertex-centrality} concerns single-vertex centrality
+%measures, \Cref{part:group-centrality} addresses group centrality maximization,
+%and \Cref{part:matching} deals with approximate MWM in dynamic graphs.
+%In the following, we provide a brief summary of the contents presented
+%in \Crefrange{part:single-vertex-centrality}{part:matching}.
+%
+%\paragraph{Algorithms for Single-Vertex Centrality Measures}
+%%
+%Among the different types of centralities available in the literature, many of
+%them consider the shortest-path distance between vertices. Closeness centrality
+%is one of the oldest, yet still popular, centrality measures: it is defined as
+%the reciprocal of the average (shortest-path) distance to all other nodes -- a
+%vertex is central if it \emph{close} to the others.
+%%
+%Computing closeness for all vertices requires to solve All-Pairs
+%Shortest Paths, which is notoriously unfeasible in large-scale instances.
+%However, since applications often demand to identify the most central vertices
+%rather than the score of each one, efficient algorithms to find the top-$k$
+%vertices with highest closeness have been
+%proposed~\cite{DBLP:journals/tkdd/BergaminiBCMM19}.
+%In \Cref{ch:dyn-topk}, we consider the problem of maintaining the top-$k$
+%closeness ranking in time-evolving graphs. Our dynamic algorithms exploit the
+%information computed on an initial snapshot of the network to skip unnecessary
+%work. Experimental results show that our approach is on average two to four
+%orders of magnitude faster than a static recomputation.
+%
+%\Cref{ch:betweenness-approx} deals with parallel approximation schemes for
+%another popular shortest-path based
+%centrality measure: betweenness centrality. Betweenness assigns
+%importance to a vertex depending on its participation in the shortest
+%paths of the network. Because \emph{all} shortest paths are considered,
+%this measure is quite expensive to compute, even for a single vertex.
+%This motivated the development of approximation algorithms for
+%betweenness and, among them, we consider the state-of-the-art \kadabra algorithm.
+%\kadabra is an \emph{adaptive} sampling algorithm, \ie it keeps drawing
+%samples -- in this case, shortest paths -- until a certain \emph{stopping
+%condition} is met. Consequently, the required number of samples to achieve
+%the desired approximation is not known in advance but depends on the
+%samples drawn so far.
+%%
+%Trivial parallelization schemes incur to high synchronization overheads and
+%do not scale to large numbers of threads. Hence, in this chapter, we implement
+%novel epoch-based parallel adaptive sampling algorithms that aim to minimize
+%the synchronization costs between threads.
+%To demonstrate their effectiveness, we turn to \kadabra\ -- although
+%our techniques can easily be adapted to other adaptive sampling algorithms.
+%Experimental results show that, compared to a traditional OpenMP-based
+%parallelization strategy, our algorithms achieve much higher parallel speedups.
+%
+%Shortest-path based measures are often criticized because of the assumption
+%that whatever flows through the network follows shortest paths
+%exclusively~\cite{DBLP:journals/socnet/Borgatti05}, which is not always
+%the case.
+%This led to the introduction of a whole new family of \emph{electrical}
+%centrality measures based on \emph{resistance distance}. Resistance distance
+%interprets the underlying graph as an electrical network and evaluates the
+%distance between two vertices by taking into account \emph{all}
+%paths between them.
+%Unfortunately, computing electrical centrality measures exactly requires, in
+%general, matrix inversion,  which is impractical for large instances.
+%In \Cref{ch:electrical-closeness}, we present algorithms
+%based on sampling of uniform spanning trees to approximate two popular
+%electrical centrality measures: electrical closeness and forest closeness.
+%Compared to state-of-the-art approaches, our algorithms not only are faster
+%but also yield solutions with superior quality in terms of absolute error.
+%
+%
+%\paragraph{Algorithms for Group Centrality Measures}
+%%
+%Applications such as optimizing warehouse locations or identifying
+%the potentially best promoters for a product in a social network do not require
+%to find the most \emph{individually} central vertices but rather the
+%group of vertices that provides the widest \enquote{coverage} of the entire
+%graph. To quantify the importance of a whole group of vertices in a network,
+%group centrality measures were introduced.
+%
+%Finding the most central group of $k$ vertices (also known as the group centrality
+%maximization problem) is, however, \np-hard for many popular group centrality measures.
+%For this reason, proposed solutions resort to approximation or heuristics.
+%Existing algorithms present limitations such as very limited scalability to large
+%networks and, in some cases, lack of approximation guarantees.
+%Furthermore, existing group centrality measures do not handle disconnected graphs.
+%In this part, we address these issues.
+%
+%\Cref{ch:group-closeness-local-search,ch:group-harm-clos-max} are devoted to
+%group-closeness. Existing maximization algorithms for this measure are heuristics
+%that do not scale to large graphs -- the fastest one needs several
+%hours for graphs with hundreds
+%of millions of vertices. In \Cref{ch:group-closeness-local-search}, we
+%introduce new local search heuristics that require minutes (but mostly a few
+%seconds) to find highly-central groups of vertices even in bigger graphs.
+%\Cref{ch:group-harm-clos-max}, in turn, introduces the first approximation
+%algorithm for group-closeness. This algorithm is based on local search as well;
+%however, its time complexity is at least quadratic in the number of vertices in
+%the graph, which makes it suitable for networks with moderate size only.
+%This chapter also addresses the lack of group centrality measures for disconnected
+%graphs by extending harmonic centrality\footnote{Harmonic centrality is defined
+%as the harmonic sum of the distances from one vertex to the others (see
+%\Cref{eq:def:harmonic}) and it is suitable also for disconnected graphs.}
+%to the group case. We develop approximation algorithms for group-harmonic
+%maximization as well.
+%
+%Finally, \Cref{ch:ged-walk} addresses the limitations in scalability of
+%existing group centrality maximization algorithms by proposing an alternative
+%measure. Because shortest-path based centrality measures are inherently
+%expensive to compute due to complexity-theoretic barriers, we devise GED-Walk,
+%a new group centrality measure based on \emph{walks} inspired by Katz
+%centrality (see \Cref{eq:def:katz}). In addition, we implement an efficient
+%parallel
+%approximation algorithm to maximize GED-Walk which, in our experiments, turns
+%out to be much faster compared to state-of-the-art maximization algorithms for
+%existing shortest-path based measures.
+%In this chapter, we also introduce group forest closeness, the first
+%\emph{electrical} group centrality measure that handles disconnected graphs out
+%of the box, and we adapt the greedy algorithm by Li
+%\etal~\cite{DBLP:conf/www/0002PSYZ19} to approximate the group forest
+%maximization problem. Experiments on popular graph mining tasks show that
+%GED-Walk and group forest closeness outperform existing measures in terms
+%of precision in connected and disconnected graphs, respectively.
+%
+%\paragraph{Approximate Maximum Weighted Matching in Dynamic Networks}
+%%
+%MWM is one of the most popular combinatorial optimization problems with numerous
+%practical applications. Even though computing optimal matchings \wrt
+%cardinality or weight can be done in polynomial time, this is not feasible for
+%large-scale networks. Thus, a wide range of approximation algorithms trading
+%solution quality for a faster running time have been proposed.
+%In the context of time-evolving graphs, various fully-dynamic algorithms that efficiently
+%maintain an approximate MWM after a graph update have been introduced as well.
+%However, little effort has been invested into implementing these algorithms in
+%practice and no batch-dynamic algorithm for (approximate) MWM has been
+%developed.
+%
+%\Cref{ch:dyn-mwm} focuses on the problem of maintaining a $\change{(1/2)}$-approximate MWM
+%in fully-dynamic dynamic graphs. Limitations of existing approaches for this problem
+%are: (i) high constant factors in their time complexity, (ii) the fact that none of
+%them supports batch updates, and (iii) the lack of a practical implementation -- meaning
+%that their actual performance on real-world networks has not been investigated.
+%%
+%We describe and implement a new batch-dynamic $\change{(1/2)}$-approximation algorithm for
+%MWM based on the state-of-the-art \suitor
+%algorithm~\cite{DBLP:conf/ipps/ManneH14} and its local edge domination
+%strategy. We provide a detailed analysis of our algorithm and prove
+%its approximation guarantee. Despite having a worst-case time complexity for a single
+%edge update that is linear in the graph size (\ie equivalent to \suitor), our extensive
+%experimental evaluation shows that our dynamic algorithm is much faster in practice.
+%More precisely, for batches with up to $10^4$ edge updates, the speedup
+%against a static recomputation is $10^2\times$ to $10^6\times$.

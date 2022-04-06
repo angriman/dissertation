@@ -1,0 +1,304 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Colors
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\darkgreen}{black!60!green}
+\newcommand{\darkorange}{brown!70!orange}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Chapter paragraphs
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\bibnotes}[1]{\paragraph{Bibliographic Notes}#1}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Writing
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\eg}{e.g.,\xspace}
+\newcommand{\ie}{i.e.,\xspace}
+\newcommand{\etal}{et al.\xspace}
+\newcommand{\etc}{etc.\xspace}
+\newcommand{\wrt}{w.r.t.\xspace} \newcommand{\aka}{a.k.a.\xspace}
+\renewcommand{\th}{\textsuperscript{\textup{th}}\xspace}
+\newcommand{\wilog}{w.l.o.g.\xspace}
+\newcommand{\Wilog}{W.l.o.g.\xspace}
+\newcommand{\np}{\ensuremath{\mathcal{NP}}}
+\newcommand{\apxch}[1]{\chapter{Appendix of \Cref{#1}}}
+\newcommand{\alenex}[2]{
+\textit{#1 Workshop on Algorithm Engineering and Experiments (ALENEX #2)}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Math
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\set}[1]{\ensuremath{\left\lbrace#1\right\rbrace}}
+\renewcommand{\iff}{\ensuremath{\Leftrightarrow}}
+\newcommand{\Oh}{\ensuremath{\mathcal{O}}}
+\newcommand{\fdist}{\ensuremath{\zeta}}
+\newcommand{\fdistp}{\ensuremath{\fdist_{\alpha}}}
+\newcommand{\ct}{\ensuremath{t_c}}
+\newcommand{\ctg}{\ensuremath{t_{c, G}}}
+\newcommand{\hitt}{\ensuremath{t_h}}
+\newcommand{\expected}[1]{\ensuremath{\mathbf{E}\left[#1\right]}}
+\DeclareMathOperator{\gmean}{GM}
+\DeclareMathOperator*{\argmax}{argmax}
+\DeclareMathOperator*{\argmin}{argmin}
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+\newcommand{\onenorm}[1]{\left\lVert#1\right\rVert_1}
+\newcommand{\twonorm}[1]{\left\lVert#1\right\rVert_2}
+\newcommand{\maxnorm}[1]{\left\lVert#1\right\rVert_{\infty}}
+\newcommand{\natn}{\ensuremath{\mathbb{N}}}
+\newcommand{\ratn}{\ensuremath{\mathbb{Q}}}
+\newcommand{\pair}[2]{\ensuremath{\left<#1, #2\right>}}
+\newcommand{\poly}{\text{poly}}
+\newcommand{\lonerel}{\ensuremath{\mathrm{L1}_\mathrm{rel}}}
+\newcommand{\ltworel}{\ensuremath{\mathrm{L2}_\mathrm{rel}}}
+\newcommand{\erel}{\ensuremath{\mathrm{E}_\mathrm{rel}}}
+
+\renewcommand{\epsilon}{\varepsilon}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Graph Measures
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\vol}{\ensuremath{\text{vol}}}
+\newcommand{\nout}{\ensuremath{N_{\text{out}}}}
+\newcommand{\nin}{\ensuremath{N_{\text{in}}}}
+\newcommand{\degin}{\ensuremath{\deg_{\text{in}}}}
+\newcommand{\degout}{\ensuremath{\deg_{\text{out}}}}
+\newcommand{\diam}{\ensuremath{\text{diam}}}
+\newcommand{\ecc}{\ensuremath{\text{ecc}}}
+\newcommand{\kidx}{\ensuremath{\mathcal{K}}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Formatting numbers
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\onedigit}[1]{
+\ensuremath{\num[round-mode=places,round-precision=1]{#1}}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Parentheses
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\roundb}[1]{\ensuremath{\left(#1\right)}}
+\newcommand{\ceil}[1]{\ensuremath{\left\lceil#1\right\rceil}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Matrices and Vectors
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\mat}[1]{\ensuremath{\mathbf{#1}}\xspace}
+\newcommand{\vect}[1]{\ensuremath{\mathbf{#1}}\xspace}
+\newcommand{\Adj}{\mat{A}}
+\newcommand{\Deg}{\mat{D}}
+\newcommand{\Ones}{\mat{J}}
+\newcommand{\ones}{\mat{j}}
+\newcommand{\Ident}{\mat{I}}
+\newcommand{\Fmat}{\ensuremath{\bm{\Omega}}\xspace}
+\newcommand{\Fmatapx}{\ensuremath{\widetilde{\Fmat}}\xspace}
+\newcommand{\Fmatp}{\ensuremath{\bm{\Omega}_{\alpha}}\xspace}
+\newcommand{\cunit}[1]{\ensuremath{\vect{e}_{#1}}}
+\newcommand{\diag}[1]{\ensuremath{\text{diag}\roundb{#1}}\xspace}
+\newcommand{\tr}[1]{\ensuremath{\text{tr}\roundb{#1}}\xspace}
+\newcommand{\xapprox}{\ensuremath{\widetilde{\vect{x}}}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Effective Resistance Notation
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\reff}{\ensuremath{r_{\text{eff}}}\xspace}
+\newcommand{\ceff}{\ensuremath{c_{\text{eff}}}\xspace}
+\newcommand{\rdist}{\ensuremath{\rho}\xspace}
+\newcommand{\rdistapx}{\ensuremath{\tilde{\rho}}\xspace}
+\newcommand{\rdiststar}{\ensuremath{\rho_{\star}}\xspace}
+\newcommand{\rdiststarapx}{\ensuremath{\tilde{\rho}_{\star}}\xspace}
+\newcommand{\Lapl}{\mat{L}}
+\newcommand{\Lstar}{\mat{L_{\star}}}
+\newcommand{\Linv}{\ensuremath{\Lapl^\dagger}\xspace}
+\newcommand{\Linvstar}{\ensuremath{\Lapl^\dagger_\star}\xspace}
+\newcommand{\Linvapx}{\ensuremath{\widetilde{\Lapl^\dagger}}\xspace}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Centrality Measures
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\clos}{\ensuremath{c_c}\xspace}
+\newcommand{\farn}{\ensuremath{f}\xspace}
+\newcommand{\elfarn}{\ensuremath{f_e}\xspace}
+\newcommand{\ffarnp}{\ensuremath{f_{f, \alpha}}\xspace}
+\newcommand{\ffarn}{\ensuremath{f_f}\xspace}
+\newcommand{\harm}{\ensuremath{c_h}}
+\newcommand{\harmupp}{\ensuremath{\widetilde{\harm}}}
+\newcommand{\betw}{\ensuremath{c_b}\xspace}
+\newcommand{\bapx}{\ensuremath{\tilde{c}_b}\xspace}
+\newcommand{\nrwb}{\ensuremath{c_{\text{nrwb}}}\xspace}
+\newcommand{\katz}{\ensuremath{c_{\text{K}}}}
+\newcommand{\edw}{ED-Walk\xspace}
+\newcommand{\ed}{\ensuremath{c_{\text{ED}}}}
+\newcommand{\eig}{\ensuremath{c_{\text{eig}}}}
+\newcommand{\pr}{\ensuremath{c_{\text{PR}}}}
+\newcommand{\elclos}{\ensuremath{c_e}}
+\newcommand{\fclos}{\ensuremath{c_f}}
+\newcommand{\fclosp}{\ensuremath{c_{f,\alpha}}}
+
+\newcommand{\gdeg}{\ensuremath{g_d}\xspace}
+\newcommand{\gclos}{\ensuremath{g_c}\xspace}
+\newcommand{\gfarn}{\ensuremath{g_f}\xspace}
+\newcommand{\gffarn}{\ensuremath{g_{\mathit{ff}}\xspace}}
+\newcommand{\gffarnp}{\ensuremath{g_{\mathit{ff},\alpha}\xspace}}
+\newcommand{\gharm}{\ensuremath{g_h}\xspace}
+\newcommand{\gfclos}{\ensuremath{g_{\mathit{fc}}}\xspace}
+\newcommand{\gfclosp}{\ensuremath{g_{\mathit{fc},\alpha}}\xspace}
+\newcommand{\gharmupp}{\ensuremath{\widehat{\gharm}}\xspace}
+\newcommand{\gfarnapx}{\ensuremath{\widetilde{\gfarn}}\xspace}
+\newcommand{\gfarnupp}{\ensuremath{\widehat{\gfarn}}\xspace}
+\newcommand{\ged}{\ensuremath{g_{\text{ED}}}}
+\newcommand{\gedll}{\ensuremath{g_{\text{ED}}^{\le\ell}}}
+\newcommand{\gedgl}{\ensuremath{g_{\text{ED}}^{>\ell}}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Specific Notations
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\dcut}{\ensuremath{d_{\text{cut}}}}
+\newcommand{\isexact}{\texttt{isExact}\xspace}
+\newcommand{\imax}{\ensuremath{i_{\max}}\xspace}
+\newcommand{\Suv}{\ensuremath{S_{-u}^{+v}}}
+\newcommand{\Su}{\ensuremath{S_{-u}}}
+\newcommand{\Sv}{\ensuremath{S^{+v}}}
+\newcommand{\deltafarnm}{\ensuremath{\Delta^-}}
+\newcommand{\deltafarnp}{\ensuremath{\Delta^+}}
+\newcommand{\Huvp}{\ensuremath{H_{u, v}^+}}
+\newcommand{\Huvm}{\ensuremath{H_{u, v}^-}}
+\newcommand{\Luvo}{\ensuremath{L_{u, v}^0}}
+\newcommand{\Huvo}{\ensuremath{H_{u, v}^0}}
+\newcommand{\wmin}{\ensuremath{w_{\min}}}
+\newcommand{\wmax}{\ensuremath{w_{\max}}}
+\newcommand{\PhiSu}{\ensuremath{\Phi_{S, u}}}
+\newcommand{\PhiSv}{\ensuremath{\Phi_{S, v}}}
+\newcommand{\phit}{\ensuremath{\phi^{\text{hit}}}}
+\newcommand{\pmiss}{\ensuremath{\phi^{\text{miss}}}}
+\newcommand{\pshit}{\ensuremath{\psi^{\text{hit}}}}
+\newcommand{\psmiss}{\ensuremath{\psi^{\text{miss}}}}
+\newcommand{\degmax}{\ensuremath{\deg_{\max}}}
+\newcommand{\erdosr}{Erd\H{o}s R\'enyi\xspace}
+\newcommand{\interm}{\ensuremath{^{(i)}}\xspace}
+\newcommand{\iinterm}{\ensuremath{^{(ii)}}\xspace}
+\newcommand{\final}{\ensuremath{^{(f)}}\xspace}
+\newcommand{\iteri}{^{[i]}}
+\newcommand{\iter}[1]{^{[#1]}}
+
+\newcommand{\tdis}{\ensuremath{t_{\text{dis}}}}
+\newcommand{\tfin}{\ensuremath{t_{\text{fin}}}}
+\newcommand{\gstar}{\ensuremath{G_{\star}}\xspace}
+\newcommand{\gstarp}{\ensuremath{G_{\star,\alpha}}\xspace}
+
+\newcommand{\graphfh}{edge factor 16, $a = \numprint{0.57}, b =
+\numprint{0.19}, c = \numprint{0.19},$ and $d = \numprint{0.05}$\xspace}
+
+\DeclareMathOperator{\rlxmove}{\gets_\mathsf{relaxed}}
+\DeclareMathOperator{\loadacq}{\gets_\mathsf{acquire}}
+\DeclareMathOperator{\storerel}{\gets_\mathsf{release}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Tools
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\nwkurl}{\url{https://github.com/networkit/networkit/}\xspace}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Tikz
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\vertex}[2]{\node[minimum size=5mm,circle,draw] (#2) at (#1) {#2};}
+\newcommand{\filledvertex}[1]{\draw[fill] (#1) circle [radius=2pt];}
+\newcommand{\edge}[2]{\draw[-] (#1) -- (#2);}
+\newcommand{\myarrow}{\draw[-{latex[scale=2]}]}
+\newcommand{\myarrowcolor}[1]{\draw[-{latex[scale=2]},#1]}
+\newcommand{\mydoublearrow}{\draw[latex'-latex']}
+\newcommand{\dedge}[2]{\myarrow (#1) -- (#2);}
+\newcommand{\dedgecolor}[3]{\myarrowcolor{#3} (#1) -- (#2);}
+\newcommand{\dbedge}[3]{\myarrow (#1) edge [#3] node {} (#2);}
+\newcommand{\ddedge}[2]{\mydoublearrow (#1) -- (#2);}
+\newcommand{\thickedge}[2]{\draw[-, line width=.4mm] (#1) -- (#2);}
+\newcommand{\dashedEdge}[2]{\draw[dashed] (#1) -- (#2);}
+\newcommand{\dottedEdge}[2]{\draw[dotted] (#1) -- (#2);}
+\newcommand{\dashdottedEdge}[2]{\draw[dash dot] (#1) -- (#2);}
+\newcommand{\eqnode}[2]{
+\node[] at (#1){\begin{minipage}{\textwidth}#2\end{minipage}};
+}
+\tikzstyle{graphnode}=[circle,draw,thick]
+\tikzstyle{groupstyle}=[dashed, thick]
+\newcommand{\simplenode}[2]{\node[graphnode] (#1) at (#2) {};}
+\newcommand{\colornode}[2]{\node[graphnode, \darkorange] (#1) at (#2) {};}
+\newcommand{\customcolornode}[3]{\node[graphnode,fill, #3,thick,draw=black] (#1) at (#2) {};}
+\newcommand{\colortextnode}[3]{\node[graphnode, \darkorange] (#1) at (#2) {#3};}
+\newcommand{\textnode}[3]{\node[graphnode, minimum size=4mm] (#1) at (#2) {#3};}
+\newcommand{\textnodecolor}[4]{\node[graphnode, minimum size=4mm,fill,#4] (#1) at (#2) {#3};}
+\newcommand{\nshift}{5pt}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Functions and Algorithms
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\func}[1]{\textsf{#1}\xspace}
+\newcommand{\nbcut}{\func{NBCut}}
+\newcommand{\bfscut}{\func{BFScut}}
+\newcommand{\nbbound}{\func{NBBound}}
+\newcommand{\bfsbound}{\func{BFSbound}}
+\newcommand{\localswaps}{\textit{Local-Swaps}\xspace}
+\newcommand{\growshrink}{\textit{Grow-Shrink}\xspace}
+\newcommand{\greedyh}{\func{Greedy-H}}
+\newcommand{\greedylsh}{\func{Greedy-LS-H}}
+\newcommand{\bestrandomh}{\func{Best-Random-H}}
+\newcommand{\greedyc}{\func{Greedy-C}}
+\newcommand{\gs}{\func{GS}}
+\newcommand{\bestrandomc}{\func{Best-Random-C}}
+\newcommand{\greedylsc}{\func{Greedy-LS-C}}
+\newcommand{\gslsc}{\func{GS-LS-C}}
+\newcommand{\ust}{\func{UST}}
+\newcommand{\lamgjlt}{\func{Lamg-jlt}}
+\newcommand{\juliajlt}{\func{Julia-jlt}}
+\newcommand{\jltjulia}{\func{JLT-Julia}}
+\newcommand{\jltcpp}{\func{JLT-CPP}}
+\newcommand{\bekas}{\func{Bekas}}
+\newcommand{\bekash}{\func{Bekas-h}}
+\newcommand{\suitor}{\func{Suitor}}
+\newcommand{\dynmwmrandom}{\func{DynMWMRandom}}
+\newcommand{\ssuitor}{\func{SortSuitor}}
+\newcommand{\findsuitor}{\func{findSuitor}}
+\newcommand{\findaff}{\func{findAffected}}
+\newcommand{\findaffb}{$\func{findAffected}_B$\xspace}
+\newcommand{\updateaff}{\func{updateAffected}}
+\newcommand{\affected}{\ensuremath{\mathit{affected}}\xspace}
+\newcommand{\heaviest}{\ensuremath{\mathit{heaviest}}\xspace}
+\newcommand{\partner}{\ensuremath{\mathit{partner}}\xspace}
+\newcommand{\done}{\ensuremath{\mathit{done}}\xspace}
+\newcommand{\vsuitor}{\ensuremath{\mathit{suitor}}\xspace}
+\newcommand{\cur}{\ensuremath{\mathit{cur}}\xspace}
+\newcommand{\mate}{\ensuremath{\mathit{mate}}\xspace}
+\newcommand{\nextCand}{\texttt{nextCandidate}\xspace}
+
+\newcommand{\localframe}{\textit{local-frame}\xspace}
+\newcommand{\Localframe}{\textit{Local-frame}\xspace}
+\newcommand{\sharedframe}{\textit{shared-frame}\xspace}
+\newcommand{\Sharedframe}{\textit{Shared-frame}\xspace}
+\newcommand{\indexedframe}{\textit{indexed-frame}\xspace}
+\newcommand{\Indexedframe}{\textit{Indexed-frame}\xspace}
+\newcommand{\kadabra}{\func{KADABRA}}
+\newcommand{\rk}{\func{RK}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Pseudocode
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\topk}{\texttt{TopK}\xspace}
+\newcommand{\prioq}{\texttt{PrioQ}\xspace}
+\newcommand{\true}{\texttt{true}\xspace}
+\newcommand{\false}{\texttt{false}\xspace}
+\newcommand{\nil}{\texttt{null}\xspace}
+\newcommand{\didswap}{\texttt{didSwap}\xspace}
+\newcommand{\TopComment}[1]{\State\texttt{/* #1 */}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Cluster specs
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\RAM}{$\SI{192}{\gibi\byte}$ of RAM\xspace}
+\newcommand{\cpumodel}{Intel Xeon Gold 6126\xspace}
+\newcommand{\CPU}{\cpumodel with $2\times12$ cores\xspace}
+\newcommand{\egocpu}{Intel Xeon Gold 6154\xspace}
+\newcommand{\egoram}{$\SI{1.5}{\tebi\byte}$ of RAM\xspace}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Changed text after first submission
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newif\ifchanges
+\newcommand{\change}[1]{\ifchanges\textcolor{blue}{#1}\else#1\fi}

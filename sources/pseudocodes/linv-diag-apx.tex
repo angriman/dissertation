@@ -1,0 +1,29 @@
+\begin{algorithm}[t]
+\footnotesize
+\setstretch{1}
+\caption{\footnotesize Approximation algorithm for $\diag{\Linv}$.}
+\label{algo:linv-diag-apx}
+\textbf{Input:} Undirected graph $G = (V, E, w)$, pivot $u \in V$, error bound $\epsilon > 0$, probability $\delta\in (0, 1)$\\
+\textbf{Output:} $\diag{\Linvapx}$, \ie an $(\epsilon, \delta)$-approximation of $\diag{\Linv}$
+
+\begin{algorithmic}[1]
+\State$\rdistapx(u, v) \gets 0\ \forall v \in V\setminus\set{u}$\Comment{$\Oh(n)$}\label{line:linv-diag-apx:rdist-init}
+\State Pick a constant $\kappa\in(0, 1)$ arbitrarily
+\State$\eta \gets \frac{\kappa\epsilon}{3\sqrt{mn\log n}\ \diam(G)}$\label{line:linv-diag-apx:eta}
+\State Compute the BFS tree $B_u$ of $G$ with root $u$\Comment{$\Oh(n + m)$}
+\label{line:linv-diag-apx:bu}
+\State$\tau \gets \ecc(u)^2\cdot\ceil{\frac{\log(2m/\delta)}{2(1 - \kappa)^2\epsilon^2}}$\Comment{$\Oh(1)$}
+\label{line:linv-diag-apx:tau}
+\For{$j \gets 1$ \textbf{to} $\tau$}\label{line:linv-diag-apx:for-tau}
+\State Sample UST $T_i$ of $G$ with root $u$\Comment{$\Oh(m\log n)$}
+\State$\rdistapx(u, \cdot) \gets\textsc{Aggregate}(T_i, \rdistapx(u, \cdot), B_u)$\Comment{$\Oh(n\log n)$, see \Cref{algo:ust-aggregation}}
+\EndFor\label{line:linv-diag-apx:end-ust-loop}
+\State Solve $\Lapl\vect{x} = \cunit{u} - \frac{1}{n}\ones$ for \vect{x} with accuracy $\eta$
+\Comment{$\tilde{\Oh}(m \log^{1/2}n \log (1 / \eta))$}\label{line:linv-diag-apx:solve}
+\State$\Linvapx[u, u] \gets \vect{x}[u]$
+\For{$v \in V\setminus\set{u}$}\Comment{Overall: $\Oh(n)$}
+\State$\Linvapx[v, v] \gets \rdistapx(u, v)/\tau - \vect{x}[u] + 2\vect{x}[v]$\label{line:linv-diag-apx:update-linvapx}
+\EndFor
+\State\Return$\diag{\Linvapx}$
+\end{algorithmic}
+\end{algorithm}

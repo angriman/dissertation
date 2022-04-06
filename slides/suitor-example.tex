@@ -1,0 +1,70 @@
+\begingroup\centering
+\begin{tikzpicture}[scale=1.75]
+\only<3>{
+\textnodecolor{a}{0, -1}{\textcolor{white}{$a$}}{\emphcolor}
+}
+\only<-2,4,6->{
+\textnode{a}{0, -1}{$a$}
+}
+\only<5>{
+\textnodecolor{a}{0, -1}{\textcolor{white}{$a$}}{\emphcolor}
+}
+\only<-3,5->{
+\textnode{b}{1, 0}{$b$}
+}
+\only<4>{
+\textnodecolor{b}{1, 0}{\textcolor{white}{$b$}}{\emphcolor}
+}
+\only<-5,7->{
+\textnode{c}{0, 0}{$c$}
+}
+\only<6>{
+\textnodecolor{c}{0, 0}{\textcolor{white}{$c$}}{\emphcolor}
+}
+\only<-6,8->{
+\textnode{d}{1, -1}{$d$}
+}
+\only<7>{
+\textnodecolor{d}{1, -1}{\textcolor{white}{$d$}}{\emphcolor}
+}
+
+\draw[-, line width=.5mm] (a) -- (c);
+\only<-7>{
+\draw[-,line width=1mm] (b) -- (c);
+\draw[-] (a) -- (d);
+}
+\only<8->{
+\draw[-,line width=1mm,\emphcolor] (b) -- (c);
+\draw[-,\emphcolor] (a) -- (d);
+}
+\draw[-] (b) -- (d);
+\onslide<3>{
+\draw[->, dashed] (a) to [bend left] (c);
+\draw (c) node [above left=2mm] {$\emph{a}$};
+}
+\onslide<4>{
+\draw[->, dashed] (b) to [bend right] (c);
+}
+\onslide<4->{
+\draw (c) node [above left=2mm] {$\emph{b}$};
+}
+\onslide<5>{
+\draw[->, dashed] (a) to [bend right] (d);
+}
+\onslide<5->{
+\draw (d) node [below right=2mm] {$\emph{a}$};
+}
+\onslide<6>{
+\draw[->, dashed] (c) to [bend left] (b);
+}
+\onslide<6->{
+    \draw (b) node [above right=2mm] {$\emph{c}$};
+}
+\onslide<7>{
+\draw[->, dashed] (d) to [bend left] (a);
+}
+\onslide<7->{
+\draw (a) node [below left=2mm] {$\emph{d}$};
+}
+\end{tikzpicture}
+\endgroup\par

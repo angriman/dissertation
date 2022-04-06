@@ -1,0 +1,241 @@
+\apxch{ch:dyn-topk}
+
+\section{Overview of Networks}
+\label{sec:dyn-topk-insts}
+
+
+\begin{minipage}[t]{0.48\textwidth}
+\begin{table}[H]
+\footnotesize
+\centering
+\captionabove{Undirected complex networks}
+\label{tab:dyn-topk-small-diam-undir}
+\input{./sources/tables/dyn-topk/undirected-small-diameter.tex}
+\end{table}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.48\textwidth}
+\begin{table}[H]
+\centering
+\footnotesize
+\captionabove{Directed complex networks}
+\label{tab:dyn-topk-small-diam-dir}
+\input{./sources/tables/dyn-topk/directed-small-diameter.tex}
+\end{table}
+\end{minipage}
+%
+\begin{minipage}[t]{0.48\textwidth}
+\begin{table}[H]
+\footnotesize
+\centering
+\captionabove{Undirected road networks}
+\label{tab:dn-topk-high-diam-undir}
+\input{./sources/tables/dyn-topk/undirected-high-diameter.tex}
+\end{table}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.48\textwidth}
+\begin{table}[H]
+\centering
+\footnotesize
+\captionabove{Directed road networks}
+\label{tab:dyn-topk-high-diam-dir}
+\input{./sources/tables/dyn-topk/directed-high-diameter.tex}
+\end{table}
+\end{minipage}
+
+\newpage
+\section{Speedup Results}
+
+\subsection{Speedups for Complex Networks}
+\label{sec:dyn-topk-add-exp-complex}
+
+\begin{table}[H]
+\centering
+\footnotesize
+\captionabove{Geometric mean of the speedups of the dynamic algorithm
+over the static one over 100 batches of edge insertions of size 1, 10, 100 in
+complex networks, for $k \in \set{1, 10, 100}$.}
+
+\label{tab:dyn-topk-speed-ins-cmplx}
+\begin{subtable}[t]{\textwidth}
+\centering
+\caption{Undirected networks}
+\label{tab:dyn-topk-speed-ins-cmplx-und}
+\input{./sources/tables/dyn-topk/speedups-addition-undirected-small-diameter.tex}
+\end{subtable}\bigskip
+
+\begin{subtable}[t]{\textwidth}
+\centering
+\caption{Directed networks}
+\label{tab:dyn-topk-speed-ins-cmplx-dir}
+\input{./sources/tables/dyn-topk/speedups-addition-directed-small-diameter.tex}
+\end{subtable}
+\end{table}\vfill\pagebreak
+
+\begin{table}[H]
+\footnotesize
+\centering
+\setlength{\tabcolsep}{4pt}
+
+\captionabove{Geometric mean of the speedups of the dynamic algorithm
+over the static one over 100 batches of edge removals of size 1, 10, 100 in
+complex networks, for $k \in \set{1, 10, 100}$.}
+\label{tab:dyn-topk-speed-rem-cmplx}
+
+\begin{subtable}[t]{\textwidth}
+\centering
+\caption{Undirected networks}
+\input{./sources/tables/dyn-topk/speedups-removal-undirected-small-diameter.tex}
+\end{subtable}\bigskip
+
+\begin{subtable}[t]{\textwidth}
+\centering
+\caption{Directed networks}
+\input{./sources/tables/dyn-topk/speedups-removal-directed-small-diameter.tex}
+\end{subtable}
+\end{table}
+
+\newpage
+\subsection{Speedups for Road Networks}
+\label{sec:dyn-topk-add-exp-road}
+
+\begin{table}[H]
+\centering
+\footnotesize
+\captionabove{Geometric mean of the speedups of the dynamic algorithm
+over the static one over 100 batches of edge insertions of size 1, 10, 100 in
+road networks, for $k \in \set{1, 10, 100}$.}
+\label{tab:dyn-topk-speed-ins-road}
+\begin{subtable}[t]{\textwidth}
+\centering
+\caption{Undirected networks}
+\input{./sources/tables/dyn-topk/speedups-addition-undirected-high-diameter.tex}
+\end{subtable}\bigskip
+
+\begin{subtable}[t]{\textwidth}
+\centering
+\caption{Directed networks}
+\input{./sources/tables/dyn-topk/speedups-addition-directed-high-diameter.tex}
+\end{subtable}
+\end{table}\vfill\pagebreak
+
+\begin{table}[H]
+\footnotesize
+\centering
+\captionabove{Geometric mean of the speedups of the dynamic algorithm
+over the static one over 100 batches of edge removals of size 1, 10, 100 in
+road networks, for $k \in \set{1, 10, 100}$.}
+\label{tab:dyn-topk-speed-rem-road}
+
+\begin{subtable}[t]{\textwidth}
+\centering
+\caption{Undirected networks}
+\input{./sources/tables/dyn-topk/speedups-removal-undirected-high-diameter.tex}
+\end{subtable}\bigskip
+
+\begin{subtable}[t]{\textwidth}
+\centering
+\caption{Directed networks}
+\input{./sources/tables/dyn-topk/speedups-removal-directed-high-diameter.tex}
+\end{subtable}
+\end{table}
+
+\section{Running Time Results}
+\label{sec:dyn-topk:time-results}
+
+\subsection{Running Times for Complex Networks}
+\label{sec:dyn-topk:time-complex}
+
+\begin{table}[H]
+\centering
+\footnotesize
+\captionabove{Geometric mean of the update times over 100 batches of edge insertions of
+size 1, 10, 100 with $k = 10$ in complex networks. The columns \enquote{Static}
+and \enquote{Dyn.} report the average time for the static and dynamic
+algorithm, respectively.}
+\label{tab:dyn-topk:time-ins-cmplx}
+
+\begin{subtable}[t]{\textwidth}
+\centering
+\caption{Undirected networks}
+\input{./sources/tables/dyn-topk/time-addition-undirected-small-diameter}
+\end{subtable}\bigskip
+
+\begin{subtable}[t]{\textwidth}
+\centering
+\caption{Directed networks}
+\input{./sources/tables/dyn-topk/time-addition-directed-small-diameter}
+\end{subtable}
+\end{table}\vfill\pagebreak
+
+\begin{table}[H]
+\centering
+\footnotesize
+\captionabove{Geometric mean of the update times over 100 batches of edge removals of
+size 1, 10, 100 with $k = 10$ in complex networks. The columns \enquote{Static}
+and \enquote{Dyn.} report the average time for the static and dynamic
+algorithm, respectively.}
+\label{tab:dyn-topk:time-rem-cmplx}
+
+\begin{subtable}[t]{\textwidth}
+\centering
+\caption{Undirected networks}
+\input{./sources/tables/dyn-topk/time-removal-undirected-small-diameter}
+\end{subtable}\bigskip
+
+\begin{subtable}[t]{\textwidth}
+\centering
+\caption{Directed networks}
+\input{./sources/tables/dyn-topk/time-removal-directed-small-diameter}
+\end{subtable}
+\end{table}
+
+\phantom{ }
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{Running Times for Road Networks}
+\label{sec:dyn-topk:time-street}
+
+\begin{table}[H]
+\centering
+\footnotesize
+\captionabove{Geometric mean of the update times over 100 batches of edge insertions of
+size 1, 10, 100 with $k = 10$ in road networks. The columns \enquote{Static}
+and \enquote{Dyn.} report the average time for the static and dynamic
+algorithm, respectively.}
+\label{tab:dyn-topk:time-ins-road}
+
+\begin{subtable}[t]{\textwidth}
+\centering
+\caption{Undirected networks}
+\input{./sources/tables/dyn-topk/time-addition-undirected-high-diameter}
+\end{subtable}\bigskip
+
+\begin{subtable}[t]{\textwidth}
+\centering
+\caption{Directed networks}
+\input{./sources/tables/dyn-topk/time-addition-directed-high-diameter}
+\end{subtable}
+\end{table}\vfill\pagebreak
+
+\begin{table}[H]
+\centering
+\footnotesize
+\captionabove{Geometric mean of the update times over 100 batches of edge removals of
+size 1, 10, 100 with $k = 10$ in road networks. The columns \enquote{Static}
+and \enquote{Dyn.} report the average time for the static and dynamic
+algorithm, respectively.}
+\label{tab:dyn-topk:time-rem-road}
+
+\begin{subtable}[t]{\textwidth}
+\centering
+\caption{Directed networks}
+\input{./sources/tables/dyn-topk/time-removal-undirected-high-diameter}
+\end{subtable}\bigskip
+
+\begin{subtable}[t]{\textwidth}
+\centering
+\caption{Undirected networks}
+\input{./sources/tables/dyn-topk/time-removal-directed-high-diameter}
+\end{subtable}
+\end{table}

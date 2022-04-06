@@ -1,0 +1,233 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\chapter*{Conclusion}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+In this thesis, we presented efficient and scalable algorithms that address three
+families of network analysis problems, namely: vertex centrality
+(\Cref{part:single-vertex-centrality}), group centrality maximization
+(\Cref{part:group-centrality}), and matching (\Cref{part:matching}), on either
+static or dynamic graphs.
+
+\paragraph{Vertex Centrality}
+In \Cref{part:single-vertex-centrality}, we focused on two main aspects of
+vertex centrality: updating the top-$k$ most central vertices in fully-dynamic
+graphs (\Cref{ch:dyn-topk}) and approximating the centrality scores of
+\emph{all} the vertices of large-scale networks
+(\Cref{ch:betweenness-approx,ch:electrical-closeness}).
+
+The algorithms presented in \Cref{ch:dyn-topk}
+update the exact top-$k$ ranking of the vertices with highest closeness
+centrality in fully-dynamic graphs with tens of millions of edges in a matter
+of seconds or at most $3$ minutes after batches
+of up to $100$ edge updates. Compared to a static recomputation, they are up to
+$10^4\times$ faster.
+Similarly to other dynamic algorithms~\cite{DBLP:journals/im/BergaminiM16},
+these results are achieved by avoiding \change{unnecessary} work and by
+exploiting precomputed information on the initial graph.
+In particular, vertices
+that are not \emph{affected} by the edge update(s) (\ie their distance to the
+others is unchanged) are ignored. In addition, maintaining upper bounds of the
+closeness centrality of each vertex allows to prune graph traversals and to
+skip the computation for several affected vertices
+(\eg far-away vertices in \Cref{tab:dyn-topk-affected}).
+This strategy has \change{been} shown to be very effective with moderately-sized
+batches of edge updates but, as we increase the batch size, it yields
+diminishing returns. This is easily explained by the fact that, if the graph
+undergoes many edge updates, the information we know about the initial graph is
+less accurate, many vertices are affected and, consequently, the possibilities
+of reducing the workload are narrowed down.
+
+
+In \Cref{ch:betweenness-approx,ch:electrical-closeness}, we introduce
+algorithms that target vertex centrality approximation in static graphs. Our
+approaches improve upon the state of the art by avoiding unnecessary work
+and by efficiently exploiting parallelism.
+In \Cref{ch:betweenness-approx}, we
+introduce a general epoch-based framework for parallel adaptive sampling, which
+we apply to betweenness centrality approximation as a case study.
+Our motivation stems from the static state-of-the-art
+\kadabra~\cite{DBLP:conf/esa/BorassiN16} ADS algorithm for betweenness
+approximation. Due to the synchronization overheads required to correctly
+check the stopping condition, a trivial OpenMP-based parallelization of
+\kadabra fails to scale to large numbers of threads.
+%
+To overcome this limitation, we introduce three parallel ADS algorithms,
+all of which implement a novel epoch-based mechanism that avoids extensive
+synchronizations when checking the stopping condition by keeping multiple
+copies of the sampling state.
+On 32 cores, \sharedframe is the fastest among our algorithms
+and requires less than two minutes to
+yield a $\pm\numprint{0.01}$ approximation for the betweenness
+centrality of all the vertices of networks with hundreds of millions of edges.
+This is an interesting result as it shows the trade-off between memory footprint
+and synchronization costs.
+\Sharedframe uses only $\Theta(1)$ additional memory
+per thread (SFs are shared among threads) and thus it needs to synchronize
+writing operations to SFs; \localframe, in turn, has a greater memory footprint
+(uses
+$\Oh(n)$ additional memory per thread as SFs are thread-local) and
+therefore writing operations to SFs are not synchronized.
+In our case study, it seems that, on 32 cores, memory latencies overcome synchronization
+costs. This is also clear from \Cref{fig:betw-apx:time-memory}: on 36 cores,
+the fastest \sharedframe configuration is the one with the lowest memory footprint.
+We also propose further variations of our algorithms which, at the cost of
+additional synchronizations, guarantee bounded memory footprint and determinism
+of the results.
+
+Finally, in \Cref{ch:electrical-closeness}, we introduce a parallel
+UST-based algorithm to approximate $\diag{\Linv}$ (or, in the case of
+forest closeness, $\diag{\Fmat}$), and thus several electrical centrality
+measures such as electrical closeness, forest closeness, and others.
+Compared to the state of the art, our algorithm is faster, it yields more
+accurate results in terms of absolute error, and requires less memory.
+In addition, our algorithm is trivial to parallelize -- as most of the work
+consists in sampling USTs -- and thus the workload can be easily distributed
+among multiple cores and/or compute nodes.
+For example, on our small cluster with $16\times24$ cores, it requires
+less than 20 minutes to achieve a $\pm\numprint{0.3}$ approximation of
+$\diag{\Linv}$ on a network with $\approx\numprint{334.6}$M edges.
+Thus, our method can be used to approximate with reasonable accuracy and in a
+matter of a few minutes electrical centrality measures on networks with
+hundreds of millions of edges with commodity hardware.
+
+It is worth observing that the results from
+\Cref{ch:dyn-topk,ch:electrical-closeness} give an empirical demonstration that
+worst-case analysis does not always reflect the actual performance of an
+algorithm on real-world instances. In fact, compared to competitors, our
+algorithms have either the same (\Cref{ch:dyn-topk}) \change{or} slightly worse
+(\Cref{ch:electrical-closeness}) time complexity but they are consistently much
+faster in practice. This confirms the crucial importance of experimental
+evaluation in the algorithm engineering process.
+
+Another aspect that emerges from the results in
+\Cref{ch:dyn-topk,ch:betweenness-approx} is that using an additional amount
+of memory to store intermediate results can bring considerable benefits in
+terms of speed. Specifically, in \Cref{ch:dyn-topk}, storing the upper bounds
+of the closeness centrality allows to skip unnecessary work. In
+\Cref{ch:betweenness-approx}, in turn, multiple copies of the sampling state
+reduce the need for synchronization and thus the overhead.
+On the other hand, the choice of which data to store should be made carefully
+because, as emerged from our experiments in \Cref{ch:betweenness-approx}, a
+large memory footprint limits the scalability of an algorithm to large instances.
+
+
+\paragraph{Group Centrality Maximization}
+%
+In \Cref{part:group-centrality}, we addressed the lack of algorithms for group
+centrality maximization capable of: (i) finding highly central sets of vertices
+in large-scale networks quickly and (ii) yielding solutions with approximation
+guarantees.
+
+The first issue is targeted in
+\Cref{ch:group-closeness-local-search,ch:ged-walk}.
+\Cref{ch:group-closeness-local-search} introduces a family of fast local
+search heuristics that, for the first time, make it possible to compute sets of
+vertices with high group-closeness centrality on networks with hundreds of
+millions of edges in minutes without sacrificing too much solution quality --
+previous state-of-the-art methods require several hours and yield less than
+$1\%$ better solution quality.
+We propose several variations of our local search algorithms offering to the
+user trade-offs between running time and solution quality.
+In \Cref{ch:ged-walk}, we propose an alternative solution to the lack of scalable
+algorithms for group centrality maximization: we observe that shortest-path based
+measures pose complexity-theoretic barriers that are hard to overcome; we
+circumvent this problem by developing GED-Walk, a new group-centrality measure
+inspired by Katz centrality that considers walks of any length instead of
+shortest paths only.
+Experiments in \Cref{sec:ged-walk:experiments} show two main achievements: (i)
+GED-Walk captures meaningful information of a graph -- as graph mining
+tasks such as semi-supervised vertex classification and graph classification
+benefit from the new measure -- and (ii) GED-Walk can be maximized (in approximation)
+considerably faster than other group centrality measures. Therefore, GED-Walk
+represents a feasible alternative to other group centrality measures in
+applications where performance is of major concern.
+
+Another limitation that we target in \Cref{ch:ged-walk} is that the only
+existing electrical group centrality measure (\ie group electrical
+closeness~\cite{DBLP:conf/www/0002PSYZ19}) \change{does not handle disconnected
+graphs out of the box}. We thus extend forest
+closeness~\cite{chebotarev2000forest} to groups of vertices. The result is
+group forest closeness, an electrical group centrality measure that handles
+disconnected graphs out of the box. We also adapt the greedy approximation
+algorithm by Li \etal~\cite{DBLP:conf/www/0002PSYZ19} to group forest
+closeness. The ability of
+group forest closeness in finding highly-central groups in disconnected graphs
+is demonstrated by semi-supervised vertex classification results: as GED-Walk
+in connected graphs, our new measure achieves higher the precision than
+existing measures.
+
+In \Cref{ch:group-harm-clos-max}, we address the second issue by implementing
+the first approximation algorithms for group-closeness and group-harmonic
+maximization. On small instances where the optimum can be computed in
+reasonable time, our algorithms yield nearly-optimal solutions. On larger
+instances, our greedy algorithm for group-harmonic maximization yields solutions
+with nearly the same quality as its local search counterpart while being
+one to two orders of magnitude faster; hence, for this problem, the greedy
+approach seems to dominate local search.
+For group-closeness maximization, in turn, the situation is different:
+in line with the theoretical findings presented in
+Ref.~\cite{DBLP:conf/alenex/AngrimanBDGGM21},
+our local search algorithm yields solutions with
+consistently higher quality than the best known greedy
+heuristics~\cite{DBLP:conf/alenex/BergaminiGM18}. Unfortunately, this comes with
+a cost in running time as
+local search needs to evaluate $\Omega(n^2)$ swaps \change{in} each iteration. Despite
+our engineering efforts (see \Cref{sec:gh-gc:algo-eng}), this algorithm still
+cannot handle \change{networks with millions of vertices} in reasonable
+time, leaving the problem of group-closeness approximation on \change{such} big
+graphs open to future work.
+
+Overall, our experiments in \Cref{ch:group-closeness-local-search,ch:group-harm-clos-max}
+indicate that local search is an effective strategy to (i) identify
+highly-central groups in large-scale networks and (ii) refining existing
+solutions. However, due to its quadratic complexity, it is not practical to
+use local-search to approximate group-closeness (and group-harmonic)
+maximization in large-scale networks.
+Hence, for applications dealing with large networks and where quality is of
+highest concern, a greedy strategy appears to offer the best trade-off between
+running time and quality.
+
+
+\paragraph{Maximum Weighted Matching on Dynamic Graphs}
+%
+The last problem we address in this thesis is to maintain a $\change{(1/2)}$-approximate
+MWM in fully-dynamic graphs (see \Cref{ch:dyn-mwm}).
+We extend the state-of-the-art \suitor algorithm by Manne and
+Halappanavar~\cite{DBLP:conf/ipps/ManneH14} (which yields a $\change{(1/2)}$-approximation
+of the MWM) to also handle multiple edge updates.
+As demonstrated in \Cref{ch:dyn-mwm}, our dynamic algorithm yields the same
+matching computed by \suitor. Moreover, our experiments in
+\Cref{sec:dyn-mwm:experiments} show that our dynamic algorithm incurs less
+overhead (in terms of visited edges) for single edge updates than the
+state-of-the-art \dynmwmrandom algorithm~\cite{conf/acda/AngrimanMSU21}.
+Also, it handles batches with up to $10^4$ edge updates in just a fraction of a
+second, \ie several orders of magnitude faster than a static recomputation.
+
+As we observed in \Cref{ch:dyn-topk}, using an additional amount of memory to
+store intermediate results reduces significantly the workload of the dynamic
+algorithm compared to a static recomputation. The amount of work that can
+be saved with this technique, however, heavily depends on the structure of the
+graph and, in a worst-case scenario, it can even be none (when all vertices in
+%
+the graph are affected).
+On the other hand, our experiments in \Cref{sec:dyn-mwm:affected-vertices} suggest
+that, in practice, the number of vertices affected by an update is significantly smaller
+than $n$ -- on average, it grows at most linearly \wrt the batch size, see
+\Cref{fig:dyn-mwm:affected-real-world,fig:dyn-mwm:affected-synthetic} in
+\Cref{sec:dyn-mwm:affected-vertices}.
+Therefore, an extensive experimental study turns out again to be an essential
+tool to evaluate an algorithm's practical performance, as worst-case analysis
+may be too pessimistic.
+
+\vspace{\baselineskip}
+
+
+In conclusion, in this thesis we presented and implemented
+-- and made publicly available in the open-source NetworKit
+toolkit~\cite{DBLP:journals/netsci/StaudtSM16} -- several
+algorithms for solving network analysis problems that either did not have
+an algorithm to solve them or that could not be solved in reasonable time by
+existing algorithms.
+We devised several directions for future work following directly from our
+contributions finalized to either improving the proposed algorithms
+or extending them to other problems.

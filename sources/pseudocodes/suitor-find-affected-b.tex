@@ -1,0 +1,53 @@
+\begin{algorithm}[t]
+\footnotesize
+\caption{\footnotesize Generalization of the \findaff function (\Cref{algo:dyn-suitor-find-aff}) for
+batches of edge updates}
+\label{algo:dyn-suitor-find-aff-b}
+\textbf{Input:} affected vertex $z$\\
+\textbf{Output:} Stack of affected vertices
+
+\begin{algorithmic}[1]
+\Function{\findaffb}{$z$}
+\State$S_A \gets$ empty stack
+\State$\nextCand[z] \gets 0$
+\State$\done \gets \false$
+\State$\cur \gets z$
+
+\Repeat
+    \State$\partner \gets \vsuitor(\cur)$
+    \State$\heaviest \gets ws(\cur)$
+    \State$\mathit{found} \gets \false$
+    \For{$i \gets \nextCand[\cur]$ \textbf{to} $\deg(\cur)$}\label{line:find-aff-b-for-neigh}
+    \State$x \gets \texttt{adjList}[\cur][i]$\Comment{$i$-th neighbor in the adjacency list of vertex $\cur$}
+    \State$\nextCand[\cur] \gets i + 1$
+        \If{\textbf{not} $\affected(x)$ \textbf{and} $w(\cur, x) > \heaviest$ \textbf{and} $w(\cur, x) > ws(x)$}
+            \State$\partner \gets x$
+            \State$\heaviest \gets w(cur, x)$
+            \State$\mathit{found} \gets \true$
+            \State\textbf{break}\label{line:dyn-suitor-find-aff-b-break}
+        \EndIf
+    \EndFor
+
+    \State$\done \gets \true$
+    \If{$\mathit{found}$}
+        \State$y \gets \vsuitor(\partner)$
+        \State$\vsuitor(\partner) \gets \cur$
+        \State$ws(\partner) \gets \heaviest$
+        \State$S_A.\texttt{push}(\partner)$
+        \State$\affected(\partner) \gets \true$
+
+        \If{$y \neq \nil$}
+            \State$\vsuitor(y) \gets \nil$
+            \State$ws(y) \gets 0$
+            \State$\affected(y) \gets \true$
+            \State$\cur \gets y$
+            \State$\done \gets \false$
+        \EndIf
+    \Else
+    \State$\affected(\cur) \gets \false$
+    \EndIf
+\Until{$\done$ is \true}
+\State\Return$S_A$
+\EndFunction
+\end{algorithmic}
+\end{algorithm}

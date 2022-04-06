@@ -1,0 +1,33 @@
+\begin{tabular}{lrrrrr}
+\toprule
+Dataset &  ENZYMES &  IMDB-BINARY &  Mutagenicity &  PROTEINS &  REDDIT-BINARY \\
+                                         &          &              &               &           &                \\
+\midrule
+\textsc{Eig}-H+\textsc{Ged+PPR}$^*$-H    &    24.12 &\textbf{71.62}& \textbf{69.18}&     73.10 &          74.17 \\
+\textsc{Eig}-T+\textsc{Ged+PPR}$^*$-T    &    27.45 &        69.25 &         62.78 &     73.54 &          76.70 \\
+\textsc{Eig}-H+\textsc{Ged+PPR}$^{**}$-H &    24.78 &        70.54 &         68.81 &     72.97 &  \textbf{81.43} \\
+\textsc{Eig}-T+\textsc{Ged+PPR}$^{**}$-T &\textbf{27.88} &   68.53 &         62.43 &     73.72 &          80.48 \\
+\textsc{Eig}-H+\textsc{Ged}              &    23.14 &        69.74 &         69.08 &     73.13 &          75.16 \\
+\textsc{Eig}-T+\textsc{Ged}              &    26.46 &        63.56 &         64.14 &\textbf{74.06} &      80.18 \\
+\textsc{Eig}-H+\textsc{PPR}$^*$-H        &    24.20 &\textbf{71.62}& \textbf{69.18}&     73.08 &          74.17 \\
+\textsc{Eig}-T+\textsc{PPR}$^*$-T        &    27.49 &        69.25 &         62.78 &     73.56 &          76.71 \\
+\textsc{Eig}-H+\textsc{PPR}$^{**}$-H     &    24.78 &        70.54 &         68.80 &     72.97 &  \textbf{81.43} \\
+\textsc{Eig}-T+\textsc{PPR}$^{**}$-T     &\textbf{27.88} &   68.53 &         62.43 &     73.72 &          80.48 \\
+\textsc{Eig}-H+\textsc{PR}$^*$-H         &    23.54 &        70.00 &         68.85 &     72.33 &          75.11 \\
+\textsc{Eig}-T+\textsc{PR}$^*$-T         &    23.18 &        57.06 &         57.38 &     73.25 &          76.00 \\
+\textsc{Eig}-H+\textsc{PR}$^{**}$-H      &    23.54 &        70.42 &         69.17 &     72.49 &          76.33 \\
+\textsc{Eig}-T+\textsc{PR}$^{**}$-T      &    23.18 &        58.42 &         57.79 &     73.31 &          76.59 \\
+\textsc{Eig}-H                           &    23.47 &        70.28 &         68.88 &     72.42 &          72.02 \\
+\textsc{Eig}-T                           &    23.02 &        56.59 &         56.90 &     73.35 &          75.31 \\
+\textsc{Ged+PPR}$^*$-H                   &    20.85 &        65.18 &         65.46 &     72.18 &          71.59 \\
+\textsc{Ged+PPR}$^{**}$-H                &    20.39 &        66.27 &         65.86 &     72.44 &          75.95 \\
+\textsc{Ged}                             &    19.18 &        60.64 &         64.51 &     71.95 &          70.59 \\
+\textsc{PPR}$^*$-H                       &    21.01 &        60.93 &         60.44 &     71.79 &          72.74 \\
+\textsc{PPR}$^{**}$-H                    &    19.46 &        66.39 &         62.27 &     71.86 &          73.79 \\
+\textsc{PR}$^*$-H                        &    20.11 &        57.04 &         61.31 &     71.78 &          73.19 \\
+\textsc{PR}$^*$-T                      &    16.98 &        51.15 &         55.85 &     71.84 &          69.66 \\
+\textsc{PR}$^{**}$-H                     &    20.11 &        60.84 &         61.75 &     71.77 &          73.43 \\
+\textsc{PR}$^{**}$-T                   &    16.98 &        56.64 &         57.19 &     72.12 &          73.31 \\
+\bottomrule
+\multicolumn{6}{l}{$^*$: PageRank teleport probability 0.85; $^{**}$: PageRank teleport probability 0.15}
+\end{tabular}

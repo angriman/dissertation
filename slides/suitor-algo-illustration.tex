@@ -1,0 +1,100 @@
+\begingroup\centering
+\begin{tikzpicture}[scale=.7]
+
+\only<-8>{
+\textnode{u}{0, 0}{$u$}
+\textnode{x2}{3, 1.5}{$x_2$}
+\textnode{x4}{6, .5}{$x_4$}
+}
+
+\only<9-10>{
+\textnodecolor{u}{0, 0}{\textcolor{white}{$u$}}{HUBmagenta}
+\textnodecolor{x2}{3, 1.5}{\textcolor{white}{$x_2$}}{HUBmagenta}
+\textnodecolor{x4}{6, .5}{\textcolor{white}{$x_4$}}{HUBmagenta}
+}
+
+\only<-4>{
+\textnode{v}{0, -1.5}{$v$}
+}
+
+\only<-5>{
+\textnode{x1}{1.5, 1.5}{$x_1$}
+\draw[-] (u) -- (x1);
+}
+
+\only<-6>{
+\textnode{x3}{4.5, .5}{$x_3$}
+\draw[-] (x2) -- (x3);
+}
+
+\only<-7>{
+\textnode{x5}{7.5, 1.5}{$x_5$}
+\draw[-] (x4) -- (x5);
+}
+
+\onslide<5-10>{
+\textnodecolor{v}{0, -1.5}{\textcolor{white}{$v$}}{\emphcolor}
+\draw[->,dashed,\emphcolor] (v) [bend left] to (u);
+\draw[-,dotted] (u) -- (x1);
+\draw (u) node [above left=2mm] {$\emph{v}$};
+}
+
+\onslide<6-10>{
+\textnodecolor{x1}{1.5, 1.5}{\textcolor{white}{$x_1$}}{\emphcolor}
+\draw[->,dashed,\emphcolor] (x1) [bend right] to (x2);
+\draw (x2) node [above right=2mm] {$\emph{x_1}$};
+}
+
+\onslide<7-10>{
+\textnodecolor{x3}{4.5, .5}{\textcolor{white}{$x_3$}}{\emphcolor}
+\draw[-,dotted] (x2) -- (x3);
+\draw[->,dashed,\emphcolor] (x3) [bend left] to (x4);
+\draw (x4) node [below right=2mm] {$\emph{x_3}$};
+}
+
+\onslide<8-10>{
+\textnodecolor{x5}{7.5, 1.5}{\textcolor{white}{$x_5$}}{\emphcolor}
+\draw[-,dotted] (x4) -- (x5);
+}
+
+\onslide<2-10>{
+\draw[-,HUBgreen, very thick] (u) -- (v);
+}
+
+\only<-10>{
+\draw[-,dotted] (x1) -- (x2);
+\draw[-,dotted] (x3) -- (x4);
+}
+
+\onslide<10>{
+\draw[->,dashed,HUBmagenta] (x4) [bend left] to (x3);
+\draw[->,dashed,HUBmagenta] (x2) [bend right] to (x1);
+\draw[->,dashed,HUBmagenta] (u) [bend left] to (v);
+\draw (x3) node [below left=2mm] {$\textcolor{HUBmagenta}{x_4}$};
+\draw (x1) node [above left=2mm] {$\textcolor{HUBmagenta}{x_2}$};
+\draw (v) node [below left=2mm] {$\textcolor{HUBmagenta}{u}$};
+}
+
+\only<11>{
+\textnode{u}{0, 0}{$u$}
+\textnode{x2}{3, 1.5}{$x_2$}
+\textnode{x4}{6, .5}{$x_4$}
+\textnode{v}{0, -1.5}{$v$}
+\textnode{x1}{1.5, 1.5}{$x_1$}
+\textnode{x3}{4.5, .5}{$x_3$}
+\textnode{x5}{7.5, 1.5}{$x_5$}
+\draw[-] (u) -- (v);
+\draw[-] (x1) -- (x2);
+\draw[-] (x3) -- (x4);
+\draw[-,dotted] (u) -- (x1);
+\draw[-,dotted] (x2) -- (x3);
+\draw[-,dotted] (x4) -- (x5);
+}
+
+\draw[-] (0, -2.5) to (.5, -2.5);
+\draw (1.5, -2.5) node {$e \in M\only<11>{'}$};
+\draw[dotted] (0, -3) to (.5, -3);
+\draw (1.5, -3) node {$e \notin M\only<11>{'}$};
+\end{tikzpicture}
+
+\endgroup\par

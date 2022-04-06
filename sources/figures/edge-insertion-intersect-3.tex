@@ -1,0 +1,51 @@
+\begin{tikzpicture}[scale=.7]
+\small
+
+\coordinate (u) at (0, 1);
+\coordinate (v) at (0, -1);
+\coordinate (x1) at (1.5, 2);
+\coordinate (y1) at (1.5, -2);
+\coordinate (x2) at (3, 2);
+\coordinate (y2) at (3, -2);
+\coordinate (x3) at (4.5, 1);
+\coordinate (y3) at (4.5, -1);
+\coordinate (x4) at (6, 1);
+\coordinate (x5) at (7.5, 2);
+\coordinate (z4) at (6, -1);
+\coordinate (z5) at (7.5, 0);
+\filledvertex{u}
+\filledvertex{v}
+
+\foreach \i in {1,...,5} {
+    \filledvertex{x\i}
+    \draw (x\i) node [above = 3pt] {$x_\i$};
+}
+\foreach \i in {1,...,3} {
+    \filledvertex{y\i}
+    \draw (y\i) node [below = 3pt] {$y_\i$};
+}
+
+\foreach \i in {4, 5} {
+    \filledvertex{z\i}
+    \draw (z\i) node [above = 3pt] {$z_\i$};
+}
+
+
+\draw (u) node [left = 3pt] {$u$};
+\draw (v) node [left = 3pt] {$v$};
+
+\edge{u}{v}
+\dashedEdge{u}{x1}
+\dashedEdge{v}{y1}
+\edge{x1}{x2}
+\edge{y1}{y2}
+\dashedEdge{x2}{x3}
+\dashedEdge{y2}{y3}
+\dottedEdge{x3}{x4}
+\edge{y3}{x4}
+\dashedEdge{x4}{x5}
+
+\draw (x3) edge[dash dot,out=270, in=180] (z4);
+\dottedEdge{z4}{z5}
+
+\end{tikzpicture}

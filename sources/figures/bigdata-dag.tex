@@ -1,0 +1,52 @@
+\begin{tikzpicture}
+
+\graphcoords
+\graphlegend
+\drawgroupcontour
+
+\simplenode{\nodeida}{\coorda}
+\simplenode{\nodeidb}{\coordb}
+\simplenode{\nodeidc}{\coordc}
+\simplenode{\nodeidd}{\coordd}
+\simplenode{\nodeide}{\coorde}
+\simplenode{\nodeidf}{\coordf}
+
+\simplenode{\nodeidg}{\coordg}
+\simplenode{\nodeidh}{\coordh}
+\colortextnode{\nodeidh}{\nodeidh}{$v$}
+\simplenode{\nodeidi}{\coordi}
+\simplenode{\nodeidj}{\coordj}
+
+\simplenode{\nodeidk}{\coordk}
+\colornode{\nodeidl}{\coordl}
+\colornode{\nodeidm}{\coordm}
+\colornode{\nodeidn}{\coordn}
+\simplenode{\nodeido}{\coordo}
+
+\colornode{\nodeidp}{\coordp}
+\colornode{\nodeidq}{\coordq}
+\colornode{\nodeidr}{\coordr}
+
+\edgecoords
+
+\draw[->] (sg1) -- (ng3);
+\draw[->] (sg11) -- (ng21);
+\draw[->] (sg2) -- (ng4);
+\draw[->] (sg3) -- (ng2);
+\draw[->] (sg4) -- (ng1);
+\draw[<-] (sg5) -- (sg3b);
+\draw[<-] (sg6) -- (sg2b);
+
+\draw[->] (ng1b) -- (ng5);
+\draw[->,\darkorange,thick] (ng2b2) -- (ng6);
+\draw[->,\darkorange,thick] (ng2b) -- (ng7);
+\draw[->,\darkorange,thick] (ng2b1) -- (ng81);
+\draw[->] (ng3b) -- (ng8);
+\draw[->] (ng3b1) -- (ng9);
+
+\draw[->,\darkorange,thick] (ng6b) -- (ng10);
+\draw[->,\darkorange,thick] (ng7b) -- (ng11);
+\draw[->,\darkorange,thick] (ng7b1) -- (ng12);
+
+\node[] at (10, -1) {\textnormal{Here:} \emph{$|D_v| = 7$}};
+\end{tikzpicture}

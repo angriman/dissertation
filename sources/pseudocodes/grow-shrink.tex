@@ -1,0 +1,19 @@
+\begin{algorithm}
+\caption{Overview of the \growshrink Algorithm}
+\label{algo:grow-shrink}
+\begin{algorithmic}[1]
+\Repeat
+\State approximate $D_v$ for all $v \in V \setminus S$ with Cohen's algorithm~\cite{DBLP:journals/jcss/Cohen97}
+\label{line:ghc-ls-grow-1}
+\State$v \gets \Sv$
+\State run pruned BFS from $v$\Comment{to recompute $\gfarn(S), d,$ and $d'$}
+\label{line:ghc-ls-grow-2}
+\State$u \gets \argmin_{u \in S} \sum_{x \in R_u}d'(x) - d(x)$
+\label{line:ghc-ls-shrink-1}
+\State$S \gets \Su$
+\State run Dijkstra-like algorithm\Comment{to recompute $\gfarn(S), d,$ and $d'$}
+\label{line:ghc-ls-shrink-2}
+\Until{previous iteration did not decrease $\gfarn(S)$}
+\end{algorithmic}
+\end{algorithm}
+

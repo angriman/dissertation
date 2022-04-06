@@ -1,0 +1,125 @@
+\chapter*{Introduction}
+Vertex centrality is arguably one of the most popular concepts
+in network analysis. Given a graph $G$, centrality measures
+assign to each vertex $v$ in $G$ a \emph{centrality score}
+that represents the importance of $v$ in $G$ by considering
+the structural properties of the graph.
+Because importance highly depends on the application, several centrality
+measures have been proposed and none is
+universal~\cite{DBLP:journals/it/GrintenAM20,DBLP:journals/im/BoldiV14}.
+
+Today, graph datasets easily reach millions (sometimes billions) of edges
+and thus the efficiency and scalability of network analysis algorithms
+is a major concern.
+Kang \etal~\cite{DBLP:conf/sdm/KangPST11} observed that
+\blockquote{measuring centrality in billion-scale graphs
+poses several challenges. Many of the \enquote{traditional}
+definitions such as closeness and betweenness were not designed
+with scalability in mind}. This often implies that complete exact computations
+of such measures on large graphs is prohibitively expensive and thus not
+practical -- especially for \emph{global} measures that take the whole graph
+into account.
+On the other hand, complete exact computation is often not necessary
+as several applications require either a reliable ranking of the
+vertices~\cite{DBLP:conf/faw/OkamotoCL08,newman2018networks} or to identify the
+top-$k$ most central vertices~\cite{DBLP:conf/icde/OlsenLH14}.
+
+Another challenge is posed by dynamic graphs, \ie graphs that change over time
+-- see \Cref{sec:prelim-dynamic-graphs}. Edges can be inserted or deleted and this
+might change the centrality score of some vertices. Recomputing centrality scores
+from scratch every time the graph changes is expensive and, if the changes are
+frequent, it easily becomes computationally infeasible.
+A promising strategy implemented by several dynamic
+algorithms~\cite{DBLP:journals/im/BergaminiM16,DBLP:conf/socialcom/GreenMB12,
+DBLP:conf/asunam/KasCC13,DBLP:conf/wea/BergaminiMOS17} is to re-use
+previously computed information -- \eg from an initial static run -- to
+identify the vertices \emph{affected} by the edge update. Then dynamic
+algorithm can then ignore all the unaffected vertices and this results in
+better performance in practice.
+
+\paragraph{Contribution and Outline}
+In the following, we describe successful attempts to scale up vertex
+centrality computations in three main settings: fully-dynamic graphs, top-$k$
+rankings, and approximation.
+In \Cref{ch:dyn-topk}, we present new dynamic
+algorithms top-$k$ closeness centrality ranking in fully-dynamic graphs.
+Our dynamic algorithms are developed on top of the static ones by
+Bergamini \etal~\cite{DBLP:journals/tkdd/BergaminiBCMM19}:
+after an edge update, they only process the affected vertices that could
+change their position in the top-$k$ ranking, and ignore all the others.
+Our algorithms are \emph{exact}, \ie they provide the correct
+top-$k$ ranking and closeness centrality scores of the top-$k$ vertices;
+furthermore, they can handle multiple edge updates at a time.
+Our experimental results show that, compared to a static recomputation,
+our algorithms are up to four orders of magnitude faster for single
+edge updates and up to two orders of magnitude faster for batches
+of 100 edge updates.
+
+In \Cref{ch:betweenness-approx}, we present new parallel sampling-based
+approximation algorithms for betweenness centrality. Approximation via sampling
+is a widely adopted strategy for computational problems that cannot be solved
+exactly within a reasonable time budget~\cite{DBLP:books/tf/18/2018aam-1}. We
+focus on \emph{adaptive} sampling (ADS), a particular subclass of sampling
+algorithms (also called \emph{progressive} sampling algorithms) where the
+number of required samples is not computed statically (\eg from the input
+instance). Instead, the algorithm determines dynamically when to stop
+by checking a stopping condition that also depends on the data sampled so far.
+While non-adaptive sampling algorithms are often trivial to parallelize (\eg
+by drawing multiple samples in parallel), this is not necessarily true for
+adaptive sampling. Indeed, checking the stopping condition for ADS constitutes
+a challenge as the algorithm requires to access all the data generated so far
+and thus mandates some form of synchronization.
+We introduce two new parallel ADS algorithms we call \localframe and \sharedframe,
+both of which try to avoid expensive synchronization overheads when checking the
+stopping condition.
+We also propose a third variant called \indexedframe which, at the cost of
+additional synchronization, guarantees deterministic results.
+To demonstrate the effectiveness of the proposed
+algorithms, we turn to the state-of-the-art \kadabra betweenness
+approximation algorithm from Borassi and Natale~\cite{DBLP:conf/esa/BorassiN16} --
+note, however, that our techniques can easily be adjusted to other ADS algorithms.
+Experimental results show that, on 32 cores, our algorithms are up to
+$\onedigit{\adsSuSfVsOmp}\times$ faster than a straightforward
+OpenMP-based parallelization. Moreover, also due to implementation
+improvements and parameter tuning, our best best algorithm performs
+adaptive sampling $\onedigit{\adsSuSfVsOriginal}\times$ faster
+than the existing implementation of \kadabra.
+
+Finally, in \Cref{ch:electrical-closeness}, we introduce algorithms to
+approximate electrical centrality measures.
+Those measures interpret the graph under consideration as an electrical
+network~\cite{lovasz1993random} and determine the centrality of a vertex by
+taking into accounts paths of arbitrary lengths.
+We consider two well-known electrical centrality measures: electrical
+closeness centrality~\cite{DBLP:conf/stacs/BrandesF05} -- or
+current-flow closeness or information centrality~\cite{stephenson1989rethinking} --
+as well as other generalizations of electrical closeness such as normalized
+random-walk betweenness and Kirchhoff-related indices, and forest closeness
+centrality~\cite{DBLP:conf/icdm/JinBZ19}.
+A straightforward way to compute electrical closeness and related centralities
+is to compute the Moore-Penrose pseudoinverse $\Linv$ of the Laplacian
+matrix $\Lapl$ of the graph under consideration, which is as expensive as dense
+matrix multiplication and standard tools in practice even require cubic
+time~\cite{DBLP:conf/cocoa/RanjanZB14}. Further, $\Linv$ requires $\Oh(n^2)$
+space which is not practical for large graphs.
+State-of-the-art approximation algorithms use the Johnson-Lindenstrauss
+transform~\cite{johnson1984extensions} and require the solution of
+$\Oh(\log n/\epsilon^2)$ Laplacian linear system to guarantee a relative
+error, which is still very expensive for large inputs.
+We observe that, to compute electrical closeness as well as related centralities,
+the only relevant part of $\Linv$ is its diagonal $\diag{\Linv}$.
+Our algorithm approximates $\diag{\Linv}$ of a Laplacian matrix \Lapl
+corresponding to a weighted undirected graph by exploiting a strong
+connection between uniform spanning trees and resistance distance.
+It requires the solution of only
+one Laplacian linear system while the remaining part is based on the sampling
+of uniform (\ie random) spanning trees (USTs). For small-world graphs,
+our algorithm achieves a $\pm\epsilon$-approximation guarantee with high probability
+in $\Oh(m\log^4n \cdot \epsilon^{-2})$ time.
+Experiments show that, compared to the state of the art, our strategy is much
+faster and more memory-efficient, it yields a better approximation of $\diag{\Linv}$,
+which results in a more accurate complete ranking the elements of $\diag{\Linv}$.
+We then generalize our algorithm for electrical closeness to approximate forest
+closeness. This results in a nearly-linear time algorithm with an absolute
+probabilistic error guarantee that outperforms the state of the art in terms
+of both running time and solution quality.

@@ -1,0 +1,64 @@
+\begin{tikzpicture}
+\tikzstyle{every node}=[font=\itshape,inner sep=0, minimum size=.3cm, outer sep=0]
+
+\graphcoords
+\drawswapgroupcontour
+\graphlegend
+
+\simplenode{\nodeida}{\coorda}
+\simplenode{\nodeidb}{\coordb}
+\simplenode{\nodeidd}{\coordd}
+\simplenode{\nodeidf}{\coordf}
+\simplenode{\nodeidg}{\coordg}
+
+\customcolornode{\nodeidc}{\coordc}{magenta}
+\customcolornode{\nodeide}{\coorde}{magenta}
+\customcolornode{\nodeidh}{\coordh}{cyan}
+\customcolornode{\nodeidl}{\coordl}{cyan}
+\customcolornode{\nodeidm}{\coordm}{cyan}
+\customcolornode{\nodeidn}{\coordn}{cyan}
+\customcolornode{\nodeidp}{\coordp}{cyan}
+\customcolornode{\nodeidq}{\coordq}{cyan}
+\customcolornode{\nodeidr}{\coordr}{cyan}
+
+\node[magenta] at ([xshift=-2pt,yshift=10pt]\coordc) {$+1$};
+\node[magenta] at ([yshift=-10pt]\coorde) {$+1$};
+
+\node[cyan] at ([yshift=-10pt]\coordh) {$-1$};
+\node[cyan] at ([yshift=10pt]\coordl) {$-1$};
+\node[cyan] at ([yshift=-10pt]\coordm) {$-1$};
+\node[cyan] at ([yshift=-10pt]\coordn) {$-1$};
+\node[cyan] at ([yshift=10pt]\coordp) {$-1$};
+\node[cyan] at ([xshift=15pt]\coordq) {$-1$};
+\node[cyan] at ([yshift=-10pt]\coordr) {$-1$};
+
+\node[] at (9, -1.5) {\textnormal{Here:}};
+\node[] at (9, -2.3) {$f(S) - f(\Suv) = \textcolor{cyan}{7} - \textcolor{magenta}{2} = 5$};
+
+\simplenode{\nodeidi}{\coordi}
+\simplenode{\nodeidj}{\coordj}
+
+\simplenode{\nodeidk}{\coordk}
+\simplenode{\nodeido}{\coordo}
+
+\edgecoords
+
+\draw[->] (sg1) -- (ng3);
+\draw[->] (sg11) -- (ng21);
+\draw[->] (sg2) -- (ng4);
+\draw[->] (sg4) -- (ng1);
+\draw[<-] (sg6) -- (sg2b);
+\draw[<-] (sg5) -- (sg3b);
+\draw[<-] (sg3) -- (ng2);
+
+\draw[->] (ng1b) -- (ng5);
+\draw[->] (ng2b2) -- (ng6);
+\draw[->] (ng2b) -- (ng7);
+\draw[->] (ng2b1) -- (ng81);
+\draw[->] (ng3b) -- (ng8);
+\draw[->] (ng3b1) -- (ng9);
+
+\draw[->] (ng6b) -- (ng10);
+\draw[->] (ng7b) -- (ng11);
+\draw[->] (ng7b1) -- (ng12);
+\end{tikzpicture}

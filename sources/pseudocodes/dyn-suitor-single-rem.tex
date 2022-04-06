@@ -1,0 +1,20 @@
+\begin{algorithm}[t]
+\caption{Dynamic \suitor algorithm for single edge removals}
+\label{algo:dyn-suitor-single-rem}
+\textbf{Input:} Graph $G' = (V, E\setminus \set{u, v}, w')$, an edge $\set{u, v} \in E$
+
+\begin{algorithmic}[1]
+\If{$\vsuitor(u) = v$}\label{line:dyn-suitor-rem:rem-condition}
+\State$\affected(x) \gets \false\ \forall x \in V$
+\State$\vsuitor(u) \gets \nil$\label{line:dyn-suitor-rem:inv-1}
+\State$\vsuitor(v) \gets \nil$
+\State$ws(u) \gets 0$
+\State$ws(v) \gets 0$\label{line:dyn-suitor-rem:inv-2}
+\For{$z\in \set{u, v}$}
+\State$\affected(z) \gets \true$
+\State$S_A \gets \textsc{findAffected}(z)$
+\State$\textsc{updateAffected}(S_A)$
+\EndFor
+\EndIf
+\end{algorithmic}
+\end{algorithm}

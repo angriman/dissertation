@@ -1,0 +1,62 @@
+\begingroup\centering
+\begin{tikzpicture}[scale=.8]
+\drawgraphcontour
+\drawgroupcontour
+
+\simplenode{\nodeida}{\coorda}
+\simplenode{\nodeidb}{\coordb}
+\simplenode{\nodeidc}{\coordc}
+\simplenode{\nodeidd}{\coordd}
+\simplenode{\nodeide}{\coorde}
+\simplenode{\nodeidf}{\coordf}
+
+\simplenode{\nodeidg}{\coordg}
+\customcolornode{\nodeidh}{\coordh}{red}
+\simplenode{\nodeidi}{\coordi}
+\simplenode{\nodeidj}{\coordj}
+
+\simplenode{\nodeidk}{\coordk}
+\customcolornode{\nodeidl}{\coordl}{red}
+\node[] at ([yshift=.4cm]\coordn) {$v$};
+\customcolornode{\nodeidm}{\coordm}{red}
+\customcolornode{\nodeidn}{\coordn}{cyan}
+\simplenode{\nodeido}{\coordo}
+
+\customcolornode{\nodeidp}{\coordp}{red}
+\customcolornode{\nodeidq}{\coordq}{cyan}
+\customcolornode{\nodeidr}{\coordr}{cyan}
+
+\node[align=left] at (12, .25) {\textnormal{Forward contrib.}};
+\node[align=left] at (12, -.25) {\textnormal{Backward contrib.}};
+\node[align=left] at (10, -2) {\normalsize$\deltafarnm(v) \ge |\textcolor{cyan}{D_v}|\cdot d(S, v)$};
+
+\coordinate[] (f1) at (9.5, .25);
+\coordinate[] (f2) at (10.25, .25);
+\coordinate[] (b1) at (9.5, -.25);
+\coordinate[] (b2) at (10.25, -.25);
+\draw[thick,cyan] (f1) -- (f2);
+\draw[thick,red] (b1) -- (b2);
+
+\edgecoords
+
+\draw[->] (sg1) -- (ng3);
+\draw[->] (sg11) -- (ng21);
+\draw[->] (sg2) -- (ng4);
+\draw[->] (sg3) -- (ng2);
+\draw[->] (sg4) -- (ng1);
+\draw[<-] (sg5) -- (sg3b);
+\draw[<-] (sg6) -- (sg2b);
+
+\draw[->] (ng1b) -- (ng5);
+\draw[->,red,thick] (ng2b2) -- (ng6);
+\draw[->,red,thick] (ng2b) -- (ng7);
+\draw[->,red,thick] (ng2b1) -- (ng81);
+\draw[->] (ng3b) -- (ng8);
+\draw[->] (ng3b1) -- (ng9);
+
+\draw[->,red,thick] (ng6b) -- (ng10);
+\draw[->,cyan,thick] (ng7b) -- (ng11);
+\draw[->,cyan,thick] (ng7b1) -- (ng12);
+
+\end{tikzpicture}
+\endgroup\par

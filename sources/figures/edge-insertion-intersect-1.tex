@@ -1,0 +1,36 @@
+\begin{tikzpicture}[scale=.7]
+\small
+
+\coordinate (u) at (0, 1);
+\coordinate (v) at (0, -1);
+\coordinate (x1) at (1.5, 2);
+\coordinate (y1) at (1.5, -2);
+\coordinate (x2) at (3, 2);
+\coordinate (y2) at (3, -2);
+\coordinate (x3) at (4.5, 1);
+\coordinate (y3) at (4.5, -1);
+\coordinate (x4) at (6, 1);
+\coordinate (x5) at (7.5, 2);
+\filledvertex{u}
+\filledvertex{v}
+
+\foreach \i in {1,...,5} {
+    \filledvertex{x\i}
+    \draw (x\i) node [above = 3pt] {$x_\i$};
+}
+
+\draw (u) node [left = 3pt] {$u$};
+\draw (v) node [left = 3pt] {$v$};
+
+%\draw[-] (u) -- (v) node [midway, right = 3pt] {$e$};
+%\draw[dashed] (u) -- (y) node [midway, below right = 3pt] {};
+
+\edge{u}{v}
+%\dashedEdge{z}{x3}
+\dashedEdge{u}{x1}
+\edge{x1}{x2}
+\dashedEdge{x2}{x3}
+\edge{x3}{x4}
+\dashedEdge{x4}{x5}
+
+\end{tikzpicture}

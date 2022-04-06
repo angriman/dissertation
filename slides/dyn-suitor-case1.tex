@@ -1,0 +1,90 @@
+\begingroup\centering
+\begin{tikzpicture}[scale=.7]
+
+\only<-3,5->{
+\textnode{u}{0, 0}{$u$}
+}
+\only<4>{
+\textnodecolor{u}{0, 0}{\textcolor{white}{$u$}}{\emphcolor}
+}
+\only<-4,6->{
+\textnode{v}{0, -1.5}{$v$}
+}
+\only<5>{
+    \textnodecolor{v}{0, -1.5}{\textcolor{white}{$v$}}{\emphcolor}
+}
+\only<-5,7->{
+\textnode{x1}{1.5, 1.5}{$x_1$};
+}
+\only<6>{
+\textnodecolor{x1}{1.5, 1.5}{\textcolor{white}{$x_1$}}{\emphcolor};
+}
+\textnode{x2}{3, 1.5}{$x_2$};
+
+\only<-6,8->{
+\textnode{x3}{4.5, .5}{$x_3$};
+}
+\only<7>{
+    \textnodecolor{x3}{4.5, .5}{\textcolor{white}{$x_3$}}{\emphcolor};
+}
+
+\only<-5>{
+\draw[-] (u) -- (x1);
+}
+\only<6->{
+\draw[-, dotted] (u) -- (x1);
+}
+\only<-7>{
+\draw[-,dotted] (x1) -- (x2);
+}
+\only<8->{
+\draw[-] (x1) -- (x2);
+}
+
+\onslide<3-7>{
+    \draw[-, very thick, HUBgreen] (u) -- (v);
+}
+\onslide<8->{
+    \draw[-, very thick] (u) -- (v);
+}
+\onslide<4>{
+    \draw[->, dashed] (u) to [bend right] (v);
+}
+\onslide<4->{
+    \draw (v) node [below left=2mm] {$\emph{u}$};
+}
+
+\onslide<5>{
+    \draw[->, dashed] (v) to [bend left] (u);
+}
+\onslide<5->{
+    \draw (u) node [above left=2mm] {$\emph{v}$};
+}
+
+\only<6>{
+    \draw[->, dashed] (x1) to [bend left] (x2);
+}
+
+\onslide<6->{
+    \draw (x2) node [above right=2mm] {$\emph{x_1}$};
+}
+
+\onslide<8->{
+    \draw (x1) node [above left=2mm] {$\emph{x_2}$};
+}
+
+
+\only<-6>{
+\draw[-] (x2) -- (x3);
+}
+\only<7->{
+    \draw[-,dotted] (x2) -- (x3);
+}
+
+\draw[-] (0, -3) to (.5, -3);
+\draw (1.5, -3) node {$\only<-7>{e \in M}\only<8>{\emph{e\in M'}}$};
+\draw[dotted] (0, -3.5) to (.5, -3.5);
+\draw (1.5, -3.5) node {$\only<-7>{e \notin M}\only<8>{\emph{e\notin M'}}$};
+
+\end{tikzpicture}
+\endgroup\par

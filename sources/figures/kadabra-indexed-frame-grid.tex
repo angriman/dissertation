@@ -1,0 +1,41 @@
+  \begin{tikzpicture}[sfstyle/.style={
+	draw,rectangle,minimum width=1.1cm,minimum height=1.1cm,align=center,font=\scriptsize
+}]
+	\node[sfstyle,draw=blue] at (0,0) (t0) {0};
+	\node[sfstyle,right=0.2cm of t0,draw=blue] (t1) {$T$};
+	\node[sfstyle,right=0.2cm of t1,draw=blue] (t2) {$2T$};
+	\node[right=0.1cm of t2] (td2) {\dots};
+
+	\node[sfstyle,draw=red] at (0,-1.2) (t10) {1};
+	\node[sfstyle,right=0.2cm of t10,draw=red] (t11) {$T+1$};
+	\node[sfstyle,right=0.2cm of t11,draw=red] (t12) {$2T+1$};
+	\node[right=0.1cm of t12] (td3) {\dots};
+
+	\node[sfstyle,draw=\darkgreen] at (0, -2.4) (t20) {$2$};
+	\node[sfstyle,right=0.2cm of t20,draw=\darkgreen] (t21) {$T+2$};
+	\node[sfstyle,right=0.2cm of t21,draw=\darkgreen] (t22) {$2T+2$};
+	\node[right=0.1cm of t22] (td4) {\dots};
+
+	\node[below=-0.1cm of t20] (td1) {\vdots};
+	\node[below=-0.1cm of t21] (td11) {\vdots};
+	\node[below=-0.1cm of t22] (td12) {\vdots};
+	\node[below right=-0.1cm and 0.2cm of t22] (tdd) {$\ddots$};
+
+	\node[above=0.55cm of t1] (nEp) {Epoch};
+
+	\node[below right=-0.4cm and -0.35cm of t0] (th0) {$0$};
+	\node[below right=-0.4cm and -0.35cm of t1] (th0) {$0$};
+	\node[below right=-0.4cm and -0.35cm of t2] (th0) {$0$};
+
+	\node[below right=-0.4cm and -0.35cm of t10] (th0) {$1$};
+	\node[below right=-0.4cm and -0.35cm of t11] (th0) {$1$};
+	\node[below right=-0.4cm and -0.35cm of t12] (th0) {$1$};
+
+    \node[below right=-0.4cm and -0.35cm of t20] (th0) {$2$};
+	\node[below right=-0.4cm and -0.35cm of t21] (th0) {$2$};
+	\node[below right=-0.4cm and -0.35cm of t22] (th0) {$2$};
+
+	\node[above=0.2cm of t0] (e1) {$1$};
+	\node[above=0.2cm of t1] (e2) {$2$};
+	\node[above=0.2cm of t2] (e3) {$3$};
+\end{tikzpicture}

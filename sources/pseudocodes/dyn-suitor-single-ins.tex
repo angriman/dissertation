@@ -1,0 +1,19 @@
+\begin{algorithm}[t]
+\footnotesize
+\caption{\footnotesize Dynamic \suitor algorithm for single edge insertions}
+\label{algo:dyn-suitor-single-ins}
+\textbf{Input:} Graph $G' = (V, E \cup \set{u, v}, w')$, an edge $\set{u, v} \notin E$
+
+\begin{algorithmic}[1]
+\If{$w'(u, v) > \max\{w'(u, \vsuitor\interm(u)), w'(v, \vsuitor\interm(u))\}$}
+\label{line:dyn-suitor-single-ins:check-affected}
+\State$\affected(x) \gets \false\ \forall x\in V$
+\For{$z \in \set{v, u}$}
+\State$\affected(z) \gets \true$
+\State$S_A \gets \textsc{findAffected}(z)$
+\State$\textsc{updateAffected}(S_A \setminus \{\vsuitor\interm(z)\})$
+\label{line:dyn-suitor-single-ins:upd-aff}
+\EndFor
+\EndIf
+\end{algorithmic}
+\end{algorithm}

@@ -1,0 +1,17 @@
+\begin{algorithm}[t]
+\footnotesize
+\caption{\footnotesize Static iterative \suitor algorithm~\cite{DBLP:conf/ipps/ManneH14}}
+\label{algo:iter-suitor}
+\textbf{Input:} Undirected graph $G = (V, E, w)$\\
+\textbf{Output:} $\change{(1/2)}$-approximation of the MWM of $G$
+
+\begin{algorithmic}[1]
+\For{\textbf{each} $u \in V$}
+\State$\vsuitor(u) \gets \nil$
+\State$ws(u) \gets 0$
+\EndFor
+\For{\textbf{each} $u \in V$}
+\State$\textsc{findSuitor}(u)$\Comment{\Cref{algo:iter-find-suitor}}
+\EndFor
+\end{algorithmic}
+\end{algorithm}

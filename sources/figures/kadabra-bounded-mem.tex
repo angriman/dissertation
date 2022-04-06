@@ -1,0 +1,30 @@
+\begin{tikzpicture}[sfstyle/.style={
+	draw,rectangle,minimum width=1.1cm,minimum height=1.1cm,align=center
+}]
+
+	\node[sfstyle,pattern=north west lines, pattern color=blue,draw=blue] at (0,0) (t0) {};
+	\node[sfstyle,right=0.2cm of t0,pattern=north west lines, pattern color=blue,draw=blue] (t1) {};
+	\node[sfstyle,right=0.2cm of t1,pattern=north west lines, pattern color=blue,draw=blue] (t2) {};
+	\node[sfstyle,right=0.2cm of t2,draw=\darkgreen] (t3) {$3T$};
+	\node[below right=-0.4cm and -0.35cm of t3] {$2$};
+	\node[right=0.1cm of t3] (td2) {\dots};
+	\node[above=0.2cm of t0] (e0) {$1$};
+	\node[above=0.2cm of t1] (e1) {$2$};
+	\node[above=0.2cm of t2] (e2) {$3$};
+	\node[above=0.2cm of t3] (e3) {$4$};
+	\node[above=.55cm of t2] (tEpoch) {Epoch};
+
+	\node[sfstyle,pattern=north west lines, pattern color=red,draw=red] at (0,-1.2) (t10) {};
+	\node[sfstyle,right=0.2cm of t10,draw=red] (t11) {$T+1$};
+	\node[below right=-0.4cm and -0.35cm of t11] (th11) {$1$};
+	\node[sfstyle,right=0.2cm of t11,draw=blue] (t12) {$2T+1$};
+	\node[below right=-0.4cm and -0.35cm of t12] (th12) {$0$};
+	\node[sfstyle,right=0.2cm of t12] (t13) {$3T+1$};
+	\node[right=0.1cm of t13] (td22) {\dots};
+
+	\node[sfstyle,pattern=north west lines, pattern color=\darkgreen,draw=\darkgreen] at (0, -2.4) (t20) {};
+	\node[sfstyle,right=0.2cm of t20,pattern=north west lines, pattern color=\darkgreen,draw=\darkgreen] (t21) {};
+	\node[sfstyle,right=0.2cm of t21,pattern=north west lines, pattern color=\darkgreen,draw=\darkgreen] (t22) {};
+	\node[sfstyle,right=0.2 of t22] (t23) {$3T+2$};
+	\node[right=0.1cm of t23] (td5) {\dots};
+\end{tikzpicture}

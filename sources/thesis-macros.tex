@@ -1,0 +1,28 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Additional required info for the title page
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\makeatletter
+\def\HUpresident#1{\gdef\@HUpresident{#1}}
+\def\HUdean#1{\gdef\@HUdean{#1}}
+\def\firstReviewer#1{\gdef\@firstReviewer{#1}}
+\def\secondReviewer#1{\gdef\@secondReviewer{#1}}
+\def\thirdReviewer#1{\gdef\@thirdReviewer{#1}}
+\makeatother
+
+\NewEnviron{cproblem}[1]{%
+\begin{center}\fbox{\parbox{.97\columnwidth}{%
+    {\centering\scshape #1\par}%
+    \parskip=1ex
+    \everypar{\hangindent=1em}%
+    \BODY
+}}
+\end{center}
+}
+
+\newcommand{\sign}[1]{%
+\centering
+\begin{tabular}[t]{@{}l@{}}
+\makebox[1.5in]{\dotfill}\\
+\strut#1\strut
+\end{tabular}%
+}

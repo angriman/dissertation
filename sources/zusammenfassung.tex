@@ -1,0 +1,67 @@
+\pagestyle{plain}
+\begin{center}
+  \textsc{Zusammenfassung}
+\end{center}
+%
+\begin{otherlanguage}{ngerman}
+Die Netzwerkanalyse ist eine Sammlung von Techniken, die darauf abzielen,
+nicht-triviale Erkenntnisse aus vernetzten Daten durch die Untersuchung von
+Beziehungsmustern zwischen den Entitäten eines Netzwerks zu gewinnen.
+Zu den Erkenntnissen, die aus einem Netzwerk
+gewonnen werden können, gehört die Bestimmung der Wichtigkeit von Entitäten
+an Hand von definierten Kriterien -- in sozialen Netzwerken gibt es
+beispielsweise in der Regel einige Teilnehmer, die einflussreicher sind als
+andere oder deren Entfernung aus dem Netzwerk eine erhebliche Veränderung des
+Kommunikationsflusses bedeuten würde. Eine andere Möglichkeit besteht darin,
+für jeden Teilnehmer eines Netzwerks den am besten geeigneten Partner zu
+finden, wenn man die paarweisen Präferenzen (oder die Kompatibilität) der
+Teilnehmer kennt, die miteinander verbunden werden sollen -- auch bekannt als
+das Maximum Weighted Matching-Problem (MWM). Beispiele hierfür sind Plattformen
+für Matchmaking oder die Paarung von Spielern in einem Schachturnier.
+
+Die Wichtigkeit ist hierbei stark an die jeweilige Anwendung gebunden.
+Daher wurden in den letzten Jahren mehrere \emph{Zentralitätsmaße} eingeführt.
+Diese Maße
+stammen hierbei aus Jahrzehnten, in denen die Rechenleistung sehr begrenzt war
+und die Netzwerke im Vergleich zu heute viel kleiner waren -- Skalierbarkeit auf
+große Datenmengen wurde daher nicht berücksichtigt.
+Heutzutage sind jedoch Netzwerke mit Millionen von Kanten
+allgegenwärtig und eine vollständige exakte Berechnung vieler traditioneller
+Zentralitätsmaße -- die immer noch weit verbreitet sind -- ist zu zeitaufwendig.
+Dieses Problem wird noch verstärkt, wenn das Ziel darin besteht, die
+\emph{Gruppe} der $k$-Knoten mit der höchsten gemeinsamen Zentralität zu
+finden; dieses Problem hat nützliche Anwendungen bei der Optimierung von
+Standorten von Lagern und der Einflussmaximierung.
+Skalierbare Algorithmen
+zur Identifizierung hochzentraler (Gruppen von) Knoten in großen Graphen sind von
+zentraler Bedeutung für eine umfassende Netzwerkanalyse.
+%
+Die heutigen Netzwerke sind nicht nur groß, sondern
+verändern sich zusätzlich im zeitlichen Verlauf. Daraus ergibt
+sich die Herausforderung, die Erkenntnisse, die aus dem Netzwerk
+gewonnen wurden, nach einer Änderung effizient zu
+aktualisieren. Effiziente \emph{dynamische} Algorithmen
+sind daher ein weiterer wesentlicher Bestandteil moderner
+Analyse-Pipelines.
+
+Hauptziel dieser Arbeit ist es, skalierbare algorithmische
+Lösungen für die zwei bereits genannten Herausforderungen zu liefern: die
+Identifizierung wichtiger Knotenpunkte in einem Netzwerk und deren
+effiziente Aktualisierung in sich verändernden Netzwerken.
+Die meisten unserer Algorithmen benötigen Sekunden bis einige
+Minuten, um diese Aufgaben in realen Netzwerken mit bis zu Hunderten Millionen
+von Kanten zu Lösen, was eine deutliche Verbesserung gegenüber dem Stand der Technik
+darstellt.
+
+Die Berechnung von MWMs in großen Netzwerke ist rechenintensiv.
+Aus diesem Grund gibt es in der Literatur zahlreiche
+schnelle inexakte Algorithmen für MWM, sowie dynamische Algorithmen zur
+Aufrechterhaltung eines (approximativen) MWMs in dynamischen Graphen. Es wurden
+jedoch nur wenige Anstrengungen unternommen, um diese Algorithmen in der Praxis
+zu implementieren, insbesondere im dynamischen Fall, so dass ihre tatsächliche
+Leistung unbekannt ist. Daher besteht ein weiteres Ziel dieser Arbeit darin,
+die Lücke zwischen Theorie und Praxis im Zusammenhang mit dynamischen MWM zu
+schließen. Insbesondere entwickeln wir einen Algorithmus, der ein
+approximatives MWM nach mehreren Kantenaktualisierungen von Graphen mit
+Milliarden von Kanten in nur einem Bruchteil einer Sekunde aktualisiert.
+\end{otherlanguage}

@@ -1,0 +1,28 @@
+\begingroup\centering
+\begin{tikzpicture}
+\small
+
+\coordinate (r1) at (2,2.4);
+\coordinate (r2) at (6.25,2.85);
+\coordinate (r3) at (8,2.8);
+
+\node[] at (2, 3.8) {$v, w\in S$};
+\draw (r1) circle [radius=3pt] coordinate (w);
+\draw (w) node [above=.15cm] {$v$};
+\draw (r2) circle [radius=3pt];
+\draw (r2) node [above=.15cm] {$w$};
+
+\node[HUBblue, draw, shape=rectangle, minimum width=2.55cm, minimum height=1.5cm, anchor=center,rounded corners=20pt,thick] at (r1) {};
+\node[HUBblue] at ([yshift=-15pt]w) {$x: r_x = v$};
+\node [HUBblue, draw, shape=rectangle, minimum width=2.5cm, minimum height=2.0cm, anchor=center,rounded corners=25pt,thick] at  (r2) {};
+\node[HUBblue] at ([yshift=-15pt]r2) {$x: r_x = w$};
+
+\draw[HUBorange, rounded corners=30pt,dashed,thick]
+  (0,1.1) rectangle ++(4,2.2);
+\node[HUBorange] at ([yshift=-30pt]w) {$x : r_x' = v$};
+\draw[HUBorange, rounded corners=40pt,dashed,thick]
+  (4,1.3) rectangle ++(3.5,3);
+\node[HUBorange] at ([xshift=-20pt,yshift=-35pt]r2) {$x : r_x' = w$};
+
+\end{tikzpicture}
+\endgroup

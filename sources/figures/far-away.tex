@@ -1,0 +1,54 @@
+\begin{tikzpicture}
+\footnotesize
+\draw[] (0, 1) -- (2, 5) -- (4, 1) -- cycle;
+
+\coordinate (a) at (intersection of {0,1 -- 2,5} and {0,2 -- 4,2});
+\coordinate (b) at (intersection of {2,5 -- 4,1} and {0,2 -- 4,2});
+\draw[] (a) -- (b);
+
+\coordinate (a1) at (intersection of {0,1 -- 2,5} and {0,1.5 -- 4,1.5});
+\dedge{a}{a1}
+\coordinate [below=.5cm of a] (a2);
+\dedge{a}{a2}
+
+\coordinate (b1) at (intersection of {2,5 -- 4,1} and {0,1.5 -- 4,1.5});
+\dedge{b}{b1}
+\coordinate [below=.5cm of b] (b2);
+\dedge{b}{b2}
+
+\coordinate (c) at (2, 2);
+\coordinate [below left=.5cm and .2cm of c] (c1);
+\coordinate [below=.5cm of c] (c2);
+\coordinate [below right=.5cm and .2cm of c] (c3);
+\dedge{c}{c1}
+\dedge{c}{c2}
+\dedge{c}{c3}
+
+\coordinate (d) at ($(a)!0.5!(c)$);
+\coordinate [below left=.5cm and .2cm of d] (d1);
+\coordinate [below right=.5cm and .2cm of d] (d2);
+\dedge{d}{d1}
+\dedge{d}{d2}
+
+\coordinate (e) at ($(c)!0.5!(b)$);
+\coordinate [below left=.5cm and .2cm of e] (e1);
+\coordinate [below right=.5cm and .2cm of e] (e2);
+\dedge{e}{e1}
+\dedge{e}{e2}
+
+\node[] at (2, 3) {Exact};
+
+\filldraw[color=black, fill=white, thick](2,5) circle (.05);
+\node[] at (2, 5) [left] {$x$};
+
+\node[] at (b) [right=1mm] {$\dcut(x)$};
+
+\coordinate (u) at (1.75, 1.25);
+\coordinate (v) at (2.25, 1.25);
+\node[] at (u) [left] {$u$};
+\node[] at (v) [right] {$v$};
+\dedgecolor{u}{v}{red}
+\filldraw[color=black, fill=white, thick] (u) circle (.05);
+\filldraw[color=black, fill=white, thick] (v) circle (.05);
+
+\end{tikzpicture}

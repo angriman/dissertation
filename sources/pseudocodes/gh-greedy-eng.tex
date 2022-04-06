@@ -1,0 +1,35 @@
+\begin{algorithm}[tb]
+\footnotesize
+\caption{\footnotesize Greedy algorithm for group-harmonic maximization.}
+\label{algo:gh-greedy-eng}
+\begin{algorithmic}[1]
+\State$top_h \gets \texttt{topHarmonicCloseness}()$~\cite{DBLP:conf/alenex/BiseniusBAM18}
+\label{line:gh-greedy-eng:toph}
+\State$S \gets \set{top_h}$
+\While{$|S| < k$}
+\State$PQ \gets$ max-priority queue with key $\gharmupp(S, u)$ and value $u$
+\label{line:gh-greedy-eng:lg-1}
+\For{\textbf{each} $u \in V \setminus S$}
+\State$PQ.\texttt{push}(u)$
+\EndFor
+\State$x \gets \nil$\Comment{Vertex with highest marginal gain computed so far}
+\State$\gharm(S\cup\set{x}) \gets -\infty$\smallskip
+
+\Repeat\Comment{This loop is done in parallel}
+\State$u \gets PQ.\texttt{extractMax}()$
+\If{$\gharmupp(S, u) \le \gharm(S \cup \set{x})$}
+\State\textbf{break}\Comment{$x$ has the highest marginal gain}
+\EndIf
+\State$\left<\isexact, \gharm(S \cup \set{u})\right> \gets$
+pruned SSSP$(u, \gharm(S \cup\set{x}))$
+\label{line:gh-greedy-eng:pruned-sssp}
+\If{\isexact \textbf{and} $\gharm(S\cup\set{u}) > \gharm(S \cup \set{x})$}
+\State$x \gets u$
+\EndIf
+\Until{$PQ$ is empty}
+\State$S \gets S \cup \set{x}$
+\label{line:gh-greedy-eng:lg-2}
+\EndWhile
+\State\Return$S$
+\end{algorithmic}
+\end{algorithm}

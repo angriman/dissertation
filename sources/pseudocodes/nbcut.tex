@@ -1,0 +1,29 @@
+\begin{algorithm}[t]
+\small
+\caption{\small\nbcut algorithm for top-$k$
+closeness centrality in static
+graphs~\cite{DBLP:journals/tkdd/BergaminiBCMM19}.}
+\label{algo:nbcut}
+\textbf{Input:} A graph $G = (V, E)$, an integer $1 \le k < n$.\\
+\textbf{Output:} Top-$k$ vertices with highest closeness centrality.
+\begin{algorithmic}[1]
+\State$\topk \gets$ empty min-priority queue with keys $\harm(u)$ and values $u$
+\State compute the number of reachable vertices $r(u)$ for each vertex $u \in V$
+\State$h_k \gets 0$\label{line:nbcut-vk-init}
+\For{\textbf{each} $u \in V$ sorted by an ordering $O$}\label{line:nbcut-for}
+\State$\left<\harmupp(u), \isexact(u)\right> \gets \bfscut(u, h_k)$
+\label{line:nbcut-bfscut}
+\If{$\isexact(u)$ \textbf{and} $\harmupp(u) > h_k$}
+\State$\topk.\texttt{push}(\harmupp(u), u)$\label{line:nbcut-update-topk1}
+\Comment{Note that here $\harmupp(u) = \harm(u)$}
+\If{$\topk.\texttt{size}() > k$}
+\State$\topk.\texttt{removeMin}()$
+\EndIf
+\If{$\topk.\texttt{size}() = k$}
+\State$h_k \gets \topk.\texttt{getMinKey}()$\label{line:nbcut-update-topk2}
+\EndIf
+\EndIf
+\EndFor
+\State\Return\topk
+\end{algorithmic}
+\end{algorithm}

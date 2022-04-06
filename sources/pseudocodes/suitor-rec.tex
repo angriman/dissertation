@@ -1,0 +1,17 @@
+\begin{algorithm}[tb]
+\caption{Static recursive \suitor algorithm~\cite{DBLP:conf/ipps/ManneH14}}
+\label{algo:rec-suitor}
+\textbf{Input:} Undirected graph $G = (V, E, w)$\\
+\textbf{Output:} $\change{(1/2)}$-approximation of the MWM of $G$
+
+\begin{algorithmic}[1]
+\For{\textbf{each} $u \in V$}
+\State$\mate(u) \gets \nil$
+\State$\vsuitor(u) \gets \nil$
+\EndFor
+\For{\textbf{each} $u \in V$}\label{line:rec-suitor:find-suitor-for}
+\State$\textsc{findSuitor}(u)$\Comment{\Cref{algo:rec-find-suitor}}
+\EndFor
+\end{algorithmic}
+\end{algorithm}
+

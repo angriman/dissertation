@@ -1,0 +1,31 @@
+\begin{algorithm}[tb]
+\small
+\caption{\small\nbbound algorithm for top-$k$
+closeness centrality in static
+graphs~\cite{DBLP:journals/tkdd/BergaminiBCMM19}.}
+\label{algo:nbbound}
+\textbf{Input:} A graph $G = (V, E)$, an integer $1 \le k < n$.\\
+\textbf{Output:} Top-$k$ vertices with highest closeness centrality.
+
+\begin{algorithmic}[1]
+\State$\topk \gets$ empty min-priority queue with keys $\harm(u)$ and values $u$
+\State compute the initial upper bound $\harmupp(u)$ for each $u \in V$
+\label{line:nbbound-compute-bound}
+\State$\prioq \gets$ max-priority queue with keys $\harmupp(u)$ and values all $u\in V$
+\label{line:nbbound-prioq-init}
+\While{\prioq is not empty}
+\State$u \gets \prioq.\texttt{extractMax}()$\label{line:nbbound-extract}
+\If{$\topk.\texttt{size}() = k$ \textbf{and} $\topk.\texttt{getMinKey}() > \harmupp(u)$}
+\State\Return\topk\label{line:nbbound-early-stop}
+\EndIf
+\State$\harm(u) \gets \bfsbound(u)$\label{line:nbbound-bfsbound}
+\Comment{Might modify $\harmupp(v)$ for some $v \in \prioq$}
+\State Update \prioq according to the new upper bounds\label{line:nbbound-update-pq}
+\State$\topk.\texttt{push}(\harm(u), u)$\label{line:nbbound-topk-update1}
+\If{$\topk.\texttt{size}() > k$}
+\State$\topk.\texttt{removeMin}()$\label{line:nbbound-topk-update2}
+\EndIf
+\EndWhile
+\State\Return\topk
+\end{algorithmic}
+\end{algorithm}

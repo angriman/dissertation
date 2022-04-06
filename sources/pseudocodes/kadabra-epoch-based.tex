@@ -1,0 +1,76 @@
+\begin{algorithm}[t]
+\footnotesize
+\caption{\footnotesize Epoch-based Approach}
+\label{algo:epoch-based-approach}
+
+\begin{minipage}[t]{.48\textwidth}
+Per-thread variable initialization:
+\begin{algorithmic}
+    \State $e_\mathrm{sam} \gets 1$
+    \State $f_\mathrm{sam} \gets$ new SF for $e_\mathrm{sam} = 1$
+    \If{$t = 0$}
+        \State $e_\mathrm{chk} \gets 0$
+        \State $\mathit{inCheck} \gets \false$
+    \EndIf
+\end{algorithmic}
+
+Main loop for thread $t$:
+\begin{algorithmic}[1]
+    \Loop
+        \State $\mathit{doStop} \rlxmove \mathtt{stop}$ \label{line:epoch-based:main-loop}
+        \If{$\mathit{doStop}$}
+            \State \textbf{break}
+        \EndIf
+        \State $f_\mathrm{sam}\mathtt{.data}
+            \gets f_\mathrm{sam}\mathtt{.data} \circ \Call{sample}{\null}$
+        \State $f_\mathrm{sam}\mathtt{.num}
+            \gets f_\mathrm{sam}\mathtt{.num} + 1$
+        \State $r \rlxmove \mathtt{epochToRead}$ \label{line:epoch-based:advance-epoch}
+        \If{$r =\ e_\mathrm{sam}$}
+            \State reclaim SF of epoch $e_\mathrm{sam} - 1$ \label{line:epoch:based:reclaim}
+            \State \texttt{sfFin}[t] $\storerel$ $f_\mathrm{sam}$ \label{line:epoch-based:publish}
+            \State $e_\mathrm{sam} \gets e_\mathrm{sam} + 1$
+            \State $f_\mathrm{sam} \gets$ new SF for $e_\mathrm{sam}$ \label{line:epoch-based:new-sf}
+        \EndIf
+        \If{$t = 0$} \label{line:epoch-based:thread-zero-call}
+            \State \Call{checkFrames}{\null}
+        \EndIf
+    \EndLoop
+\algstore{epochbased}
+\end{algorithmic}
+\end{minipage}\hfill
+\begin{minipage}[t]{.48\textwidth}
+Check of stopping condition by thread $0$:
+\begin{algorithmic}[1]
+\algrestore{epochbased}
+    \Procedure{checkFrames}{\null}
+        \If{\textbf{not} $\mathit{inCheck}$} \label{line:epoch-based:check-cycle}
+            \State $e_\mathrm{chk} \gets e_\mathrm{chk} + 1$
+            \State $\mathtt{epochToRead} \rlxmove e_\mathrm{chk}$
+            \State $\mathit{inCheck} \gets \true$
+        \EndIf
+        \For{$t = 0$ \textbf{to} $T - 1$} \label{line:epoch-based:check-frames}
+            \State $f_\mathrm{fin} \loadacq \mathtt{sfFin}[t]$ \label{line:epoch-based:subscribe}
+            \If{$f_\mathrm{fin} = \nil$}
+                \State \Return
+            \EndIf
+            \If{$f_\mathrm{fin}.\mathtt{epoch} \neq e_\mathrm{chk}$}
+                \State \Return
+            \EndIf
+        \EndFor
+        \State $d \gets$ new SF for accumulation
+        \For{$t = 0$ \textbf{to} $T$} \label{line:epoch-based:accumulate}
+            \State $f_\mathrm{fin} \rlxmove \mathtt{sfFin}[t]$
+            \State $d\mathtt{.data}
+                \gets d\mathtt{.data} \circ f_\mathrm{fin}\mathtt{.data}$
+            \State $d\mathtt{.num}
+                \gets d\mathtt{.num} + f_\mathrm{fin}\mathtt{.num}$
+        \EndFor
+        \If{\Call{checkForStop}{$d$}} \label{line:epoch-based:convergence}
+            \State $\mathtt{stop} \rlxmove \true$ \label{line:epoch-based:do-stop}
+        \EndIf
+        \State $\mathit{inCheck} \gets \false$
+    \EndProcedure
+\end{algorithmic}
+\end{minipage}
+\end{algorithm}

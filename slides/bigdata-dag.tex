@@ -1,0 +1,85 @@
+\begingroup\centering
+\only<1>{\begin{tikzpicture}[scale=.7]}
+\only<2->{\begin{tikzpicture}[draw=lightgray,scale=.7]}
+\renewcommand{\darkorange}{\emphcolor}
+
+\drawgraphcontour
+\drawgroupcontour
+
+\simplenode{\nodeida}{\coorda}
+\simplenode{\nodeidb}{\coordb}
+\simplenode{\nodeidc}{\coordc}
+\simplenode{\nodeidd}{\coordd}
+\simplenode{\nodeide}{\coorde}
+\simplenode{\nodeidf}{\coordf}
+
+\simplenode{\nodeidg}{\coordg}
+\only<1>{\simplenode{\nodeidh}{\coordh}}
+\only<2->{\colortextnode{\nodeidh}{\nodeidh}{$v$}}
+\simplenode{\nodeidi}{\coordi}
+\simplenode{\nodeidj}{\coordj}
+
+\simplenode{\nodeidk}{\coordk}
+\only<1>{
+\simplenode{\nodeidl}{\coordl}
+\simplenode{\nodeidm}{\coordm}
+\simplenode{\nodeidn}{\coordn}
+}
+\only<2->{
+\colornode{\nodeidl}{\coordl}
+\colornode{\nodeidm}{\coordm}
+\colornode{\nodeidn}{\coordn}
+}
+\simplenode{\nodeido}{\coordo}
+
+\only<1>{
+\simplenode{\nodeidp}{\coordp}
+\simplenode{\nodeidq}{\coordq}
+\simplenode{\nodeidr}{\coordr}
+}
+\only<2->{
+\colornode{\nodeidp}{\coordp}
+\colornode{\nodeidq}{\coordq}
+\colornode{\nodeidr}{\coordr}
+}
+
+\edgecoords
+
+\draw[->] (sg1) -- (ng3);
+\draw[->] (sg11) -- (ng21);
+\draw[->] (sg2) -- (ng4);
+\draw[->] (sg3) -- (ng2);
+\draw[->] (sg4) -- (ng1);
+\draw[<-] (sg5) -- (sg3b);
+\draw[<-] (sg6) -- (sg2b);
+
+\draw[->] (ng1b) -- (ng5);
+\only<1>{
+\draw[->] (ng2b2) -- (ng6);
+\draw[->] (ng2b) -- (ng7);
+\draw[->] (ng2b1) -- (ng81);
+}
+\only<2->{
+\draw[->,blue,thick] (ng2b2) -- (ng6);
+\draw[->,blue,thick] (ng2b) -- (ng7);
+\draw[->,blue,thick] (ng2b1) -- (ng81);
+}
+\draw[->] (ng3b) -- (ng8);
+\draw[->] (ng3b1) -- (ng9);
+
+\only<1>{
+\draw[->] (ng6b) -- (ng10);
+\draw[->] (ng7b) -- (ng11);
+\draw[->] (ng7b1) -- (ng12);
+}
+\only<2->{
+\draw[->,blue,thick] (ng6b) -- (ng10);
+\draw[->,blue,thick] (ng7b) -- (ng11);
+\draw[->,blue,thick] (ng7b1) -- (ng12);
+};
+
+\only<2->{
+    \node[] at (10, -1.5) {\textnormal{Here:} \emph{$|\deltafarnm(v)| = 7$}};
+}
+\end{tikzpicture}
+\endgroup\par

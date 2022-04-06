@@ -1,0 +1,27 @@
+\begingroup\centering
+\begin{tikzpicture}
+
+\simplenode{a}{-1, 0}
+\simplenode{b}{-.7, 1}
+\simplenode{c}{0, 1.2}
+\simplenode{d}{1, 1}
+\simplenode{e}{1.2, -.8}
+\simplenode{f}{2, 0}
+\simplenode{g}{0, 0}
+\simplenode{h}{-1.8, 1}
+
+\draw[-] (a) -- (b);
+\draw[-] (a) -- (h);
+\draw[-] (b) -- (h);
+\draw[-] (b) -- (c);
+\draw[-] (c) -- (d);
+\only<2>{
+\draw[HUBmagenta,-,thick] (c) -- (e);
+}
+\draw[-] (e) -- (f);
+\draw[-] (e) -- (g);
+\only<3->{
+\draw[HUBgreen,-,thick] (c) -- (g);
+}
+\end{tikzpicture}
+\endgroup\par

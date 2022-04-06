@@ -1,0 +1,35 @@
+\begin{algorithm}[t]
+\footnotesize
+\setstretch{1}
+\caption{\footnotesize Approximation algorithm for $\diag{\Fmat}$.}
+\label{algo:flinv-diag-apx}
+\textbf{Input:} Undirected graph $G = (V, E, w)$, control parameter $\alpha$,
+error bound $\epsilon \in (0, 1)$, probability $\delta\in (0, 1)$\\
+\textbf{Output:} $\diag{\Fmatapx}$, \ie an $(\epsilon, \delta)$-approximation of $\diag{\Fmat}$
+
+\begin{algorithmic}[1]
+\State Create augmented graph $\gstar = (V_\star, E_\star)$ as described
+in \Cref{sec:el-clos:ffarn-elfarn}, compute $\vol(G)$ and $c$\Comment{$\Oh(m + n)$}
+\label{line:flinv-diag-apx:aug-graph}
+\State$u_\star \gets$ universal vertex of \gstar\label{line:flinv-diag-apx:pivot}
+\State Pick constant $\kappa\in(0, 1)$ arbitrarily
+\State$\eta \gets \frac{\kappa\epsilon}{6\sqrt{\alpha(c+2)\vol(G)}}$
+\label{line:flinv-diag-apx:eta}
+\State$\tau \gets \ceil{\frac{\log(2m/\delta)}{2(1 - \kappa)^2\epsilon^2}}$
+\For{$j \gets 1$ \textbf{to} $\tau$}\label{line:flinv-diag-apx:ust-sample-1}
+\State$\rdiststarapx(u_\star, \cdot) \gets\textsc{SampleUST}(\gstar, u_\star)$
+\Comment{$\Oh(\alpha\vol(G) + n)$}
+\label{line:flinv-diag-apx:ust-sample-2}
+\EndFor
+\State Solve $\Lstar\vect{x} = \cunit{u_\star} - \frac{1}{n + 1}\cdot\ones$ for $\vect{x}$
+with accuracy $\eta$
+\Comment{$\tilde{\Oh}(m\log^{1/2}n\log(1/\eta))$}
+\label{line:flinv-diag-apx:lapl-system}
+\For{$v \in V$}\Comment{Overall: $\Oh(n)$}\label{line:flinv-diag-apx:update-rdist-for}
+\State$\Fmatapx[v, v] \gets \rdiststarapx(u_\star, v)/\tau - \vect{x}[u_\star] + 2\vect{x}[v]$
+\label{line:flinv-diag-apx:update-rdist}
+\Comment{Unweighted case, see text for weighted case}
+\EndFor
+\State\Return$\diag{\Fmatapx}$
+\end{algorithmic}
+\end{algorithm}

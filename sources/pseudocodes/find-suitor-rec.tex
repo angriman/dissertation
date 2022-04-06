@@ -1,0 +1,16 @@
+\begin{algorithm}[tb]
+\caption{Recursive \findsuitor function}
+\label{algo:rec-find-suitor}
+\begin{algorithmic}[1]
+\Function{findSuitor}{$u$}
+\State$\mate(u) \gets \argmax_{v \in N(u)}\set{w(u, v) : w(u, v) > w(v, suitor(v)}$
+\If{$p(u) \neq \nil$}
+\State$y \gets \vsuitor(\mate(u))$
+\State$\vsuitor(\mate(u)) \gets u$
+\If{$y \neq \nil$}
+\State$\textsc{findSuitor}(y)$
+\EndIf
+\EndIf
+\EndFunction
+\end{algorithmic}
+\end{algorithm}

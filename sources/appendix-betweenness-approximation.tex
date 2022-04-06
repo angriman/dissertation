@@ -1,0 +1,57 @@
+\apxch{ch:betweenness-approx}
+
+\section{Running Time Results}
+\label{apx:betw-apx:time}
+%
+In this appendix, we report the detailed running time of our algorithms on
+every instance. For better readability, we partitioned the instances into two
+categories: moderate instances achieved a total running time of less than $100$
+seconds (\Cref{tab:betw-apx:time-moderate}); the others are shown in
+\Cref{tab:betw-apx:time-expensive}. The deviation in running time among
+different runs of the same algorithm turned out to be small -- \eg around $3\%$
+for our \localframe algorithm using $36$ cores, in geometric mean running time
+over all instances. As it is specifically small compared to our speedups, we
+report data on a single run per instance.
+
+
+\begin{table}[h]
+\setlength{\tabcolsep}{3pt}
+\centering\scriptsize
+\captionabove{Absolute running times (s) on moderate instances. Total: ADS with preprocessing
+on a single core.}
+\label{tab:betw-apx:time-moderate}
+
+\begin{subtable}[t]{\textwidth}
+\centering
+\caption{OMP: OpenMP baseline, L: \localframe}
+\input{sources/tables/betw-apx/time-1.tex}
+\end{subtable}\bigskip
+
+\begin{subtable}[t]{\textwidth}
+\centering
+\caption{S: \sharedframe, I: \indexedframe}
+\input{sources/tables/betw-apx/time-2.tex}
+\end{subtable}
+\end{table}
+
+\begin{table}[h]
+\setlength{\tabcolsep}{3pt}
+\centering\scriptsize
+\captionabove{Absolute running times (s) on expensive instances. Total: ADS with preprocessing
+on a single core.}
+\label{tab:betw-apx:time-expensive}
+
+\begin{subtable}[t]{\textwidth}
+\centering
+\caption{OMP: OpenMP baseline, L: \localframe}
+\input{sources/tables/betw-apx/time-3.tex}
+\end{subtable}\bigskip
+
+\begin{subtable}[t]{\textwidth}
+\centering
+\caption{S: \sharedframe, I: \indexedframe}
+\input{sources/tables/betw-apx/time-4.tex}
+\end{subtable}
+\end{table}
+
+

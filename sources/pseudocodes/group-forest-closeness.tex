@@ -1,0 +1,26 @@
+\begin{algorithm}[t]
+\footnotesize
+\setstretch{1}
+\caption{\footnotesize Greedy algorithm for group forest closeness maximization -- adapted from Li \etal~\cite{DBLP:conf/www/0002PSYZ19}}
+\label{algo:group-forest-closeness}
+\textbf{Input:} Undirected graph $G = (V, E)$, group size $k$ \\
+\textbf{Output:} Group $S \subseteq V$ of $k$ vertices
+
+\begin{algorithmic}[1]
+\State$\Linvstar \gets\textsc{pseudoInverse}(\Lstar)$
+\State$v \gets \argmin_{v \in V}n(\Linvstar[v, v]) + \tr{\Linvstar}$
+\State$\mat{M} \gets \textsc{inverse}((\Lstar)_{-v})$
+\Comment{Invariant: $\mat{M} \gets (\Lstar)_{-S}^{-1}$ throughout the algorithm}
+\State$S \gets \set{v}$
+\While{$|S| < k$}
+\State$v \gets \argmax_{v \in V \setminus S}
+\frac{(\mat{M}\cunit{v})^\top(\mat{M}\cunit{v})}{\cunit{v}^\top\mat{M}\cunit{v}}$
+\State$\mat{M} \gets
+\roundb{\mat{M} - \frac{\mat{M}\cunit{v}\cunit{v}^\top\mat{M}}{\cunit{v}^\top\mat{M}\cunit{v}}}_{-\set{v}}$
+\label{line:gfc:m-update}
+\State$S \gets S \cup \set{u}$
+\EndWhile
+\State\Return$S$
+\end{algorithmic}
+
+\end{algorithm}

@@ -1,0 +1,49 @@
+\begin{algorithm}[t]
+\footnotesize
+\setstretch{1}
+\caption{\footnotesize Lazy greedy algorithm for GED-Walk maximization.}
+\label{algo:ged-lazy-greedy}
+\textbf{Input:} Graph $G = (V, E)$, parameter $\alpha$, and group size $k$.\\
+\textbf{Output:} Group $S \subseteq V$ with $\ged(S) \ge (1 - 1/e)$ times the
+optimum score.
+\begin{algorithmic}[1]
+\State$S \gets \emptyset,\ \ell \gets 1$
+\State$L(u) \gets \infty,\ U(u) \gets \infty$ for all $u \in V$
+\State$PQ_L \gets$ empty max-priority queue with keys $L(u)$ and values $u \in V$
+\State$PQ_U \gets$ empty max-priority queue with keys $U(u)$ and values $u \in V$
+\Procedure{LazyUpdate}{$PQ$}\label{line:ged-greedy:proc}
+\Repeat
+\State$u \gets PQ.\texttt{max}()$
+\State$L(u) \gets L_{\ell}(S, u)$
+\State$U(u) \gets U_{\ell}(S, u)$
+\State$PQ_L.\texttt{update}(u),\ PQ_U.\texttt{update}(u)$
+\Until{$u = PQ.\texttt{max}()$}
+\State\Return$u$
+\EndProcedure\smallskip
+
+\Loop
+\For{\textbf{each} $u \in V$}
+\State$L(u) \gets \infty,\ U(u) \gets \infty$\label{line:ged-greedy:reset-LU}
+\State$PQ_L.\texttt{push}(u),\ PQ_U.\texttt{push}(u)$
+\EndFor
+\Loop
+\If{$|S| = k$}
+\State\Return$S$
+\EndIf
+\State$x \gets \textsc{lazyUpdate}(PQ_L)$
+\State$PQ_L.\texttt{remove}(x),\ PQ_U.\texttt{remove}(x)$
+\State$y \gets \textsc{lazyUpdate}(PQ_U)$
+\If{$L(x) \le U(y) - \epsilon / k$}\Comment{Check if $x$ is $(\epsilon / k)$-separated from $y$}
+\label{line:ged-greedy:eps-sep-check}
+\TopComment{$x$ and $y$ are not $(\epsilon/k)$-separated, increase $\ell$}
+\State$PQ_L.\texttt{push}(x),\ PQ_U.\texttt{push}(x)$
+\State\textbf{break}
+\EndIf
+\State$S \gets S \cup \set{x}$\label{line:ged-greedy:add-x}
+\EndLoop
+\State$\ell \gets 2\ell$\Comment{Increase $\ell$ using geometric progression}
+\label{line:ged-greedy:inc-l}
+\EndLoop
+\end{algorithmic}
+\end{algorithm}
+

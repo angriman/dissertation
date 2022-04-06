@@ -1,0 +1,173 @@
+\documentclass{mimosis}
+\usepackage{algorithm}
+\usepackage[noend]{algpseudocode}
+\usepackage{amsfonts}
+\usepackage[toc,page]{appendix}
+\usepackage{bm}
+\usepackage{chngcntr}
+\usepackage[ngerman,english]{cleveref}
+\usepackage{environ}
+\usepackage{numprint}
+\usepackage[super]{nth}
+\usepackage{placeins}
+\usepackage{svg}
+\usepackage{tikz}
+\usepackage[textsize=footnotesize]{todonotes}
+
+\usetikzlibrary{arrows, arrows.meta, calc, decorations.pathreplacing, patterns,
+positioning}
+
+%%% Cleveref settings %%%
+\Crefname{equation}{Eq.}{Eqs.}
+\newcommand{\crefrangeconjunction}{--}
+\AtBeginEnvironment{appendices}{
+\crefalias{section}{appendix}
+\crefalias{Section}{Appendix}
+\crefalias{chapter}{appendix}
+\crefalias{Chapter}{Appendix}
+}
+
+%%% Numprint settings %%%
+\npthousandsep{,}%
+\npdecimalsign{.}%
+\npproductsign{\cdot}%
+\npunitseparator{\,}%
+\npdegreeseparator{}%
+\npcelsiusseparator{\nprt@unitsep}%
+\nppercentseparator{\nprt@unitsep}%
+
+% shorter minus sign in \numprint exponents
+\expandafter\renewcommand\csname nprt@sign@-\endcsname{%
+\ifmmode {-}\else {\text{-}}\fi}
+
+%%% Hyphenation %%%
+\hyphenation{Page-Rank net-works}
+
+% Avoid resetting footnotes after each part/chapter
+%\makeatletter
+%\pretocmd{\@schapter}{\setcounter{footnote}{0}}{}{}
+\counterwithout*{footnote}{chapter}
+%\pretocmd{\@chapter}{\setcounter{footnote}{0}}{}{}
+%\makeatother
+
+%%% Macros %%%
+\input{sources/macros.tex}
+\input{sources/thesis-macros.tex}
+
+%%% Color changes for final version in blue %%%
+\changesfalse
+
+%%% Generated macros %%%
+\input{sources/gen-macros/preliminaries.tex}
+\input{sources/gen-macros/betweenness-approximation.tex}
+\input{sources/gen-macros/dyn-topk.tex}
+\input{sources/gen-macros/group-closeness-ls.tex}
+\input{sources/gen-macros/group-closeness-harmonic.tex}
+\input{sources/gen-macros/ged-walk.tex}
+\input{sources/gen-macros/ged-harmonic.tex}
+\input{sources/gen-macros/el-clos.tex}
+\input{sources/gen-macros/forest-closeness.tex}
+\input{sources/gen-macros/dyn-mwm.tex}
+\input{sources/gen-macros/rw-macros.tex}
+
+\input{sources/bibliography-mimosis}
+\addbibresource{references.bib}
+
+\input{sources/acronyms}
+\input{sources/glossary}
+
+\makeindex
+\makeglossaries
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Incipit
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\title{\textbf{Scalable Algorithms for the Analysis of Massive Networks}}
+\author{\textbf{Eugenio Angriman}}
+\HUpresident{Prof. Dr.-Ing. Dr. Sabine Kunst}
+\HUdean{Prof. Dr. Elmar Kulke}
+\firstReviewer{Prof. Dr Henning Meyerhenke}
+\secondReviewer{Prof. Dr. Giuseppe Francesco Italiano}
+\thirdReviewer{Prof. Dr. Ulrik Brandes}
+\date{14 Dezember 2021}
+
+
+\begin{document}
+
+\frontmatter
+\include{sources/title}
+\include{sources/decl-independent-work}
+\cleardoublepage
+\include{sources/acknowledgments}
+
+\cleardoublepage
+\include{sources/zusammenfassung}
+\cleardoublepage
+\include{sources/abstract}
+
+\cleardoublepage
+\tableofcontents
+\vfill
+\pagebreak
+\listoffigures
+\vfill
+\pagebreak
+\listoftables
+\vfill
+\pagebreak
+
+\mainmatter
+
+\part{Introduction}
+\include{sources/1_introduction.tex}
+\include{sources/2_preliminaries.tex}
+\part{Algorithms for Single-Vertex Centrality Measures}
+\label{part:single-vertex-centrality}
+\include{sources/intro-part-2.tex}
+\include{sources/3_dyn-top-closeness.tex}
+\include{sources/4_betweenness-approximation.tex}
+\include{sources/5_electrical-closeness.tex}
+\part{Algorithms for Group Centrality Measures}
+\label{part:group-centrality}
+\include{sources/intro-part-3.tex}
+\include{sources/6_group-closeness-local-search-heu.tex}
+\include{sources/7_group-closeness-harmonic-approx.tex}
+\include{sources/8_ged-walk.tex}
+\part{Maximum Weighted Matching in Fully-Dynamic Graphs}
+\label{part:matching}
+\include{sources/intro-part-4.tex}
+\include{sources/9_dyn-mwm.tex}
+\part{Conclusion}
+\label{part:conclusion}
+\include{sources/conclusions}
+
+%%% Appendices %%%
+\begin{appendices}
+\addtocontents{toc}{\protect\setcounter{tocdepth}{0}}
+\input{sources/appendix-publications.tex}
+\input{sources/appendix-dyn-topk.tex}
+\input{sources/appendix-betweenness-approximation.tex}
+\input{sources/appendix-electrical-closeness.tex}
+\input{sources/appendix-group-closeness-local-search.tex}
+\input{sources/appendix-group-harmonic-closeness-maximization.tex}
+\input{sources/appendix-ged-walk.tex}
+\input{sources/appendix-dyn-mwm.tex}
+\end{appendices}
+
+% This ensures that the subsequent sections are being included as root
+% items in the bookmark structure of your PDF reader.
+%\bookmarksetup{startatroot}
+\backmatter
+%      \printacronymsandglossary
+\begingroup
+    \let\clearpage\relax
+    \glsaddall
+    \printglossary[type=\acronymtype]
+    \newpage
+    \printglossary
+\endgroup
+\printindex
+\printbibliography
+
+\end{document}

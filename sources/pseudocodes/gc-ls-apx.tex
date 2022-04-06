@@ -1,0 +1,44 @@
+\begin{algorithm}[t]
+\footnotesize
+\setstretch{1}
+\caption{\footnotesize Overview of the single-swap algorithm for group-closeness maximization.}
+\label{algo:gc-ls-apx}
+\begin{algorithmic}[1]
+\State$S \gets \growshrink(G, k)$
+\State$\gfarn(S) \gets$ SSSP$(S)$
+\Repeat
+\State$PQ_u \gets$ min-priority queue with key $(\gfarn(S \setminus \set{u}) - \gfarn(S)$
+and value $u$\label{line:gc-ls-apx:pqu1}
+\For{\textbf{each} $x \in S$}
+\State$PQ_u.\texttt{push}(x)$
+\EndFor\label{line:gc-ls-apx:pqu2}
+\State$\didswap \gets \false$
+\Repeat
+\State$u \gets PQ_u.\texttt{extractMin}()$
+\TopComment{Compute the exact farness increase}
+\State$\gfarn^+(u) \gets \gfarn(S \setminus \set{u}) - \gfarn(S)$\label{line:gc-ls-apx:gfarnplus}
+\State compute $\gfarnapx((S \cup \set{v}) \setminus \set{u})$ for all $v \in V \setminus S$
+\State$PQ_v \gets$ max-priority queue with key $\gfarnapx((S \cup \set{v}) \setminus \set{u})$
+and value $v$\label{line:gc-ls-apx:pqv1}
+\For{\textbf{each} $x \in V \setminus S$}
+\State$PQ_v.\texttt{push}(x)$
+\EndFor\label{line:gc-ls-apx:pqv2}
+\Repeat
+\State$v \gets PQ_v.\texttt{extractMax}()$
+\TopComment{Compute the exact farness decrease}
+\State$\gfarn((S \cup \set{v}) \setminus \set{u}) \gets$ pruned SSSP from $v$
+\If{$\gfarn((S \cup \set{v}) \setminus \set{u}) \le \roundb{1 - \frac{\epsilon}{k (n - k)}}\gfarn(S)$}
+\State$S \gets (S \cup \set{v}) \setminus \set{u}$
+\State$\gfarn(S) \gets$ SSSP$(S)$
+\State$\didswap \gets \true$
+\State\textbf{break}
+\EndIf
+\Until{$PQ_v$ is empty}
+\If{\didswap}
+\State\textbf{break}
+\EndIf
+\Until{$PQ_u$ is empty}
+\Until{not \didswap}
+\State\Return$S$
+\end{algorithmic}
+\end{algorithm}

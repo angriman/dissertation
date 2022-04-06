@@ -1,0 +1,37 @@
+\begin{tikzpicture}[scale=.7]
+\foreach[count=\i from 0] \y in {a,b,...,h}
+{
+    \coordinate (\y) at (\i, 0);
+    \coordinate (e\y) at (\i+.5, .3);
+    \filledvertex{\y};
+}
+
+\foreach[count=\i from 4] \y in {g,f,...,a}
+{
+    \draw (e\y) node {\footnotesize$\i$};
+}
+
+\only<1>{
+\draw[-,very thick] (a) -- (b);
+\draw[-,very thick] (c) -- (d);
+\draw[-,very thick] (e) -- (f);
+\draw[-,very thick] (g) -- (h);
+
+\draw[-] (b) -- (c);
+\draw[-] (d) -- (e);
+\draw[-] (f) -- (g);
+}
+
+\only<2>{
+\draw[-] (a) -- (b);
+\draw[-] (c) -- (d);
+\draw[-] (e) -- (f);
+\draw[-] (g) -- (h);
+
+\draw[-,very thick] (b) -- (c);
+\draw[-,very thick] (d) -- (e);
+\draw[-,very thick] (f) -- (g);
+\draw[-,very thick, HUBgreen] (a) [bend right] to (h);
+\draw (ed) node [below = 6mm] {\footnotesize$11$};
+}
+\end{tikzpicture}

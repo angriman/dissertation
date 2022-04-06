@@ -1,0 +1,31 @@
+\begin{algorithm}[t]
+\caption{\footnotesize Iterative \findsuitor function}
+\label{algo:iter-find-suitor}
+\begin{algorithmic}[1]
+\footnotesize
+\Function{findSuitor}{$u$}
+\State$\cur \gets u$
+\State$\done \gets \false$
+\Repeat
+\State$\partner \gets \vsuitor(\cur)$
+\State$\heaviest \gets ws(\cur)$
+\For{\textbf{each} $v \in N(\cur)$}\label{line:iter-find-suitor:for-neigh}
+\If{$w(\cur, v) > \heaviest$ \textbf{and} $w(\cur, v) > ws(v)$}
+\State$\partner \gets v$
+\State$\heaviest \gets w(\cur, v)$
+\EndIf
+\EndFor\label{line:iter-find-suitor:for-neigh-end}
+\State$\done \gets \true$
+\If{$\heaviest > 0$}\label{line:iter-find-suitor:if-heaviest}
+\State$y \gets \vsuitor(\partner)$\label{line:iter-find-suitor:update-1}
+\State$\vsuitor(\partner) \gets \cur$
+\State$ws(\partner) \gets \heaviest$\label{line:iter-find-suitor:update-2}
+\If{$y \neq \nil$}\label{line:iter-find-suitor:if-y}
+\State$\cur \gets y$
+\State$\done \gets \false$\label{line:iter-find-suitor:if-y-end}
+\EndIf
+\EndIf
+\Until{$\done$ is \true}
+\EndFunction
+\end{algorithmic}
+\end{algorithm}

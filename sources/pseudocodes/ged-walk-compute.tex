@@ -1,0 +1,21 @@
+\begin{algorithm}[tb]
+\caption{GED-Walk Computation}
+\label{algo:ged-walk-compute}
+\textbf{Input:} Graph $G = (V, E)$, parameters
+$\alpha, \epsilon$, and group $S \subseteq V$.\\
+\textbf{Output:} $\ged(S) \pm \epsilon$.
+\begin{algorithmic}[1]
+\State$c \gets 0$
+\State$i \gets 1$
+\While{\true}
+\State compute $\phi_i(S)$\label{line:ged-walk-compute:phi}
+\State$c \gets c + \alpha^i \phi_i(S)$
+\State compute bound $B_{\ell}$ s.t. $\gedgl(S) \le B_{\ell}$
+\label{line:ged-walk-compute:bound}
+\If{$B_{\ell} < \epsilon$}
+\State\Return$c$
+\EndIf
+\State$i \gets i + 1$
+\EndWhile
+\end{algorithmic}
+\end{algorithm}

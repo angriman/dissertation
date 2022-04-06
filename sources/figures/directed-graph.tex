@@ -1,0 +1,16 @@
+\begin{tikzpicture}
+\vertex{-1,1}{0}{0}
+\vertex{1,1}{1}{1}
+\vertex{0,0}{2}{2}
+\vertex{-1,-1}{3}{3}
+\vertex{1,-1}{4}{4}
+
+\dedge{0}{3}
+\dedge{1}{2}
+\dbedge{1}{4}{bend left=20}
+\dbedge{4}{1}{bend left=20}
+\dedge{2}{3}
+\dedge{2}{4}
+\dedge{3}{4}
+\end{tikzpicture}
+

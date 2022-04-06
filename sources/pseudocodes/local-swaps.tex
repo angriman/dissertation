@@ -1,0 +1,14 @@
+\begin{algorithm}[tb]
+\caption{Overview of the \localswaps Algorithm}
+\label{algo:local-swaps}
+\begin{algorithmic}[1]
+\Repeat
+\State approximate $D_v$ for all $v \in V \setminus S$ with~\cite{DBLP:journals/jcss/Cohen97}
+\State$\left< u, v \right> \gets \argmax_{u, \in S,\ v\in N(u) \setminus S} |D_v| - |\Lambda_u|$
+\label{line:ghc-ls-good-swap}
+\State$S \gets \Suv$
+\State run pruned BFS from $v$\Comment{to recompute $\gfarn(S)$}
+\label{line:ghc-ls-pruned-bfs}
+\Until{previous iteration did not decrease $\gfarn(S)$}
+\end{algorithmic}
+\end{algorithm}

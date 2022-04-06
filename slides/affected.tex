@@ -1,0 +1,12 @@
+\begingroup\centering
+\begin{tikzpicture}
+\textnode{a}{-.75, 0}{$u$}
+\textnode{b}{.75, 0}{$v$}
+\textnode{c}{-2, -.5}{$a$}
+\textnode{d}{2, -.5}{$b$}
+
+\draw (a) edge [very thick] node[above=.5mm] {3} (b);
+\draw (a) edge [thick, \emphcolor] node [above=.5mm] {2} (c);
+\draw (b) edge [\emphcolor] node [above=.5mm] {1} (d);
+\end{tikzpicture}
+\endgroup\par

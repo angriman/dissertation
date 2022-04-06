@@ -1,0 +1,30 @@
+\begin{tikzpicture}[sfstyle/.style={
+	draw,rectangle,minimum width=1.1cm,minimum height=1.1cm,align=center,font=\scriptsize
+}]
+	\node[draw,rectangle] at (5,2) {$\mathtt{epochToRead} = 5$};
+
+	\draw (-4,0) -- (6,0);
+	\node[above right=0.15cm and 0cm] at (-4,0) {Thread 2};
+	\node[below right=0.15cm and 0cm] at (-4,0) {Thread 9};
+
+	\node[sfstyle,dashed] at (0,0.8) (sf00) {SF of\\epoch\\4};
+	\node[sfstyle,right=0.5cm of sf00] (sf01) {SF of\\epoch\\5};
+	\node[sfstyle,right=0.5cm of sf01] (sf02) {SF of\\epoch\\6};
+	\node[sfstyle,right=0.5cm of sf02] (sf03) {$\ldots$};
+	\node[text width=1.8cm,align=right,above left=-0.5cm and 1.5cm of sf00] (efin0) {$\mathtt{sfFin}[2]$};
+	\node[text width=1.8cm,align=right,above=0cm of efin0] (csf0) {$f_\mathrm{sam}$};
+	\draw[->,cyan,thick] (efin0.east) to[out=30,in=130] (sf01.north);
+	\draw[->,orange,thick] (csf0.east) to[out=20,in=130] (sf02.north);
+
+	\node[sfstyle] at (0,-0.8) (sf10) {SF of\\epoch\\4};
+	\node[sfstyle,right=0.5cm of sf10] (sf11) {SF of\\epoch\\5};
+	\node[sfstyle,right=0.5cm of sf11] (sf12) {SF of\\epoch\\6};
+	\node[sfstyle,right=0.5cm of sf12] (sf13) {$\ldots$};
+	\node[text width=1.8cm,align=right,below left=-0.5cm and 1.5cm of sf10] (efin1) {$\mathtt{sfFin}[9]$};
+	\node[text width=1.8cm,align=right,below=0cm of efin1] (csf1) {$f_\mathrm{sam}$};
+	\draw[->,cyan,thick] (efin1.east) to[out=-30,in=-130] (sf10.south);
+	\draw[->,orange,thick] (csf1.east) to[out=-20,in=-130] ([xshift=-0.2cm]sf11.south);
+	\draw[->,cyan,dashed,thick] (efin1.east) to[out=-30,in=-130] ([xshift=0.2cm]sf11.south);
+	\draw[->,orange,dashed,thick] (csf1.east) to[out=-20,in=-130] (sf12.south);
+\end{tikzpicture}
+

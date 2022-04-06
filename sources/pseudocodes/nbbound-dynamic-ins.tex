@@ -1,0 +1,48 @@
+\begin{algorithm}[tb]
+\small
+\caption{\small Dynamic \nbbound algorithm to update the
+top-$k$ vertices after an edge insertion.}
+\label{algo:nbbound-dyn-ins}
+\textbf{Input:} A graph $G = (V, E)$, an edge $(u,v) \notin E$, \topk.\\
+\textbf{Output:} Top-$k$ vertices with highest harmonic centrality in $G' = (V, E \cup \set{(u, v)})$.
+\begin{algorithmic}[1]
+\State$\prioq \gets$ empty max-priority queue with keys $\harmupp(x)$ and values $x$
+\State$h_k \gets \topk.\texttt{getMinKey}()$
+\State$A \gets $ compute the set of affected vertices\label{line:nbbound-dyn-ins-init1}
+\State compute $d(u, x), d'(u, x), d(x, v), d'(x, v)$ for each $x\in A$
+\label{line:nbbound-dyn-ins-init2}\smallskip
+
+\For{each $x \in A$}\Comment{Compute the new bound $\harmupp'(x)$ for each $x\in A$}
+\label{line:nbbound-dyn-ins-loop}
+\If{$x\in \topk$}
+\State$\topk.\texttt{remove}(x)$
+\State$h_k \gets 0$
+\EndIf
+\State$y \gets u$
+\If{$G$ is undirected}
+\State$y \gets \argmin_{z \in \set{u, v}}d(x, z)$
+\EndIf
+\TopComment{update the bounds of the affected vertices}
+\State$\harmupp'(x) \gets \harmupp(x) +
+\sum_{i = 1}^{\imax}\frac{1}{i + d(x, y)}(n_i'(y) - n_i(y))$
+\label{line:nbbound-dyn-ins-upd-bound}
+\State$\prioq.\texttt{push}(\harmupp'(x), x)$\smallskip
+\EndFor
+
+\While{$\prioq$ is not empty}\label{line:nbbound-dyn-ins-resume1}
+\State$x \gets \prioq.\texttt{extractMax}()$
+\If{$\topk.\texttt{size}() = k$ \textbf{and} $\harmupp(x) < h_k$}
+\State\Return\topk\label{line:nbbound-dyn-ins-early-stop}
+\EndIf
+\State$\harm(x) \gets \bfsbound(x)$\label{line:nbbound-dyn-ins-bfsbound}
+\Comment{Might modify $\harmupp(z)$ for some $z\in\prioq$}
+\State Update \prioq according to the new upper bounds
+\State$\topk.\texttt{push}(\harm(x), x)$
+\If{$\topk.\texttt{size}() > k$}
+\State$\topk.\texttt{removeMin}()$
+\EndIf
+\EndWhile
+\State\Return\topk
+\label{line:nbbound-dyn-ins-loop-end}
+\end{algorithmic}
+\end{algorithm}

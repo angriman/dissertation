@@ -1,0 +1,88 @@
+bib_file: "references.bib"
+dblp_condensed: n
+
+inproceedings:
+    author: r
+    address: o
+    title: r
+    booktitle: r
+    pages: o
+    publisher: o
+    year: r
+    doi: o
+    url: d
+    note: o
+
+    series: d
+    issue: d
+    volume: d
+
+article:
+    author: r
+    title: r
+    address: o
+    journal: r
+    volume: o
+    number: o
+    pages: o
+    year: r
+    doi: o
+    url: d
+    note: o
+
+    publisher: d
+    issue: d
+
+book:
+    author: r
+    title: r
+    address: o
+    year: r
+    doi: o
+    url: d
+    note: o
+    editor: o
+    publisher: o
+    issue: o
+
+techreport:
+    author: r
+    title: r
+    institution: r
+    year: r
+
+phdthesis:
+    author: r
+    abstract: o
+    year: r
+    school: o
+    title: r
+
+incollection:
+    author: r
+    title: r
+    booktitle: r
+    publisher: o
+    year: r
+    editor: o
+    volume: o
+    number: o
+    series: o
+    chapter: o
+    pages: o
+    edition: o
+    month: o
+    address: o
+    note: d
+    annote: d
+
+misc:
+    author: r
+    address: o
+    title: r
+    booktitle: o
+    publisher: o
+    year: r
+    doi: o
+    url: d
+    note: o

@@ -1,0 +1,14 @@
+\begin{algorithm}[tb]
+\caption{Greedy algorithm for maximizing a monotone submodular set function $f$
+under a cardinality constraint $|S| = k$.}
+\label{algo:gh-greedy}
+\begin{algorithmic}[1]
+\State$S \gets \emptyset$
+\While{$|S| < k$}
+\State$u \gets \argmax_{v \in V \setminus S}\set{f(S \cup \set{v}) - f(S)}$
+\State$S \gets S\cup\set{v}$
+\EndWhile
+\State\Return$S$
+\end{algorithmic}
+\end{algorithm}
+

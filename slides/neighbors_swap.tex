@@ -1,0 +1,67 @@
+\begingroup\centering
+\begin{tikzpicture}[scale=.6]
+\renewcommand{\nshift}{6.5pt}
+
+\graphcoords
+\graphcontour
+\drawswapgroupcontour
+
+\simplenode{\nodeida}{\coorda}
+\simplenode{\nodeidb}{\coordb}
+\simplenode{\nodeidd}{\coordd}
+\simplenode{\nodeidf}{\coordf}
+\simplenode{\nodeidg}{\coordg}
+
+\customcolornode{\nodeidc}{\coordc}{magenta}
+\customcolornode{\nodeide}{\coorde}{magenta}
+\customcolornode{\nodeidh}{\coordh}{cyan}
+\customcolornode{\nodeidl}{\coordl}{cyan}
+\customcolornode{\nodeidm}{\coordm}{cyan}
+\customcolornode{\nodeidn}{\coordn}{cyan}
+\customcolornode{\nodeidp}{\coordp}{cyan}
+\customcolornode{\nodeidq}{\coordq}{cyan}
+\customcolornode{\nodeidr}{\coordr}{cyan}
+
+\newcommand{\plone}{\scriptsize$+1$}
+\newcommand{\mione}{\scriptsize$-1$}
+
+\node[magenta] at ([xshift=-2pt,yshift=11pt]\coordc) {\plone};
+\node[magenta] at ([yshift=-11pt]\coorde) {\plone};
+
+\node[cyan] at ([yshift=-11pt]\coordh) {\mione};
+\node[cyan] at ([yshift=11pt]\coordl) {\mione};
+\node[cyan] at ([yshift=-11pt]\coordm) {\mione};
+\node[cyan] at ([yshift=-11pt]\coordn) {\mione};
+\node[cyan] at ([yshift=11pt]\coordp) {\mione};
+\node[cyan] at ([xshift=15pt]\coordq) {\mione};
+\node[cyan] at ([yshift=-11pt]\coordr) {\mione};
+
+\simplenode{\nodeidi}{\coordi}
+\simplenode{\nodeidj}{\coordj}
+
+\simplenode{\nodeidk}{\coordk}
+\simplenode{\nodeido}{\coordo}
+
+\edgecoords
+
+\draw[->] (sg1) -- (ng3);
+\draw[->] (sg11) -- (ng21);
+\draw[->] (sg2) -- (ng4);
+\draw[<-] (sg3) -- (ng2);
+\draw[->] (sg4) -- (ng1);
+\draw[<-] (sg5) -- (sg3b);
+\draw[<-] (sg6) -- (sg2b);
+
+\draw[->] (ng1b) -- (ng5);
+\draw[->] (ng2b2) -- (ng6);
+\draw[->] (ng2b) -- (ng7);
+\draw[->] (ng2b1) -- (ng81);
+\draw[->] (ng3b) -- (ng8);
+\draw[->] (ng3b1) -- (ng9);
+
+\draw[->] (ng6b) -- (ng10);
+\draw[->] (ng7b) -- (ng11);
+\draw[->] (ng7b1) -- (ng12);
+\end{tikzpicture}
+\endgroup\par
+

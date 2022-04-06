@@ -1,0 +1,69 @@
+\begin{algorithm}[t!]
+\setstretch{1}
+\footnotesize
+\caption{\footnotesize Dynamic \nbcut algorithm to update the
+top-$k$ vertices after an edge insertion.}
+\label{algo:nbcut-dyn-ins}
+\textbf{Input:} A graph $G = (V, E)$, an edge $(u,v) \notin E$, \topk.\\
+\textbf{Output:} Top-$k$ vertices with highest closeness centrality in $G' = (V, E \cup \set{(u, v)})$.
+
+\begin{algorithmic}[1]
+\State$\prioq \gets$ empty max-priority queue with keys $\harmupp'(x)$ and values $x$
+\State$h_k \gets \topk.\texttt{getMinKey}()$
+\State compute $r'(x)$ for each $x \in V$\label{line:nbcut-dyn-ins-init1}
+\State$A \gets $ compute the set of affected vertices\label{line:nbcut-dyn-ins-aff}
+\State compute $d(u, x), d'(u, x), d(x, v), d'(x, v)$ for each $x\in A$
+\label{line:nbcut-dyn-ins-init2}\smallskip
+
+\For{each $x \in A$}\Comment{Compute the new bound $\harmupp'(x)$ for each $x\in A$}
+\If{$x\in \topk$}\label{line:nbcut-dyn-ins-remove1}
+\State$\topk.\texttt{remove}(x)$\label{line:nbcut-dyn-ins-remove2}
+\State$h_k \gets 0$
+\EndIf
+\State$y \gets u$
+\If{$G$ is undirected}
+\State$y \gets \argmin_{z \in \set{u, v}}d(x, z)$
+\EndIf
+\If{\textbf{not} $\isexact(x)$ \textbf{and} $\dcut(x) < d(x, y)$}\label{line:nbcut-dyn-ins-upd1}
+\State$\harmupp'(x) \gets \harmupp(x) - \frac{r(x)}{\dcut(x) + 2} + \frac{r'(x)}{\dcut(x) + 2}$
+\Comment{$x$ is a far-away vertex}
+\label{line:nbcut-dyn-ins-far-away}
+\ElsIf{\textbf{not} $\isexact(x)$ \textbf{and} $\dcut(x) = d(x, y)$}
+\State$\harmupp'(x) \gets \harmupp(x) - \frac{r(x) - r'(x) + 1}{\dcut(x) + 2}
++ \frac{1}{\dcut(x) + 1}$
+\label{line:nbcut-dyn-ins-boundary}
+\Comment{$x$ is a boundary vertex}
+\Else
+\State$\harmupp'(x) \gets \harmupp(x) +
+\sum_{i = 1}^{\imax}\frac{1}{i + d(x, y)} \roundb{n_i'(y) - n_i(y)}$
+\Comment{Distance-based bound}
+\label{line:nbcut-dyn-ins-dist-bound}
+\State$\dcut(x) \gets \infty$
+\label{line:nbcut-dyn-ins-dist-dcut-infty}
+\EndIf
+\State$\prioq.\texttt{push}(x)$\label{line:nbcut-dyn-ins-upd2}
+\EndFor\smallskip
+
+\While{$\prioq$ is not empty}\label{line:nbcut-dyn-ins-resume1}
+\State$x \gets \prioq.\texttt{extractMax}()$
+\If{$\harmupp'(x) \ge h_k$}
+\State$\left<\harmupp'(x), \isexact(x) \right> \gets \bfscut(x, h_k)$
+\Comment{We have to run a new \bfscut from $x$}
+\Else\ \textbf{break}\label{line:nbcut-dyn-ins-break}
+\EndIf
+\If{$\isexact(x)$ \textbf{and} $\harmupp'(x) \ge h_k$}
+\State$\topk.\texttt{push}(\harmupp'(x), x)$
+\Comment{Note that here $\harmupp'(x) = \harm(x)$}
+\EndIf
+\If{$\topk.\texttt{size}() > k$}
+\State$\topk.\texttt{removeMax}()$
+\EndIf
+\If{$\topk.\texttt{size}() = k$}
+\State$h_k \gets \topk.\texttt{getMinKey}()$
+\EndIf
+\EndWhile\label{line:nbcut-dyn-ins-resume2}
+\State update $\harmupp(x), r(x),$ and $n_i(u)$ to $\harmupp'(x), r'(x),$ and $n_i'(x)$, respectively
+for each $x\in V$
+\State\Return\topk
+\end{algorithmic}
+\end{algorithm}

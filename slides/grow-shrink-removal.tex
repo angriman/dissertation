@@ -1,0 +1,96 @@
+\begingroup\centering
+\begin{tikzpicture}
+\small
+\coordinate (r1) at (2,2.4);
+\coordinate (r2) at (6.25,2.85);
+\coordinate (r3) at (8,2.8);
+\coordinate (l1) at (.1, 4);
+\coordinate (l2) at (.55, 4);
+\coordinate (l3) at (.1, 3.6);
+\coordinate (l4) at (.55, 3.6);
+\coordinate (u1) at ([xshift=.75cm, yshift=-.45cm]r2);
+\coordinate (w1) at ([xshift=.75cm, yshift=.3cm]r1);
+\coordinate (w2) at ([xshift=.85cm, yshift=-.3cm]w1);
+\coordinate (w3) at ([xshift=.95cm, yshift=.4cm]w2);
+\path (w) ++(30:3pt) coordinate (pw1);
+\path (w1) ++(180:3pt) coordinate (pw2);
+\path (w1) ++(0:3pt) coordinate (pw3);
+\path (w2) ++(160:3pt) coordinate (pw4);
+\path (w2) ++(0:3pt) coordinate (pw5);
+\path (w3) ++(185:4pt) coordinate (pw6);
+\path (r2) ++(325:3pt) coordinate (pu1);
+\path (u1) ++(145:3pt) coordinate (pu2);
+\path (u1) ++(30:4pt) coordinate (pu3);
+\path (r3) ++(190:3pt) coordinate (pu6);
+
+\node[cyan, draw, shape=rectangle, minimum width=2.55cm, minimum height=1.5cm, anchor=center,rounded corners=20pt,thick] at (r1) {};
+\onslide<-5>{
+\node [HUBred, draw, shape=rectangle, minimum width=2.5cm, minimum height=2.0cm, anchor=center,rounded corners=25pt,thick] at  (r2) {};
+\node [cyan,draw, shape=rectangle, minimum width=1cm, minimum height=1.3cm, anchor=center,rounded corners=10pt,
+thick] at (r3) {};
+\draw[HUBorange, rounded corners=40pt,dashed,thick]
+  (4,1.3) rectangle ++(3.5,3);
+\node[draw,cyan,shape=rectangle, rounded corners=30pt,dashed,thick, minimum width=3.8cm, minimum height=2.5cm]
+at ([xshift=.1cm,yshift=-.3cm]r1) {};
+\node [cyan,draw, shape=rectangle, minimum width=2cm, minimum height=1.5cm, anchor=center,rounded corners=15pt,
+thick, dashed] at ([xshift=.5cm]r3) {};
+}
+\onslide<6->{
+\node [cyan,draw, shape=rectangle, minimum width=4.9cm, minimum height=1.5cm, anchor=center,rounded corners=15pt,
+thick, dashed] at ([xshift=-.95cm]r3) {};
+\node [cyan,draw, shape=rectangle, minimum width=3cm, minimum height=1.3cm, anchor=center,rounded corners=10pt,
+thick] at ([xshift=-1cm]r3) {};
+
+\node[draw,cyan,shape=rectangle, rounded corners=30pt,dashed,thick, minimum width=4.4cm, minimum height=2.5cm]
+at ([xshift=.4cm,yshift=-.3cm]r1) {};
+}
+
+\only<3-4>{
+    \draw (w3) circle [radius=3pt];
+    \draw (u1) circle [radius=3pt];
+}
+\only<5>{
+    \customcolornode{w31}{w3}{cyan};
+    \customcolornode{u11}{u1}{cyan};
+}
+
+\draw (r1) circle [radius=3pt] coordinate (w);
+\draw (w) node [below=.1cm] {$a$};
+\onslide<3-5>{
+\draw (w1) circle [radius=3pt];
+\draw (w2) circle [radius=3pt];
+\draw (w2) node [below=.1cm] {$x$};
+\draw (w3) node [below=.15cm] {$y$};
+
+\draw[-] (pw1) -- (pw2);
+\draw[-] (pw3) -- (pw4);
+\draw[densely dotted, ultra thick] (pw5) -- (pw6);
+}
+
+\draw (r3) circle [radius=3pt];
+\draw (r3) node [below=.15cm] {$c$};
+
+\only<-5>{
+\draw (r2) circle [radius=3pt];
+\draw (r2) node [above=.1cm] {$u$};
+\draw (r2) node [below left=.65cm] {\textcolor{HUBred}{$R_u$}};
+\draw (r2) node [below left=1.3cm] {\textcolor{HUBorange}{$R_{u}'$}};
+}
+\onslide<3-5>{
+\draw (u1) node [below=.15cm] {$z$};
+
+\draw[-] (pu1) -- (pu2);
+\draw[dashed, ultra thick] (pu3) -- (pu6);
+
+%\draw[densely dotted, ultra thick] (l1) -- (l2);
+%\draw[dashed, ultra thick] (l3) -- (l4);
+%\node [right=.1cm of l2,align=left] {$d_S'$-boundary pair};
+%\node [right=.1cm of l4,align=left] {$d_S$-boundary pair};
+}
+
+\only<4-5>{
+\draw (u1) node [above=.2cm] {$d_S(c)$};
+\draw (w3) node [above=.15cm] {$d_S'(x)$};
+}
+\end{tikzpicture}
+\endgroup\par

@@ -1,0 +1,217 @@
+\apxch{ch:group-harm-clos-max}
+
+\section{Approximation for Group-Closeness in the Sense of Li \etal}
+\label{apx:gh-gc:li-etal-apx}
+%
+As explained in Ref.~\cite[Appendix C]{DBLP:conf/alenex/AngrimanBDGGM21},
+the approach of Li \etal~\cite{DBLP:conf/www/0002PSYZ19} works for
+minimizing a general supermodular monotone non-increasing function
+$f(\cdot)$ with respect to a cardinality constraint.
+They let $x^*_1 \in \argmax_x\set{f(\emptyset) - f(\set{x})}$ and use
+the greedy algorithm on the set function
+%
+\[
+    g(S) := f(\set{x^*_1}) - f(\set{x^*_1} \cup S),
+\]
+%
+which is a monotone non-decreasing submodular set function with
+$g(\emptyset) = 0$. Thus, the greedy algorithm maximizes the function
+with respect to a cardinality constraint within an approximation factor
+of $1 - 1/e$~\cite{DBLP:journals/mp/NemhauserWF78}.
+However, there are two caveats. First, the greedy algorithm uses a budget
+of $k - 1$ instead of $k$ (budget of one is spent on identifying $x^*_1$)
+and thus Li \etal obtain an approximation factor of $1 - k/((k - 1)e)$.
+Second, and most importantly, observe that the approximation factor is
+obtained on the function $g(S)$ and not $f(S)$, \ie they
+get a set $S$ of size $k - 1$ such that
+%
+\[
+f(\set{x^*_1}) - f(\set{x^*_1} \cup S) \ge
+\roundb{1 - \frac{k}{(k - 1)e}}\cdot(f(\set{x^*_1}) - f(\set{x^*_1} \cup S^*)),
+\]
+%
+where $S^*$ is the optimal set of size $k - 1$ to be added to $\set{x^*_1}$
+with the goal of minimizing $f(\cdot)$.
+We remark that this set is not necessarily related to the set that minimizes
+$f(\cdot)$ with respect to the cardinality constraint. Clearly, this approach
+can be applied for the submodular farness function $\gfarn(\cdot)$ in place
+of $f(\cdot)$. It can not, however, provide an approximation algorithm
+for $\gfarn(\cdot)$ in the usual sense -- and furthermore it would not be
+easily extendable to $\gclos(\cdot)$.
+\vfill\pagebreak
+
+\section{Instances Statistics}
+\label{sec:gh-gc:inst-stats}
+\setlength{\tabcolsep}{2pt}
+
+\begin{table}[H]
+\footnotesize\centering
+\captionabove{Small networks used for group-harmonic experiments with ILP solver.}
+\label{tab:gh-gc-apx:small-inst-gh}
+\begin{subtable}[t]{.45\textwidth}
+\centering
+\caption{Complex networks}
+\label{tab:gh-gc-apx:small-inst-gh-cplx}
+\input{./sources/tables/gh-gc-apx/harmonic-closeness-small-diameter-small.tex}
+\end{subtable}\hfill
+\begin{subtable}[t]{.45\textwidth}
+\centering
+\caption{High-diameter networks}
+\label{tab:gh-gc-apx:small-inst-gh-high-diam}
+\input{./sources/tables/gh-gc-apx/harmonic-closeness-high-diameter-small.tex}
+\end{subtable}
+\end{table}
+
+\begin{table}[tb]
+\footnotesize\centering
+\captionabove{Small networks used for group-closeness experiments with ILP solver.}
+\label{tab:gh-gc-apx:small-inst-gc}
+\begin{subtable}[t]{.45\textwidth}
+\centering
+\caption{Complex networks}
+\input{./sources/tables/gh-gc-apx/closeness-small-diameter-small.tex}
+\end{subtable}\hfill
+\begin{subtable}[t]{.45\textwidth}
+\centering
+\caption{High-diameter networks}
+\input{./sources/tables/gh-gc-apx/closeness-high-diameter-small.tex}
+\end{subtable}
+\end{table}
+
+\begin{table}[tb]
+\footnotesize
+\captionabove{Large networks used for group-harmonic experiments.}
+\label{tab:gh-gc-apx:large-inst-gh}
+\begin{subtable}[t]{.45\textwidth}
+\caption{Complex networks}
+\label{tab:gh-gc-apx:large-inst-gh-cplx}
+\input{./sources/tables/gh-gc-apx/harmonic-closeness-small-diameter-large.tex}
+\end{subtable}\hfill
+\begin{subtable}[t]{.45\textwidth}
+\caption{High-diameter networks}
+\label{tab:gh-gc-apx:large-inst-gh-high-diam}
+\input{./sources/tables/gh-gc-apx/harmonic-closeness-high-diameter-large.tex}
+\end{subtable}
+\end{table}
+
+\begin{table}[tb]
+\footnotesize
+\captionabove{Large (strongly) connected components of the networks in \Cref{tab:gh-gc-apx:large-inst-gh}
+used for group-closeness experiments.}
+\label{tab:gh-gc-apx:large-inst-gc}
+\begin{subtable}[t]{.45\textwidth}
+\caption{Complex networks}
+\label{tab:gh-gc-apx:large-inst-gc-cplx}
+\input{./sources/tables/gh-gc-apx/closeness-small-diameter-large.tex}
+\end{subtable}\hfill
+\begin{subtable}[t]{.45\textwidth}
+\caption{High-diameter networks}
+\label{tab:gh-gc-apx:large-inst-gc-high-diam}
+\input{./sources/tables/gh-gc-apx/closeness-high-diameter-large.tex}
+\end{subtable}
+\end{table}
+
+\FloatBarrier
+
+\section{Running Times -- Group-Harmonic Maximization}
+\label{sec:gh-gc:running-times-gh}
+
+\begin{table}[H]
+\scriptsize
+\captionabove{Running times (s) of \greedyh and \greedylsh
+on the complex networks of \Cref{tab:gh-gc-apx:large-inst-gh-cplx}.}
+\label{tab:gh-gc-apx:time-gh-cplx}
+
+\begin{subtable}[t]{.6\textwidth}
+\centering
+\caption{Undirected unweighted}
+\input{./sources/tables/gh-gc-apx/time-h-undirected-unweighted-small-diameter.tex}
+\end{subtable}\hfill
+\begin{subtable}[t]{.4\textwidth}
+\centering
+\caption{Directed unweighted}
+\input{./sources/tables/gh-gc-apx/time-h-directed-unweighted-small-diameter.tex}
+\end{subtable}
+\end{table}
+
+\begin{table}[H]
+\scriptsize
+\captionabove{Running times (s) of \greedyh and \greedylsh
+on the high-diameter networks of \Cref{tab:gh-gc-apx:large-inst-gh-high-diam}.}
+\label{tab:gh-gc-apx:time-gh-high-diam}
+
+\begin{subtable}[t]{.5\textwidth}
+\centering
+\caption{Undirected unweighted}
+\input{./sources/tables/gh-gc-apx/time-h-undirected-unweighted-high-diameter.tex}
+\end{subtable}\hfill
+\begin{subtable}[t]{.5\textwidth}
+\centering
+\captionabove{Undirected weighted}
+\input{./sources/tables/gh-gc-apx/time-h-undirected-unweighted-high-diameter.tex}
+\end{subtable}\medskip
+
+\begin{subtable}[t]{.485\textwidth}
+\centering
+\caption{Directed unweighted}
+\input{./sources/tables/gh-gc-apx/time-h-directed-unweighted-high-diameter.tex}
+\end{subtable}\hfill
+\begin{subtable}[t]{.515\textwidth}
+\centering
+\caption{Directed weighted}
+\input{./sources/tables/gh-gc-apx/time-h-directed-unweighted-high-diameter.tex}
+\end{subtable}
+\end{table}
+
+\section{Running Times -- Group-Closeness Maximization}
+\label{sec:gh-gc:running-times-gc}
+
+\begin{table}[H]
+\centering\scriptsize
+\captionabove{Running time (s) of \gslsc and \greedylsc
+on the complex networks of \Cref{tab:gh-gc-apx:large-inst-gc-cplx}.}
+\label{tab:gh-gc-apx:time-gc-cplx}
+
+\begin{subtable}[t]{.5\textwidth}
+\centering
+\caption{Undirected unweighted}
+\input{./sources/tables/gh-gc-apx/time-c-undirected-unweighted-small-diameter.tex}
+\end{subtable}\hfill
+\begin{subtable}[t]{.5\textwidth}
+\centering
+\caption{Directed unweighted}
+\input{./sources/tables/gh-gc-apx/time-c-directed-unweighted-small-diameter.tex}
+\end{subtable}
+\end{table}
+
+\begin{table}[H]
+\centering\scriptsize
+\captionabove{Running time (s) of \gslsc and \greedylsc
+on the high-diameter networks of \Cref{tab:gh-gc-apx:large-inst-gc-high-diam}.}
+\label{tab:gh-gc-apx:time-gc-high-diam}
+
+\begin{subtable}[t]{.5\textwidth}
+\centering
+\caption{Undirected unweighted}
+\input{./sources/tables/gh-gc-apx/time-c-undirected-unweighted-high-diameter.tex}
+\end{subtable}\hfill
+\begin{subtable}[t]{.5\textwidth}
+\centering
+\caption{Directed unweighted}
+\input{./sources/tables/gh-gc-apx/time-c-directed-unweighted-high-diameter.tex}
+\end{subtable}\medskip
+
+\begin{subtable}[t]{.5\textwidth}
+\centering
+\caption{Undirected weighted}
+\input{./sources/tables/gh-gc-apx/time-c-undirected-weighted-high-diameter.tex}
+\end{subtable}\hfill
+\begin{subtable}[t]{.5\textwidth}
+\centering
+\caption{Directed weighted}
+\input{./sources/tables/gh-gc-apx/time-c-directed-weighted-high-diameter.tex}
+\end{subtable}
+\end{table}
+
+
+

@@ -1,0 +1,18 @@
+\begin{algorithm}[t]
+\footnotesize
+\caption{\footnotesize Updates \vsuitor and $ws$ of the matching partners of the
+vertices into the stack $S_A$}
+\label{algo:dyn-suitor-update-aff}
+\textbf{Input:} Stack of affected vertices $S_A$
+
+\begin{algorithmic}[1]
+\While{$S_A$ is not empty}
+\State$x \gets S_A.\texttt{pop}()$
+\State$y \gets \vsuitor(x)$
+\State$\vsuitor(y) \gets x$\label{line:dyn-mwm:update-aff-1}
+\State$ws(y) \gets ws(x)$\label{line:dyn-mwm:update-aff-2}
+\State$\affected(x) \gets \false$\label{line:dyn-mwm:update-aff-unaff-1}
+\State$\affected(y) \gets \false$\label{line:dyn-mwm:update-aff-unaff-2}
+\EndWhile
+\end{algorithmic}
+\end{algorithm}

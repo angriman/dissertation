@@ -1,0 +1,122 @@
+\chapter*{Introduction}
+%
+As we saw in \Cref{part:single-vertex-centrality},
+finding highly central vertices in a graph is a fundamental
+problem in network analysis (see also Ref.~\cite{newman2018networks}).
+To this end, several
+centrality measures have been introduced over the past decades (see
+Ref.~\cite{DBLP:journals/im/BoldiV14} and \Cref{sec:centrality-measures}).
+The problem of identifying the top-$k$ most central vertices in
+a graph has been widely studied
+\cite{DBLP:journals/tkdd/BergaminiBCMM19,
+DBLP:conf/faw/OkamotoCL08,DBLP:conf/icde/OlsenLH14,DBLP:conf/www/LeeC14}.
+However, many network analysis applications do not require the $k$
+most \emph{individually} central vertices, but rather a \emph{group}
+of $k$ vertices that is central \emph{as a whole}
+\cite{DBLP:journals/toc/KempeKT15,
+DBLP:journals/isci/ZhaoWLTG17,DBLP:journals/pe/GkantsidisMS06,DBLP:conf/icde/LiLCCDZ15,
+yan2006efficient}.
+
+Everett and Borgatti~\cite{everett1999centrality}
+were the first to extend the centrality concept to groups of vertices and
+defined group-degree, group-closeness, group-betweenness, and flow betweenness.
+Group centrality maximization problems are often \np-hard: group-degree
+maximization can be reduced from vertex cover~\cite{DBLP:conf/alenex/AngrimanGBZGM20},
+for group-closeness see Ref.~\cite{DBLP:conf/adc/ChenWW16} and for group-harmonic
+see Ref.~\cite{DBLP:conf/alenex/AngrimanBDGGM21}.
+Consequently, exact methods for these problems such as ILP
+solvers~\cite{DBLP:conf/alenex/BergaminiGM18} take too long on graphs with
+non-trivial size -- a few thousands of vertices/edges or more.
+Thus, group centrality maximization is generally approached via
+approximation~\cite{DBLP:conf/kdd/MahmoodyTU16,DBLP:conf/www/0002PSYZ19}
+or heuristics~\cite{DBLP:conf/alenex/BergaminiGM18,DBLP:conf/adc/ChenWW16}.
+Yet, existing algorithms for group centrality maximization fail to scale to
+large real-world networks. In addition, early attempts to attribute a constant-factor
+approximation to a popular greedy algorithm for group-closeness maximization
+were flawed (see \Cref{sec:group-harm-clos-max:gc-prel-disc}), leaving the open
+questions of whether this problem can be approximated and, if so, how well.
+Another weakness of existing group centrality measures is that, without proper
+adjustments, they are not designed to handle disconnected graphs.
+
+In the following, we address the lack of scalability of group centrality
+maximization algorithms from two directions: (i) in the context of
+group-closeness centrality, we introduce new fast local search heuristics to
+compute highly central groups of vertices in large graphs
+(\Cref{ch:group-closeness-local-search}) and (ii) we introduce a novel
+group centrality measure called GED-Walk as well as efficient parallel
+algorithms compute it and to approximate the group of vertices with highest
+GED-Walk centrality (\Cref{ch:ged-walk}).
+%
+Concerning the group-closeness approximation issue, building on top of the
+results presented in Ref.~\cite{DBLP:conf/alenex/AngrimanBDGGM21}, we provide
+an efficient implementation of the first approximation algorithm for this
+problem (\Cref{ch:group-harm-clos-max}). Finally, we address the lack of
+electrical group centrality measures for disconnected graphs by extending
+forest closeness to disconnected graphs (\Cref{ch:ged-walk}); as its
+single-vertex counterpart, group forest closeness handles disconnected graphs
+out of the box.
+
+\paragraph{Contribution and Outline}
+In \Cref{ch:group-closeness-local-search}, we introduce new fast local search
+heuristics for group-closeness to compute highly central groups of vertices.
+Our heuristics start from an initial a group of vertices $S$ and perform
+exchanges between vertices within $S$ and the rest of the graph until they
+reach a local optim\change{um}. Compared to the state-of-the-art greedy
+algorithm~\cite{DBLP:conf/alenex/BergaminiGM18}, experimental results show
+that, on unweighted graphs, our strategy is two orders of magnitude faster and
+achieves $\numprint{99.4}\%$ of the solution quality; on weighted graphs, it
+yields solutions of $\onedigit{\wGSQualInc}\%$ \emph{higher} quality while also
+being $\onedigit{\gsPSevenFiveKSpeed}\times$ faster.
+Furthermore, our algorithms handle graphs with hundreds of million of edges
+in only around ten minutes, while the greedy algorithm requires more than
+ten \emph{hours}.
+
+Heuristics, however, do not provide any approximation guarantees, leaving
+the question of approximability for group-closeness maximization unsettled.
+In \Cref{ch:group-harm-clos-max}, we address this issue.
+By exploiting the theoretical results
+from Ref.~\cite{DBLP:conf/alenex/AngrimanBDGGM21}, we build the first
+approximation algorithm for group-closeness maximization by adapting to
+group-closeness the local search algorithm for $k$-Median by Arya
+\etal~\cite{DBLP:journals/siamcomp/AryaGKMMP04}. In
+addition, we also address \emph{group-harmonic} maximization -- to
+the best of our knowledge, we are the first to study this optimization problem.
+We implement an efficient greedy algorithm as well as a local search
+approximation algorithm to maximize group-harmonic.
+In our experimental study we show that, compared to a greedy strategy, our local
+search approximation algorithm yields solutions with superior quality at the cost
+of additional running time. In particular, local search is one to three orders
+of magnitude slower than greedy, which is expected due to the approximation
+guarantees. Indeed, local search approximation algorithms often cut greedy's
+(empirical) gap to optimality by half or more.
+
+Finally, in \Cref{ch:ged-walk}, we introduce two new group centrality
+measures: GED-Walk, a novel group centrality
+measure inspired by Katz centrality, and group forest closeness, that is, forest
+closeness (see \Cref{ch:electrical-closeness}) extended to sets of vertices.
+Similarly to Katz centrality, GED-Walk takes into account walks of any length
+and gives to shorter walks greater importance than to longer walks. Since it is
+not based on shortest paths, GED-Walk can be optimized significantly faster
+(for groups with moderate size) compared to shortest-path based measures such
+as group-closeness, group-harmonic or group-betweenness.
+%
+We describe efficient parallel algorithms to
+compute the GED-Walk score of a given group and to efficiently approximate the
+group of vertices with highest GED-Walk centrality. Experimental results show
+that GED-Walk improves the precision of popular graph mining applications
+such as semi-supervised vertex classification and graph
+classification~\cite{DBLP:journals/tnn/ChapelleSZ09}. Also, our
+algorithm for maximizing GED-Walk (in approximation) is two orders of magnitude
+faster than state-of-the-art algorithms for group-betweenness
+maximization~\cite{DBLP:conf/kdd/MahmoodyTU16} and, for group sizes up to 100
+vertices, one to two orders of magnitude faster than group-harmonic and
+group-closeness maximization~\cite{DBLP:conf/alenex/BergaminiGM18}.
+
+Group forest closeness, in turn, is defined as the reciprocal of group
+forest farness, \ie the sum of forest distances from a group $S$ to the
+other vertices. Maximizing this measure turns out to be \np-hard, so we adapt
+the greedy approximate algorithm from Li \etal~\cite{DBLP:conf/www/0002PSYZ19}
+for group electrical closeness to group forest closeness.
+Semi-supervised vertex classification results on disconnected graphs indicate
+that, in comparison to existing measures, group forest closeness improves the
+precision to a much greater extent.

@@ -1,0 +1,407 @@
+\newglossaryentry{Vertices}{%
+  name        = {$V$},
+  description = {Set of vertices in a graph.},
+  sort        = {vertices},
+}
+
+\newglossaryentry{Edges}{%
+  name        = {$E$},
+  description = {Set of edges in a graph.},
+  sort        = {edges},
+}
+
+\newglossaryentry{Neighbors}{%
+  name        = {$N(u)$},
+  description = {Neighbors of $u$.},
+  sort        = {neighbors},
+}
+
+\newglossaryentry{Neighbors-in}{%
+  name        = {$\nin(u)$},
+  description = {In-neighbors of $u$.},
+  sort        = {neighbors in},
+}
+
+\newglossaryentry{Neighbors-out}{%
+  name        = {$\nout(u)$},
+  description = {Out-neighbors of $u$.},
+  sort        = {neighbors out},
+}
+
+\newglossaryentry{Neighbors Group}{%
+  name        = {$N(S)$},
+  description = {Set of vertices that have at least one neighbor in $S \subseteq V$.},
+  sort        = {neighbors group},
+}
+
+\newglossaryentry{Expected}{%
+  name        = {$\expected{X}$},
+  description = {Expected value of a random variable $X$.},
+  sort        = {expected value},
+}
+
+\newglossaryentry{Degree}{%
+  name        = {$\deg(u)$},
+  description = {Degree of $u$.},
+  sort        = {degree},
+}
+
+\newglossaryentry{Degree-in}{%
+  name        = {$\degin(u)$},
+  description = {In-degree of $u$.},
+  sort        = {degree in},
+}
+
+\newglossaryentry{Degree-out}{%
+  name        = {$\degout(u)$},
+  description = {Out-degree of $u$.},
+  sort        = {degree out},
+}
+
+\newglossaryentry{Weight}{%
+  name        = {$w(u, v)$},
+  description = {Weight of the edge \set{u,v} (or $(u, v)$ if the graph is directed).},
+  sort        = {weight},
+}
+
+\newglossaryentry{Adjacency Matrix}{%
+  name        = {\mat{A}},
+  description = {Adjacency matrix.},
+  sort        = {matrix adjacency},
+}
+
+\newglossaryentry{Laplacian Matrix}{%
+  name        = {\Lapl},
+  description = {Laplacian matrix.},
+  sort        = {matrix laplacian},
+}
+
+\newglossaryentry{Laplacian Pseudoinverse Matrix}{%
+  name        = {\Linv},
+  description = {Moore-Penrose pseudoinverse of the Laplacian matrix \Lapl.},
+  sort        = {matrix laplacian pseudoinverse},
+}
+
+\newglossaryentry{Laplacian Matrix Augmented}{%
+  name        = {\Lstar},
+  description = {Laplacian matrix of the augmented graph \gstarp.},
+  sort        = {matrix laplacian augmented},
+}
+
+\newglossaryentry{Laplacian Pseudoinverse Matrix Augmented}{%
+  name        = {\Linvstar},
+  description = {Moore-Penrose pseudoinverse of the Laplacian matrix \Lstar.},
+  sort        = {maitrix laplacian pseudoinverse augmented},
+}
+
+\newglossaryentry{Ones Matrix}{%
+  name        = {$\Ones$},
+  description = {Matrix where every element is one.},
+  sort        = {matrix ones},
+}
+
+\newglossaryentry{Degree Matrix}{%
+  name        = {\mat{D}},
+  description = {Degree matrix.},
+  sort        = {matrix degree},
+}
+
+\newglossaryentry{Number of Vertices}{%
+  name        = {$n$},
+  description = {Number of vertices in a graph.},
+  sort        = {number of vertices},
+}
+
+\newglossaryentry{Number of Edges}{%
+  name        = {$m$},
+  description = {Number of edges in a graph.},
+  sort        = {number of edges},
+}
+
+\newglossaryentry{Shortest Path Distance}{%
+  name        = {$d(u, v)$},
+  description = {Shortest-path distance between $u$ and $v$.},
+  sort        = {distance shortest path},
+}
+
+\newglossaryentry{Forest Distance}{%
+  name        = {$\fdistp(u, v)$},
+  description = {Forest distance between $u$ and $v$.},
+  sort        = {distance forest},
+}
+
+\newglossaryentry{Resistance Distance}{%
+  name        = {$\rdist(u, v)$},
+  description = {Resistance distance between $u$ and $v$.},
+  sort        = {distance resistance},
+}
+
+\newglossaryentry{Augmented Graph}{%
+  name        = {$\gstarp$},
+  description = {Augmented graph.},
+  sort        = {augmented graph},
+}
+
+\newglossaryentry{Matrix Multiplication Exponent}{%
+  name        = {$\omega$},
+  description = {Matrix multiplication exponent.},
+  sort        = {matrix multiplication exponent},
+}
+
+\newglossaryentry{Resistance}{%
+  name        = {$r(u, v)$},
+  description = {Resistance of edge \set{u,v}.},
+  sort        = {resistance},
+}
+
+\newglossaryentry{Conductance}{%
+  name        = {$c(u, v)$},
+  description = {Conductance between $u$ and $v$.},
+  sort        = {conductance},
+}
+
+\newglossaryentry{Effective Resistance}{%
+  name        = {$\reff(u, v)$},
+  description = {Effective resistance (or resistance distance) between $u$ and $v$.},
+  sort        = {effective resistance},
+}
+
+\newglossaryentry{Effective Conductance}{%
+  name        = {$\ceff(u, v)$},
+  description = {Effective conductance between $u$ and $v$.},
+  sort        = {effective conductance},
+}
+
+\newglossaryentry{Potential}{%
+  name        = {$p(u)$},
+  description = {Electric potential of vertex $u$.},
+  sort        = {potential},
+}
+
+\newglossaryentry{Potential Difference}{%
+  name        = {$p(u, v)$},
+  description = {Electric potential difference between $u$ and $v$: $p(u) - p(v)$.},
+  sort        = {potential difference},
+}
+
+\newglossaryentry{Current}{%
+  name        = {$i(u, v)$},
+  description = {Electrical current flowing from $u$ to $v$.},
+  sort        = {electrical current},
+}
+
+\newglossaryentry{Canonical Unit Vector}{%
+  name        = {$\cunit{u}$},
+  description = {Canonical unit vector for $u$.},
+  sort        = {matrix vector canonical unit},
+}
+
+\newglossaryentry{Identity Matrix}{%
+  name        = {$\Ident$},
+  description = {Identity matrix.},
+  sort        = {matrix identity},
+}
+
+\newglossaryentry{Ones vector}{%
+  name        = {$\ones$},
+  description = {All-ones vector.},
+  sort        = {matrix vector ones},
+}
+
+\newglossaryentry{Closeness Centrality}{%
+  name        = {$\clos(u)$},
+  description = {Closeness centrality of $u$.},
+  sort        = {centrality closeness},
+}
+
+\newglossaryentry{Harmonic Centrality}{%
+  name        = {$\harm(u)$},
+  description = {Harmonic centrality of $u$.},
+  sort        = {centrality harmonic},
+}
+
+\newglossaryentry{Shortest Paths}{%
+  name        = {$\sigma_{x,y}$},
+  description = {Number of shortest paths from $x$ to $y$.},
+  sort        = {shortest paths},
+}
+
+\newglossaryentry{PageRank}{%
+  name        = {$\pr(u)$},
+  description = {PageRank score of $u$.},
+  sort        = {centrality pagerank},
+}
+
+\newglossaryentry{Shortest Paths through}{%
+  name        = {$\sigma_{x,y}(u)$},
+  description = {Number of shortest paths from $x$ to $y$ that cross $u$.},
+  sort        = {shortest paths through},
+}
+
+\newglossaryentry{Betweenness Centrality}{%
+  name        = {$\betw(u)$},
+  description = {Betweenness centrality of $u$.},
+  sort        = {centrality betweenness},
+}
+
+\newglossaryentry{Katz Centrality}{%
+  name        = {$\katz(u)$},
+  description = {Katz centrality of $u$.},
+  sort        = {centrality katz},
+}
+
+\newglossaryentry{Normalized Random Walk}{%
+  name        = {$\nrwb(u)$},
+  description = {Normalized random walk betweenness of $u$.},
+  sort        = {centrality betweenness normalized random walk},
+}
+
+\newglossaryentry{ED-Walk Centrality}{%
+  name        = {$\ed(u)$},
+  description = {ED-Walk centrality of $u$.},
+  sort        = {centrality ed walk},
+}
+
+\newglossaryentry{Eigenvector centrality}{%
+  name        = {$\eig(u)$},
+  description = {Eigenvector centrality of $u$.},
+  sort        = {centrality eigenvector},
+}
+
+\newglossaryentry{Farness}{%
+  name        = {$f(u)$},
+  description = {Farness of $u$.},
+  sort        = {farness},
+}
+
+\newglossaryentry{Forest Farness}{%
+  name        = {$\ffarnp(u)$},
+  description = {Forest farness of $u$.},
+  sort        = {farness forest},
+}
+
+\newglossaryentry{Electrical closeness}{%
+  name        = {$\elclos(u)$},
+  description = {Electrical closeness of $u$.},
+  sort        = {centrality closeness electrical},
+}
+
+\newglossaryentry{Forest Closeness}{%
+  name        = {$\fclosp(u)$},
+  description = {Forest closeness of $u$.},
+  sort        = {centrality closeness forest},
+}
+
+\newglossaryentry{Group Closeness Centrality}{%
+  name        = {$\gclos(S)$},
+  description = {Group-closeness of $S$.},
+  sort        = {group centrality closeness},
+}
+
+\newglossaryentry{Group Forest Closeness Centrality}{%
+  name        = {$\gfclosp(S)$},
+  description = {Group forest closeness of $S$.},
+  sort        = {group centrality forest closeness},
+}
+
+\newglossaryentry{Group Farness}{%
+  name        = {$\gfarn(S)$},
+  description = {Group-farness of $S$.},
+  sort        = {group centrality farness},
+}
+
+\newglossaryentry{Group Forest Farness}{%
+  name        = {$\gffarnp(S)$},
+  description = {Group forest farness of $S$.},
+  sort        = {group centrality farness forest},
+}
+
+\newglossaryentry{Group Degree Centrality}{%
+  name        = {$\gdeg(S)$},
+  description = {Group-degree of $S$.},
+  sort        = {group centrality degree},
+}
+
+\newglossaryentry{Group Harmonic Centrality}{%
+  name        = {$\gharm(S)$},
+  description = {Group-harmonic of $S$.},
+  sort        = {group centrality harmonic},
+}
+
+\newglossaryentry{GED Walk Centrality}{%
+  name        = {$\ged(S)$},
+  description = {GED-Walk centrality of $S$.},
+  sort        = {group centrality ged walk},
+}
+
+\newglossaryentry{Walks length i}{%
+  name        = {$\phi_i(S)$},
+  description = {Number of walks of length $i$ that contain at least one vertex in $S \subseteq V$.},
+  sort        = {group centrality ged walk walks length i},
+}
+
+\newglossaryentry{Commute Time}{%
+  name        = {$\ct(u, v)$},
+  description = {Commute time between $u$ and $v$.},
+  sort        = {commute time},
+}
+
+\newglossaryentry{Volume}{%
+  name        = {$\vol(G)$},
+  description = {Volume of a graph $G$.},
+  sort        = {volume},
+}
+
+\newglossaryentry{Hitting Time}{%
+  name        = {$\hitt(u, v)$},
+  description = {Hitting time from $u$ to $v$.},
+  sort        = {hitting time},
+}
+
+\newglossaryentry{Diameter}{%
+  name        = {$\diam(G)$},
+  description = {Diameter of a graph $G$.},
+  sort        = {diameter},
+}
+
+\newglossaryentry{Eccentricity}{%
+  name        = {$\ecc(u)$},
+  description = {Eccentricity of $u$.},
+  sort        = {eccentricity},
+}
+
+\newglossaryentry{Reachable vertices}{%
+  name        = {$R(u)$},
+  description = {Vertices reachable from $u$.},
+  sort        = {reachable vertices},
+}
+
+\newglossaryentry{Reachable vertices cardinality}{%
+  name        = {$r(u)$},
+  description = {Number of vertices reachable from $u$.},
+  sort        = {reachable vertices cardinality},
+}
+
+\newglossaryentry{Kirchhoff Index}{%
+  name        = {$\kidx(G)$},
+  description = {Kirchhoff index of graph $G$.},
+  sort        = {kirchhoff index},
+}
+
+\newglossaryentry{Forest Matrix}{%
+  name        = {$\Fmatp$},
+  description = {Forest matrix.},
+  sort        = {matrix forest},
+}
+
+\newglossaryentry{Diagonal}{%
+  name        = {$\diag{\mat{M}}$},
+  description = {Diagonal of a matrix $\mat{M}$.},
+  sort        = {matrix diagonal},
+}
+
+\newglossaryentry{Trace}{%
+  name        = {$\tr{\mat{M}}$},
+  description = {Trace of a matrix $\mat{M}$.},
+  sort        = {matrix trace},
+}

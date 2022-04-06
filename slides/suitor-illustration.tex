@@ -1,0 +1,32 @@
+\begingroup\centering
+\begin{tikzpicture}
+\textnode{u}{0,0}{$u$}
+\textnode{a}{2, 1}{$a$}
+\textnode{d}{4, 1}{$d$}
+\textnode{b}{2, 0}{$b$}
+\textnode{c}{2, -1}{$c$}
+
+\newcommand{\neigh}[1]{
+\node (1#1) [above right=3mm and 3mm of #1] {};
+\node (2#1) [right=3mm of #1] {};
+\node (3#1) [below right=3mm and 3mm of #1] {};
+\draw[-] (#1) -- (1#1);
+\draw[-] (#1) -- (2#1);
+\draw[-] (#1) -- (3#1);
+}
+\neigh{d}
+\neigh{b}
+\neigh{c}
+
+\draw[-,line width=1mm] (a) -- (d);
+\draw[-,ultra thick] (u) -- (a);
+\draw[-,thick] (u) -- (b);
+\draw[-, very thick] (u) -- (c);
+\draw[->, dashed, \emphcolor] (d) [bend right] to (a);
+\draw (a) node [above left=2mm] {$\emph{d}$};
+\draw[->, dashed, \emphcolor] (b) [bend right] to (u);
+\draw[->, dashed, \emphcolor] (c) [bend left] to (u);
+\draw (u) node [above left=2mm] {$\emph{c}$};
+\end{tikzpicture}
+\endgroup\par
+
